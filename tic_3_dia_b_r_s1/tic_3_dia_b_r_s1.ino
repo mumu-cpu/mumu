@@ -59,6 +59,12 @@ int ct_state = 0;
 int ct1s_state = 0;
 int ct05s_state = 0;
 bool ct1s_sta = false;
+
+int ct2t_state = 0;
+bool ct2t_sta0=false;
+bool ct2t_sta1=false;
+bool ct2t_sta2=false;
+
 bool ct05s_sta = false;
 bool welc_ctr_err = true;
 // bool welc_ctr_tb_st[7];
@@ -76,6 +82,8 @@ String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
+unsigned long cpt2t_millis = millis();
+
 unsigned long cpt05s_millis = millis();
 bool f_b_cl_state = false;
 unsigned long f_b_cl_Tmp = 0;

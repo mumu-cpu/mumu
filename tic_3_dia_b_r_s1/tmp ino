@@ -1,36 +1,36 @@
   int count_2t(int ct2t_state)
 {
 int ct2t_ste = ct2t_state;
-  unsigned long rlt1s = millis() - cpt2t_millis;
-  if (ct2t_sta0== false && rlt1s > 100)
+  unsigned long rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== false && rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0= true;
 
   }
-  rlt1s = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct1s_sta1==false && rlt1s > 100)
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1==false && rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
-    ct1s_sta1 = true;
+    ct2t_sta1 = true;
   }
-  rlt1s = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct1s_sta1 == true && ct1s_sta2==false && rlt1s > 200)
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2==false && rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
-    ct1s_sta2 = true;
+    ct2t_sta2 = true;
   }
-  rlt1s = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct1s_sta1 == true && ct1s_sta2 == true && rlt1s > 100)
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2 == true && rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0= false;
-    ct1s_sta1 = false;
-    ct1s_sta2 = false;
+    ct2t_sta1 = false;
+    ct2t_sta2 = false;
   }
 
 // return(ct2t_ste);
