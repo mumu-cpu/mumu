@@ -139,6 +139,8 @@ unsigned long millisF_B_CL_5 = 0;
 void setup()
 { //                              SETUP
   Serial.begin(115200);
+    Serial.println("      A U T O     D I A G N O S T I C"); //
+ Serial.println("     "); //
   pinMode(flacheRouge, OUTPUT);
   pinMode(flacheBleu, OUTPUT);
   pinMode(sirenC, OUTPUT);
@@ -159,14 +161,15 @@ void setup()
   // {
   // }
 
+  
+  
+  
   // welc diagnostique
-  for (int compt = ct1s_state; ct1s_state <= 31; compt)
-  {
-    ct1s_state = welc_1s(ct1s_state);
-  }
+  //for (int compt = ct1s_state; ct1s_state <= 18; compt)
+  //{    ct1s_state = welc_1s(ct1s_state);  }
   // welc listing ID err
   // 							            roge, bleu, sirC, sirI,	spot,	alime, fanne,	bsch
-  // bool welc_ctr_tb_st[8] = {false, true, false, true, true, false, true, false};
+  bool welc_ctr_tb_st[8] = {false, true, false, true, true, false, true, false};
 
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false &&  welc_ctr_tb_st[2] == false &&  welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
@@ -187,7 +190,7 @@ void setup()
   Serial.println("	"); //
 
   //      A U T O     C O N F I G
-
+ Serial.println("      A U T O     C O N F I G"); //
   // flacheRouge ->defaut ==>flacheBleu
   if (welc_ctr_tb_st[0] == true) // && welc_ctr_tb_st[1] == false)
   {
@@ -332,6 +335,7 @@ void setup()
     while (1)
       ;
   }
+debut = millis();          // temp debut duree cycle
 }
 void loop()
 { //                               LOOP
@@ -342,7 +346,7 @@ void loop()
   // compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)// int compt = count(sosSay);
   // Serial.println(compteB);
   // Serial.println(ct_state);
-  return;
+  // return;
 
   Serial.println(" ");
   //            MANU_AUTO_VEILLE
@@ -979,7 +983,7 @@ int welc_1s(int ct1s_state)
 {
   int ct1s_ste = ct1s_state;
   unsigned long rlt1s = millis() - cpt1s_millis;
-  if (rlt1s > 1000)
+  if (rlt1s > 100)
   {
     ct1s_sta = true;
     ct1s_ste = ct1s_ste + 1;
@@ -1260,10 +1264,20 @@ int welc_1s(int ct1s_state)
 
   // chiffre 9
   case 17:
-    digitalWrite(fan, true);
+    digitalWrite(flacheRouge, false);
+    digitalWrite(flacheBleu, false);
+    digitalWrite(sirenC, false);
+    digitalWrite(sirenI, false);
+    digitalWrite(spot, false);
+    digitalWrite(alim, false);
+    digitalWrite(fan, false);
+    digitalWrite(bosch, false);
+    
+    
+    //digitalWrite(fan, true);
     break;
   case 18:
-    digitalWrite(fan, false);
+    //digitalWrite(fan, false);
     break;
 
   // chiffre 10
@@ -1360,19 +1374,19 @@ int f_b_cl_2(int sosSay)
   int siren_c_i = 0;
   if (sosSay == 2 || sosSay == 3)
   {
-    flache = 12;   // sortie flacheBleu
-    siren_c_i = 3; // sortie siren con (continute)
+    flache =flacheBleu ;   // sortie 12
+    siren_c_i =sirenC ; //3 sortie siren con (continute)
   }
   if (compteB == 2 || compteB == 4 || compteB == 6)
   {
-    flache = 6;    // eclairage spot
-    siren_c_i = 9; // sortie siren iso
+    flache =spot ;    //6 eclairage 
+    siren_c_i =sirenI ; //9 sortie siren iso
   }
 
   if (sosSay == 4 || sosSay == 5)
   {
-    flache = 11;   // sortie flacheRouge
-    siren_c_i = 9; // sortie siren iso
+    flache = flacheRouge;   //11 sortie flacheRouge
+    siren_c_i = sirenI; //9 sortie siren iso
   }
 
   int cont_st = count();
