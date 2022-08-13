@@ -991,6 +991,66 @@ int count05s(int ct05s_state)
   return (ct05s_ste);
 }
 
+  int count_2t(int ct2t_state)
+{
+int ct2t_ste = ct2t_state;
+  unsigned long rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== false && rlt2t > 100)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta0= true;
+
+  }
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1==false && rlt2t > 100)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta1 = true;
+  }
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2==false && rlt2t > 200)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta2 = true;
+  }
+  rlt2t = millis() - cpt2t_millis;
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2 == true && rlt2t > 100)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta0= false;
+    ct2t_sta1 = false;
+    ct2t_sta2 = false;
+  }
+
+// return(ct2t_ste);
+
+switch(ct2t_ste)
+{
+case 0:
+digitalWrite(flacheRouge,true);
+break;
+case 1:
+digitalWrite(flacheRouge,false);
+break;
+case 2:
+digitalWrite(flacheRouge,true);
+break;
+case 3:
+digitalWrite(flacheRouge,false);
+break;
+case 4:
+ct2t_ste=0;
+break;
+}
+
+
+
+}
+
 int welc_1s(int ct1s_state)
 {
   int ct1s_ste = ct1s_state;
