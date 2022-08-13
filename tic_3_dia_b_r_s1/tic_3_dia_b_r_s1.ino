@@ -43,7 +43,7 @@ bool sirenCState = false;                // state sirenC
 bool sirenIState = false;                // state sirenI
 int alim_State = 0;                      // state alim_State
 bool tempo_State_On = false;             // cycle on
-const unsigned long tempo = (2000 * 10); // temp duree cycle
+unsigned long tempo = (2000 * 10); // temp duree cycle
 unsigned long debut = millis();          // temp debut duree cycle
 unsigned long interval = 1000;           // interval cligniot
 unsigned long inter = 1;
@@ -176,12 +176,12 @@ void setup()
   //for (int compt = ct1s_state; ct1s_state <= 18; compt)
   //{    ct1s_state = welc_1s(ct1s_state);  }
   // welc listing ID err
-  // 							            roge, bleu, sirC, sirI,	spot,	alime, fanne,	bsch
-  bool welc_ctr_tb_st[8] = {false, true, false, true, true, false, true, false};
+  // 					   roge, bleu, sirC, sirI,	spot,	alime, fanne,	bsch
+  bool welc_ctr_tb_st[8] = {true, true, true, false, true, false, false, false};
 
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false &&  welc_ctr_tb_st[2] == false &&  welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
-    Serial.println(" S Y S T E M    O K");
+    Serial.println("    S Y S T E M    O K");
   }
   // welc listing ID 0k
   for (int i = 0; i < 8; i++)
@@ -353,12 +353,13 @@ void loop()
 { //                               LOOP
 
   //  **********************TEST********************************
+  ct2t_state=count_2t(ct2t_state);
   // ct1s_state = welc_1s(ct1s_state);
   // sosSay = 5;
   // compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)// int compt = count(sosSay);
   // Serial.println(compteB);
   // Serial.println(ct_state);
-  // return;
+  return;
 
   Serial.println(" ");
   //            MANU_AUTO_VEILLE
@@ -995,7 +996,7 @@ int count05s(int ct05s_state)
 {
 int ct2t_ste = ct2t_state;
   unsigned long rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== false && rlt2t > 100)
+  if (ct2t_sta0== false && rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1003,21 +1004,21 @@ int ct2t_ste = ct2t_state;
 
   }
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1==false && rlt2t > 100)
+  if (ct2t_sta0== true && ct2t_sta1==false && rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta1 = true;
   }
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2==false && rlt2t > 200)
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2==false && rlt2t > 500)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta2 = true;
   }
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2 == true && rlt2t > 100)
+  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2 == true && rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1048,7 +1049,7 @@ break;
 }
 
 
-
+return(ct2t_ste);
 }
 
 int welc_1s(int ct1s_state)
