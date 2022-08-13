@@ -198,7 +198,8 @@ void setup()
   Serial.println("	"); //
 
   //      A U T O     C O N F I G
- Serial.println("      A U T O     C O N F I G"); //
+  Serial.println("      A U T O     C O N F I G"); //
+  
   // flacheRouge ->defaut ==>flacheBleu
   if (welc_ctr_tb_st[0] == true) // && welc_ctr_tb_st[1] == false)
   {
@@ -313,11 +314,13 @@ void setup()
   {
     Serial.print(welc_ctr_tb_id[6]);
     Serial.println("	DEFAUT	0.f.  ! HS");
+  fan=0;
   } // defaut fan --> hs
   if (welc_ctr_tb_st[4] == true)
   {
     Serial.print(welc_ctr_tb_id[4]);
     Serial.println("	DEFAUT	0.f.  ! HS");
+  spot=0;
   } // defaut spot --> hs
   // flacheRouge -> flacheBleu -> spot -> con -> iso ==> DEFAUT
   if (welc_ctr_tb_st[0] == true &&
@@ -337,6 +340,7 @@ void setup()
     while (1)
       ;
   }
+    // bat BOSCH ==> DEFAUT
   if (welc_ctr_tb_st[7] == true)
   {
     Serial.println("	DEFAUT GENERAL ! BOSCH");
