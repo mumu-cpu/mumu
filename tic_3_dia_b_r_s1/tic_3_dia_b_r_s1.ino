@@ -996,7 +996,10 @@ int count05s(int ct05s_state)
 {
 int ct2t_ste = ct2t_state;
   unsigned long rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== false && rlt2t > 200)
+
+//cycle x1
+  if (ct2t_sta0== false && // allum 0
+      rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1004,27 +1007,66 @@ int ct2t_ste = ct2t_state;
 
   }
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1==false && rlt2t > 200)
+  if (ct2t_sta0== true && // etein 1
+      ct2t_sta1==false && 
+      rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta1 = true;
   }
+ 
+ //cycle x2
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2==false && rlt2t > 500)
+  if (ct2t_sta0== true && // allum 2
+      ct2t_sta1 == true && 
+      ct2t_sta2==false && 
+      rlt2t > 500)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta2 = true;
   }
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0== true && ct2t_sta1 == true && ct2t_sta2 == true && rlt2t > 200)
+  if (ct2t_sta0== true && // etein 3
+      ct2t_sta1 == true && 
+      ct2t_sta2 == true && 
+      ct2t_sta3= false && 
+      rlt2t > 300)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta3= true;
+  }
+
+//cycle x3
+rlt2t=millis()-cpt2t_millis;
+  if (ct2t_sta0== true && // allum 4
+      ct2t_sta1 == true && 
+      ct2t_sta2 == true && 
+      ct2t_sta3==true && 
+      ct2t_sta4==false &&
+      rlt2t > 100)
+  {
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta4=true;
+  }
+rlt2t=millis()-cpt2t_millis;
+  if (ct2t_sta0== true && // etein 5
+      ct2t_sta1 == true && 
+      ct2t_sta2 == true && 
+      ct2t_sta3==true && 
+      ct2t_sta4==true && 
+      rlt2t > 100)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0= false;
     ct2t_sta1 = false;
     ct2t_sta2 = false;
+    ct2t_sta3=false;
+    ct2t_sta4=false 
   }
 
 // return(ct2t_ste);
@@ -1044,9 +1086,16 @@ case 3:
 digitalWrite(flacheRouge,false);
 break;
 case 4:
+digitalWrite(flacheRouge,true);
+break;
+case 5:
+digitalWrite(flacheRouge,false);
+break;
+case 6:
 ct2t_ste=0;
 break;
 }
+
 
 
 return(ct2t_ste);
