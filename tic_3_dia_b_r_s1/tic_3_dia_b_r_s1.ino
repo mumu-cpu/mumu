@@ -64,6 +64,8 @@ int ct2t_state = 0;
 bool ct2t_sta0=false;
 bool ct2t_sta1=false;
 bool ct2t_sta2=false;
+bool ct2t_sta3=false;
+bool ct2t_sta4=false;
 
 bool ct05s_sta = false;
 bool welc_ctr_err = true;
@@ -1031,7 +1033,7 @@ int ct2t_ste = ct2t_state;
   if (ct2t_sta0== true && // etein 3
       ct2t_sta1 == true && 
       ct2t_sta2 == true && 
-      ct2t_sta3= false && 
+      ct2t_sta3== false && 
       rlt2t > 300)
   {
     cpt2t_millis = millis();
@@ -1066,7 +1068,7 @@ rlt2t=millis()-cpt2t_millis;
     ct2t_sta1 = false;
     ct2t_sta2 = false;
     ct2t_sta3=false;
-    ct2t_sta4=false 
+    ct2t_sta4=false ;
   }
 
 // return(ct2t_ste);
