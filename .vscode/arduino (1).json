@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "/dev/ttyS0",
+    "programmer": "arduino:avrisp",
+    "output path": "/home/mumu",
+    "sketch": "TIC_3_dia_b_r_s.ino"
+}

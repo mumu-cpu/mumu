@@ -1,0 +1,6 @@
+{
+    "arduino.useArduinoCli": true,
+    "arduino.openPDEFiletype": true,
+    "arduino.commandPath": "arduino",
+    "arduino.path": "/home/mumu/arduino-1.8.18"
+}

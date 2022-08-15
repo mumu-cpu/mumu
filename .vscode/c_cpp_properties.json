@@ -1,0 +1,91 @@
+{
+    "configurations": [
+        {
+            "name": "FedoraUSB",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/include",
+                "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/cores/arduino",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/variants/standard",
+                "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/.pio/libdeps/uno/Unity/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "/usr/lib/gcc/x86_64-redhat-linux/11/include",
+                "/usr/lib/gcc/avr/5.4.0/include",
+                "/usr/lib/gcc/x86_64-linux-gnu/10/include",
+                "/home/mumu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/cores/arduino",
+                "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries",
+                "/usr/include/",
+                "/home/mumu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                "/home/mumu/arduino-1.8.18/hardware/arduino/avr/variants/mega",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "${workspaceFolder}/**",
+                    "/usr/lib/gcc/x86_64-redhat-linux/11/include",
+                    "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/cores/arduino",
+                    "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries",
+                    "/usr/include/",
+                    "/home/mumu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                    "/home/mumu/arduino-1.8.18/hardware/arduino/avr/variants/mega",
+                    "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/include",
+                    "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/cores/arduino",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/variants/standard",
+                    "/home/mumu/Documents/PlatformIO/Projects/220705-174739-uno/.pio/libdeps/uno/Unity/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/HID/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
+                    "/home/mumu/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60002",
+                "ARDUINO_AVR_UNO",
+                "F_CPU=16000000L",
+                "ARDUINO_ARCH_AVR",
+                "ARDUINO=10808",
+                "__AVR_ATmega328P__",
+                ""
+            ],
+            "cStandard": "gnu17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "compilerPath": "/usr/bin/clang",
+            "compilerArgs": [
+                "-mmcu=atmega328p",
+                ""
+            ]
+        },
+        {
+            "name": "q4osHD",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/lib/gcc/avr/5.4.0/include",
+                "/usr/lib/gcc/x86_64-linux-gnu/10/include",
+                "/home/mumu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include",
+                "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/cores/arduino",
+                "/home/mumu/.arduino15/packages/arduino/hardware/avr/1.8.5/libraries",
+                "/usr/include/",
+                "/home/mumu/.arduino15/packages/arduino/tools/avr-gcc/7.3.0-atmel3.6.1-arduino7/avr/include"
+            ],
+            "defines": [ 
+                "ARDUINO_AVR_UNO"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-arm64"
+        }
+    ],
+    "version": 4
+}
