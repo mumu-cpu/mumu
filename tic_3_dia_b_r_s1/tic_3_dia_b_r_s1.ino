@@ -66,6 +66,7 @@ bool ct2t_sta1=false;
 bool ct2t_sta2=false;
 bool ct2t_sta3=false;
 bool ct2t_sta4=false;
+bool ct2t_sta5=false;
 
 bool ct05s_sta = false;
 bool welc_ctr_err = true;
@@ -179,7 +180,7 @@ void setup()
   //{    ct1s_state = welc_1s(ct1s_state);  }
   // welc listing ID err
   // 					   roge, bleu, sirC, sirI,	spot,	alime, fanne,	bsch
-  bool welc_ctr_tb_st[8] = {true, true, true, false, true, false, false, false};
+  bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false &&  welc_ctr_tb_st[2] == false &&  welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
@@ -1001,17 +1002,19 @@ int ct2t_ste = ct2t_state;
 
 //cycle x1
   if (ct2t_sta0== false && // allum 0
-      rlt2t > 100)
+      ct2t_sta5==false && 
+      rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0= true;
+    ct2t_sta5=false;
 
   }
   rlt2t = millis() - cpt2t_millis;
   if (ct2t_sta0== true && // etein 1
       ct2t_sta1==false && 
-      rlt2t > 100)
+      rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1034,7 +1037,7 @@ int ct2t_ste = ct2t_state;
       ct2t_sta1 == true && 
       ct2t_sta2 == true && 
       ct2t_sta3== false && 
-      rlt2t > 300)
+      rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1048,7 +1051,7 @@ rlt2t=millis()-cpt2t_millis;
       ct2t_sta2 == true && 
       ct2t_sta3==true && 
       ct2t_sta4==false &&
-      rlt2t > 100)
+      rlt2t > 200)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1060,7 +1063,8 @@ rlt2t=millis()-cpt2t_millis;
       ct2t_sta2 == true && 
       ct2t_sta3==true && 
       ct2t_sta4==true && 
-      rlt2t > 100)
+      ct2t_sta5==false &&
+      rlt2t > 700)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1069,6 +1073,9 @@ rlt2t=millis()-cpt2t_millis;
     ct2t_sta2 = false;
     ct2t_sta3=false;
     ct2t_sta4=false ;
+    ct2t_sta5=true;
+  }else{
+  ct2t_sta5=false;
   }
 
 // return(ct2t_ste);
@@ -1096,6 +1103,10 @@ break;
 case 6:
 ct2t_ste=0;
 break;
+case 7:
+  ct2t_ste=0;
+  break;
+
 }
 
 
