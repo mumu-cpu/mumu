@@ -56,10 +56,15 @@ unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
 unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
 unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
 int ct_state = 0;
+
 int ct1s_state = 0;
-int ct05s_state = 0;
 bool ct1s_sta = false;
 
+/* compteur 1 tep */
+int ct05s_state = 0;
+bool ct05s_sta = false;
+
+/* compteur 3 tep */
 int ct2t_state = 0;
 bool ct2t_sta0 = false;
 bool ct2t_sta1 = false;
@@ -182,7 +187,9 @@ void setup()
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false && welc_ctr_tb_st[2] == false && welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
     Serial.println("    S Y S T E M    O K");
+  welc_ctr_err=false;
   }
+
   // welc listing ID 0k
   for (int i = 0; i < 8; i++)
   {
@@ -193,12 +200,14 @@ void setup()
     }
     else
     {
+        Serial.println("      A U T O     C O N F I G"); //
+  welc_ctr_err=true;
+
     }
   }
   Serial.println("	"); //
 
   //      A U T O     C O N F I G
-  Serial.println("      A U T O     C O N F I G"); //
 
   // flacheRouge ->defaut ==>flacheBleu
   if (welc_ctr_tb_st[0] == true) // && welc_ctr_tb_st[1] == false)
@@ -985,14 +994,14 @@ int count05s(int ct05s_state)
   {
     cpt05s_millis = millis();
     ct05s_ste = ct05s_ste + 1;
-    ct1s_sta = false;
+    ct05s_sta = false;
   }
   // Serial.println(ct05s_ste);
 
   return (ct05s_ste);
 }
 
-int count_2t(int ct2t_state)
+int count_2t(int ct2t_state)// _[-]_[---]_[-]_[_____]_
 {
   int ct2t_ste = ct2t_state;
   unsigned long rlt2t = millis() - cpt2t_millis;
