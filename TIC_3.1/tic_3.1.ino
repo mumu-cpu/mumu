@@ -366,6 +366,274 @@ void loop()
   return;
 
   Serial.println(" ");
+  demare():
+  // //            MANU_AUTO_VEILLE
+  // // si BPmarcheState (off)  on
+  // BPmarcheState = digitalRead(BPmarche);
+  // Manu_auto = !BPmarcheState;
+  // // si tempo_State_On (off)  on
+  // if ((millis() - debut) <= tempo && Manu_auto == false)
+  // {
+  //   tempo_State_On = true;
+  //   long tempCycle = tempo - (millis() - debut);
+  //   Serial.print("temp cylce restant : ");
+  //   tempCycle = tempCycle / 1000;
+  //   Serial.print(tempCycle);
+  //   Serial.println(" s.");
+  // }
+  // else
+  // {
+  //   tempo_State_On = false;
+  // }
+  // if (Manu_auto == true)
+  // {
+  //   if (tempx >= 100 || tempx < 5)
+  //   {
+  //     Serial.println("Manu  on");
+  //     if (tempx >= 100)
+  //     {
+  //       temp1 = millis();
+  //     }
+  //   }
+  // }
+  // if ((Manu_auto == false) && (tempo_State_On == false))
+  // {
+  //   veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
+  // }
+
+  // // **********************DEBUT**********************
+
+  // batt = getBattery(batt, battLow);
+  // const float voltt = (batt * (TensionMax - TensionMin));
+  // const float volty = (voltt / 100);
+  // const float volt = (volty + TensionMin);
+  // if (batt <= 20)
+  // {
+  //   Serial.print(volt);
+  //   Serial.print("v !");
+  //   battLow = true;
+  //   Serial.println(" !!! bat BOSCH LOW !!! ");
+  // }
+  // else
+  // {
+  //   Serial.print("bat BOSCH : ");
+  //   Serial.print(batt);
+  //   Serial.print("%_");
+  //   Serial.print(volt);
+  //   Serial.println("v");
+  //   battLow = false;
+  // }
+  // if (batt <= 1)
+  // {
+  //   battOffFonc();
+  // }
+  // alim_State = controlAlimFonc();
+  // if (alim_State == 20)
+  // {
+  //   alimOffFonc();
+  // }
+  compteB = compteB;
+  
+  
+  
+  CcPhNeTe = test();
+  if (CcPhNeTe > 0)
+  {
+    debut = millis();
+  }
+  switch (CcPhNeTe)
+  {
+  case 1: // Ne <-> Te
+    Serial.print("Ne <-> Te ");
+    Serial.println(CcPhNeTe);
+    // sosNbr34();
+    switch (compteB) //(sosNbr == 34)
+    {
+    case 1:
+      sosSay = 3;
+      compteB = f_b_cl_2(sosSay); //(sosNbr == 34)
+      break;
+    case 2:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+      break;
+    case 3:
+      sosSay = 4;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 34)
+      break;
+    case 4:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+      break;
+    case 5:
+      compteB = 0; // (sosNbr == 34)
+      break;
+    default:
+      compteB = 1; // sosNbr == 34
+      break;
+    }
+    break;
+  case 2: // Ph <-> Te
+    Serial.print("Ph <-> Te ");
+    Serial.println(CcPhNeTe);
+    // sosNbr24();
+    switch (compteB) //(sosNbr == 24)
+    {
+    case 1:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); //(sosNbr == 24)
+      break;
+    case 2:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+      break;
+    case 3:
+      sosSay = 4;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 24)
+      break;
+    case 4:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+      break;
+    case 5:
+      compteB = 0; // (sosNbr == 24)
+      break;
+    default:
+      compteB = 1; // sosNbr == 24
+      break;
+    }
+    break;
+  case 3: // Ph <-> Ne
+    Serial.print("Ph <-> Ne ");
+    Serial.println(CcPhNeTe);
+    switch (compteB) //(sosNbr == 23)
+    {
+    case 1:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); //(sosNbr == 23)
+      break;
+    case 2:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+      break;
+    case 3:
+      sosSay = 3;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 23)
+      break;
+    case 4:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+      break;
+    case 5:
+      compteB = 0; // (sosNbr == 23)
+      break;
+    default:
+      compteB = 1; // sosNbr == 23
+      break;
+    }
+    break;
+  case 4: // Cc-Ph-Ne-Te. test
+    Serial.print("Cc-Ph-Ne-Te. test ");
+    Serial.println(CcPhNeTe);
+    // sosNbr234();
+    switch (compteB) //(sosNbr == 234)
+    {
+    case 1:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); //(sosNbr == 234)
+      break;
+    case 2:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      break;
+    case 3:
+      sosSay = 3;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+      break;
+    case 4:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      break;
+    case 5:
+      sosSay = 4;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+      break;
+    case 6:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      break;
+    case 7:
+      compteB = 0; // (sosNbr == 23)
+      break;
+    default:
+      compteB = 1; // sosNbr == 234
+      break;
+    }
+    break;
+  case 5: // Cc_Ph_Ne_Te. cuci
+    Serial.print("Cc_Ph_Ne_Te. cuci");
+    Serial.println(CcPhNeTe);
+    // sosNbr55();
+    switch (compteB) //(sosNbr == 55)
+    {
+    case 1:
+      sosSay = 5;
+      compteB = f_b_cl_2(sosSay); //(sosNbr == 55)
+      break;
+    case 2:
+      sosSay = 1;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+      break;
+    case 3:
+      sosSay = 5;
+      compteB = f_b_cl_2(sosSay); //  (sosNbr == 55)
+      break;
+    case 4:
+      sosSay = 2;
+      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+      break;
+    case 5:
+      compteB = 0; // (sosNbr == 23)
+      break;
+    default:
+      compteB = 1; // sosNbr == 55
+      break;
+    }
+    break;
+  default:
+    if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
+    {
+      sosSay = 0;             // CcPhNeTe == 0
+      sosTmp = 0;             // CcPhNeTe == 0
+      f_b_cl(sosSay);         // CcPhNeTe == 0
+      f_r_cl(sosSay);         // CcPhNeTe == 0
+      s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
+      sosSay = 2;
+      sosTmp = 12;
+      s_c_cl(sosSay, sosTmp);
+      spot_cl(sosSay = 10, sosTmp);
+    }
+    if (CcPhNeTe == 0 && battLow == true)
+    {
+      sosSay = 1;             // CcPhNeTe == 0
+      sosTmp = 5;             // CcPhNeTe == 0
+      f_b_cl(sosSay);         // CcPhNeTe == 0
+      f_r_cl(sosSay);         // CcPhNeTe == 0
+      s_c_cl(sosSay, sosTmp); // CcPhNeTe == 0
+    }
+    compteB = 0; // CcPhNeTe == 0
+    cp_cl = 1;
+    comptespot = 1;
+    chro = millis();
+    break;
+  }
+  //  **********************TEST**********************
+}
+//                                   FIN LOOP
+//                                   FONCTION
+
+void demare()
+{
   //            MANU_AUTO_VEILLE
   // si BPmarcheState (off)  on
   BPmarcheState = digitalRead(BPmarche);
@@ -431,225 +699,11 @@ void loop()
   {
     alimOffFonc();
   }
-  compteB = compteB;
-  CcPhNeTe = test();
-  if (CcPhNeTe > 0)
-  {
-    debut = millis();
-  }
 
-  switch (CcPhNeTe)
-  {
-  case 1: // Ne <-> Te
-    // sosSay = 7;
-    // sosTmp = 7;
-    // s_c_cl(sosSay, sosTmp);
-    Serial.print("Ne <-> Te ");
-    Serial.println(CcPhNeTe);
-    // sosNbr34();
-    switch (compteB) //(sosNbr == 34)
-    {
-    case 1:
-      sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 34)
-      break;
-    case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
-      break;
-    case 3:
-      sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 34)
-      break;
-    case 4:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
-      break;
-    case 5:
-      compteB = 0; // (sosNbr == 34)
-      break;
-    default:
-      compteB = 1; // sosNbr == 34
-      break;
-    }
-    break;
-  case 2: // Ph <-> Te
-    // sosSay = 7;
-    // sosTmp = 7;
-    // s_c_cl(sosSay, sosTmp);
-    Serial.print("Ph <-> Te ");
-    Serial.println(CcPhNeTe);
-    // sosNbr24();
-    switch (compteB) //(sosNbr == 24)
-    {
-    case 1:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 24)
-      break;
-    case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
-      break;
-    case 3:
-      sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 24)
-      break;
-    case 4:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
-      break;
-    case 5:
-      compteB = 0; // (sosNbr == 24)
-      break;
-    default:
-      compteB = 1; // sosNbr == 24
-      break;
-    }
-    break;
-  case 3: // Ph <-> Ne
-    // sosSay = 1;
-    // sosTmp = 1;
-    // s_c_cl(sosSay, sosTmp);
-    Serial.print("Ph <-> Ne ");
-    Serial.println(CcPhNeTe);
-    // sosNbr23(compteB);
-    // Serial.print("compteB_");
-    // Serial.println(compteB);
-    switch (compteB) //(sosNbr == 23)
-    {
-    case 1:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 23)
-      break;
-    case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
-      break;
-    case 3:
-      sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 23)
-      break;
-    case 4:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
-      break;
-    case 5:
-      compteB = 0; // (sosNbr == 23)
-      break;
-    default:
-      compteB = 1; // sosNbr == 23
-      break;
-    }
-    break;
-  case 4: // Cc-Ph-Ne-Te. test
-    // sosSay = 7;
-    // sosTmp = 7;
-    // s_i_cl(sosSay, sosTmp);
-    // sosSay = 1;
-    // s_c_cl(sosSay, sosTmp);
-    Serial.print("Cc-Ph-Ne-Te. test ");
-    Serial.println(CcPhNeTe);
-    // sosNbr234();
-    switch (compteB) //(sosNbr == 234)
-    {
-    case 1:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 234)
-      break;
-    case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
-      break;
-    case 3:
-      sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
-      break;
-    case 4:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
-      break;
-    case 5:
-      sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
-      break;
-    case 6:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
-      break;
-    case 7:
-      compteB = 0; // (sosNbr == 23)
-      break;
-    default:
-      compteB = 1; // sosNbr == 234
-      break;
-    }
-    break;
-  case 5: // Cc_Ph_Ne_Te. cuci
-    // sosSay = 7;
-    // sosTmp = 7;
-    // s_i_cl(sosSay, sosTmp);
-    // sosSay = 1;
-    // s_c_cl(sosSay, sosTmp);
-    Serial.print("Cc_Ph_Ne_Te. cuci");
-    Serial.println(CcPhNeTe);
-    // sosNbr55();
-    switch (compteB) //(sosNbr == 55)
-    {
-    case 1:
-      sosSay = 5;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 55)
-      break;
-    case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
-      break;
-    case 3:
-      sosSay = 5;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 55)
-      break;
-    case 4:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
-      break;
-    case 5:
-      compteB = 0; // (sosNbr == 23)
-      break;
-    default:
-      compteB = 1; // sosNbr == 55
-      break;
-    }
-    break;
-  default:
-    if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
-    {
-      sosSay = 0;             // CcPhNeTe == 0
-      sosTmp = 0;             // CcPhNeTe == 0
-      f_b_cl(sosSay);         // CcPhNeTe == 0
-      f_r_cl(sosSay);         // CcPhNeTe == 0
-      s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
-      sosSay = 2;
-      sosTmp = 12;
-      s_c_cl(sosSay, sosTmp);
-      spot_cl(sosSay = 10, sosTmp);
-    }
-    if (CcPhNeTe == 0 && battLow == true)
-    {
-      sosSay = 1;             // CcPhNeTe == 0
-      sosTmp = 5;             // CcPhNeTe == 0
-      f_b_cl(sosSay);         // CcPhNeTe == 0
-      f_r_cl(sosSay);         // CcPhNeTe == 0
-      s_c_cl(sosSay, sosTmp); // CcPhNeTe == 0
-    }
-    compteB = 0; // CcPhNeTe == 0
-    cp_cl = 1;
-    comptespot = 1;
-    chro = millis();
-    break;
-  }
-  //  **********************TEST**********************
+
 }
-//                                   FIN LOOP
-//                                   FONCTION
+
+
 void ecl_auto(int sosSay)
 {
   eclr = analogRead(photo);
