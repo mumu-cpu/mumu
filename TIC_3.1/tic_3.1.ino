@@ -366,7 +366,7 @@ void loop()
   return;
 
   Serial.println(" ");
-  demare():
+  demare();
   // //            MANU_AUTO_VEILLE
   // // si BPmarcheState (off)  on
   // BPmarcheState = digitalRead(BPmarche);
