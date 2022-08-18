@@ -357,13 +357,13 @@ void loop()
 { //                               LOOP
 
   //  **********************TEST********************************
-  ct2t_state = count_2t(ct2t_state);
+  //ct2t_state = count_2t(ct2t_state);
   // ct1s_state = welc_1s(ct1s_state);
   // sosSay = 5;
   // compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)// int compt = count(sosSay);
   // Serial.println(compteB);
   // Serial.println(ct_state);
-  return;
+  //return;
 
   Serial.println(" ");
   demare();
@@ -929,7 +929,7 @@ int spot_cl(int sosSay, unsigned long sosTmp)
 int count()
 {
   unsigned long rlt = millis() - cpt_millis;
-  if ((compteB == 1 || compteB == 0) && ct_state > 2)
+  if ((compteB == 1 || compteB == 0) && (ct_state > 2 && ct_state <11))
   {
     cpt_millis = millis();
   }
@@ -1170,7 +1170,7 @@ int welc_1s(int ct1s_state)
     cpt1s_millis = millis();
     ct1s_ste = ct1s_ste + 1;
   }
-  if (ct1s_sta == true &&ct1s_sta1 = true)
+  if (ct1s_sta == true &&ct1s_sta1 == true)
   {
     ct1s_sta = false;
     ct1s_sta1 = false;
