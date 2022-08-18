@@ -187,21 +187,20 @@ void setup()
   {
     Serial.println("    S Y S T E M    O K");
     // welc listing ID 0k
-  for (int i = 0; i < 8; i++)
-  {
-    if (welc_ctr_tb_st[i] == false)
+    for (int i = 0; i < 8; i++)
     {
-      Serial.print(welc_ctr_tb_id[i]);
-      Serial.println("	RAS	0.k."); //
+      if (welc_ctr_tb_st[i] == false)
+      {
+        Serial.print(welc_ctr_tb_id[i]);
+        Serial.println("	RAS	0.k."); //
+      }
     }
   }
-}
-  Serial.println("	"); //
-    else
-    { 
-       Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
-
-    }
+  else
+  {
+      Serial.println("	"); //
+Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
+  }
 
   //      A U T O     C O N F I G
 
@@ -358,13 +357,13 @@ void loop()
 { //                               LOOP
 
   //  **********************TEST********************************
-  //ct2t_state = count_2t(ct2t_state);
+  // ct2t_state = count_2t(ct2t_state);
   // ct1s_state = welc_1s(ct1s_state);
   // sosSay = 5;
   // compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)// int compt = count(sosSay);
   // Serial.println(compteB);
   // Serial.println(ct_state);
-  //return;
+  // return;
 
   Serial.println(" ");
   demare();
@@ -434,9 +433,7 @@ void loop()
   //   alimOffFonc();
   // }
   compteB = compteB;
-  
-  
-  
+
   CcPhNeTe = test();
   if (CcPhNeTe > 0)
   {
@@ -700,10 +697,7 @@ void demare()
   {
     alimOffFonc();
   }
-
-
 }
-
 
 void ecl_auto(int sosSay)
 {
@@ -930,7 +924,7 @@ int spot_cl(int sosSay, unsigned long sosTmp)
 int count()
 {
   unsigned long rlt = millis() - cpt_millis;
-  if ((compteB == 1 || compteB == 0) && (ct_state > 2 && ct_state <11))
+  if ((compteB == 1 || compteB == 0) && (ct_state > 2 && ct_state < 11))
   {
     cpt_millis = millis();
   }
@@ -1171,7 +1165,7 @@ int welc_1s(int ct1s_state)
     cpt1s_millis = millis();
     ct1s_ste = ct1s_ste + 1;
   }
-  if (ct1s_sta == true &&ct1s_sta1 == true)
+  if (ct1s_sta == true && ct1s_sta1 == true)
   {
     ct1s_sta = false;
     ct1s_sta1 = false;
