@@ -186,8 +186,7 @@ void setup()
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false && welc_ctr_tb_st[2] == false && welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
     Serial.println("    S Y S T E M    O K");
-  }
-  // welc listing ID 0k
+    // welc listing ID 0k
   for (int i = 0; i < 8; i++)
   {
     if (welc_ctr_tb_st[i] == false)
@@ -195,14 +194,16 @@ void setup()
       Serial.print(welc_ctr_tb_id[i]);
       Serial.println("	RAS	0.k."); //
     }
-    else
-    {
-    }
   }
+}
   Serial.println("	"); //
+    else
+    { 
+       Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
+
+    }
 
   //      A U T O     C O N F I G
-  Serial.println("      A U T O     C O N F I G"); //
 
   // flacheRouge ->defaut ==>flacheBleu
   if (welc_ctr_tb_st[0] == true) // && welc_ctr_tb_st[1] == false)
