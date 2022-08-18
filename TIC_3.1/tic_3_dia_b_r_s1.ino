@@ -56,9 +56,10 @@ unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
 unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
 unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
 int ct_state = 0;
+
 int ct1s_state = 0;
-int ct05s_state = 0;
 bool ct1s_sta = false;
+bool ct1s_sta1 = false;
 
 int ct2t_state = 0;
 bool ct2t_sta0 = false;
@@ -68,8 +69,9 @@ bool ct2t_sta3 = false;
 bool ct2t_sta4 = false;
 bool ct2t_sta5 = false;
 
+int ct05s_state = 0;
 bool ct05s_sta = false;
-bool ct05s_sta1 =false;
+bool ct05s_sta1 = false;
 
 bool welc_ctr_err = true;
 // bool welc_ctr_tb_st[7];
@@ -962,39 +964,34 @@ int count()
   }
   return (ct_state);
 }
+
 int count05s(int ct05s_state)
 {
-  // int ct1s_state = count1s(ct1s_state);
   int ct05s_ste = ct05s_state;
-  unsigned long rlt05s = millis() - cpt05s_millis;
-  // if ((compteB == 1 || compteB == 0) && ct1s_state > 2)
-  // {
-  //   cpt1s_millis = millis();
-  // }
+  unsigned long rlt05s;
 
-  if (rlt05s > 200 && ct05s_sta ==false)
+  rlt05s = millis() - cpt05s_millis;
+  if (rlt05s > 200 && ct05s_sta == false)
   {
     ct05s_sta = true;
     ct05s_ste = ct05s_ste + 1;
     cpt05s_millis = millis();
   }
-  else
-  {
-    ct05s_sta = false;
-  }
+
   rlt05s = millis() - cpt05s_millis;
-  if (ct05s_sta == true && ct05s_sta1 == false && rlt05s > 100) // && rlt1s < 1000)
+  if (rlt05s > 100 && ct05s_sta1 == false && ct05s_sta == true)
   {
     cpt05s_millis = millis();
     ct05s_ste = ct05s_ste + 1;
     ct05s_sta1 = true;
   }
-  if(ct05s_sta == true && ct05s_sta1 == true)
-  {
-    ct05s_sta=false;ct05s_sta1=false;
-  }
-  // Serial.println(ct05s_ste);
 
+  if (ct05s_sta == true && ct05s_sta1 == true)
+  {
+    ct05s_sta = false;
+    ct05s_sta1 = false;
+    cpt05s_millis = millis();
+  }
   return (ct05s_ste);
 }
 
@@ -1003,57 +1000,68 @@ int count_2t(int ct2t_state)
   int ct2t_ste = ct2t_state;
   unsigned long rlt2t = millis() - cpt2t_millis;
 
-// cycle x1
- // allum 0
-  if (ct2t_sta0 == false && ct2t_sta5 == false && rlt2t > 200)
+  // cycle x1
+  // allum 0
+  if (rlt2t > 200 && ct2t_sta5 == false && ct2t_sta0 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0 = true;
     ct2t_sta5 = false;
   }
- // etein 1
+  // etein 1
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0 == true && ct2t_sta1 == false && rlt2t > 200)
+  if (rlt2t > 200 && ct2t_sta1 == false && ct2t_sta0 == true)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta1 = true;
   }
 
-// cycle x2
- // allum 2
+  // cycle x2
+  // allum 2
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0 == true && ct2t_sta1 == true && ct2t_sta2 == false && rlt2t > 500)
+  if (rlt2t > 500 && ct2t_sta1 == true && ct2t_sta2 == false && ct2t_sta0 == true)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta2 = true;
   }
- // etein 3
+  // etein 3
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0 == true && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == false && rlt2t > 200)
+  if (rlt2t > 200 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == false && ct2t_sta0 == true)
   {
-    cpt2t_millis = millis(); ct2t_ste = ct2t_ste + 1; ct2t_sta3 = true;
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta3 = true;
   }
-// cycle x3
- // allum 4
+  // cycle x3
+  // allum 4
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0 == true && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == false && rlt2t > 200)
+  if (rlt2t > 200 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == false && ct2t_sta0 == true)
   {
-    cpt2t_millis = millis(); ct2t_ste = ct2t_ste + 1; ct2t_sta4 = true;
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta4 = true;
   }
- // etein 5
+  // etein 5
   rlt2t = millis() - cpt2t_millis;
-  if (ct2t_sta0 == true && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == false && rlt2t > 700)
+  if (rlt2t > 700 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == false && ct2t_sta0 == true)
   {
-    cpt2t_millis = millis(); ct2t_ste = ct2t_ste + 1; ct2t_sta0 = false; ct2t_sta1 = false; ct2t_sta2 = false;  ct2t_sta3 = false; ct2t_sta4 = false; ct2t_sta5 = true;
+    cpt2t_millis = millis();
+    ct2t_ste = ct2t_ste + 1;
+    ct2t_sta0 = false;
+    ct2t_sta1 = false;
+    ct2t_sta2 = false;
+    ct2t_sta3 = false;
+    ct2t_sta4 = false;
+    ct2t_sta5 = true;
   }
   else
   {
     ct2t_sta5 = false;
   }
-// cycle count_2t
+  // cycle count_2t
 
   // return(ct2t_ste);
 
@@ -1092,7 +1100,7 @@ int welc_1s(int ct1s_state)
 {
   int ct1s_ste = ct1s_state;
   unsigned long rlt1s = millis() - cpt1s_millis;
-  if (rlt1s > 100)
+  if (rlt1s > 100 && ct1s_sta == false)
   {
     ct1s_sta = true;
     ct1s_ste = ct1s_ste + 1;
@@ -1102,11 +1110,17 @@ int welc_1s(int ct1s_state)
   {
   }
   rlt1s = millis() - cpt1s_millis;
-  if (ct1s_sta == true && rlt1s > 100)
+  if (ct1s_sta == true && ct1s_sta1 == false && rlt1s > 100)
   {
+    ct1s_sta1 = true;
     cpt1s_millis = millis();
     ct1s_ste = ct1s_ste + 1;
+  }
+  if (ct1s_sta == true &&ct1s_sta1 = true)
+  {
     ct1s_sta = false;
+    ct1s_sta1 = false;
+    cpt1s_millis = millis();
   }
   // Serial.print("ct1s_ste : ");
   //  Serial.println(ct1s_ste);
