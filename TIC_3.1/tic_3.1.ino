@@ -198,8 +198,8 @@ void setup()
   }
   else
   {
-      Serial.println("	"); //
-Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
+    Serial.println("	");                                         //
+    Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
   }
 
   //      A U T O     C O N F I G
