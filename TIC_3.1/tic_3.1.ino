@@ -535,10 +535,11 @@ void loop()
       f_b_cl(sosSay);         // CcPhNeTe == 0
       f_r_cl(sosSay);         // CcPhNeTe == 0
       s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
-      sosSay = 2;
-      sosTmp = 12;
-      s_c_cl(sosSay, sosTmp);
-      spot_cl(sosSay = 10, sosTmp);
+      ct2t_state=count_2t(ct2t_state);
+      // sosSay = 2;
+      // sosTmp = 12;
+      // s_c_cl(sosSay, sosTmp);
+      // spot_cl(sosSay = 10, sosTmp);
     }
     if (CcPhNeTe == 0 && battLow == true)
     {
@@ -1024,7 +1025,7 @@ int count_2t(int ct2t_state)
   }
   // etein 5
   rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 700 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == false && ct2t_sta0 == true)
+  if (rlt2t > 500 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == false && ct2t_sta0 == true)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
