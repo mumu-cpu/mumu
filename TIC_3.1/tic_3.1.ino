@@ -386,7 +386,7 @@ void loop()
   //   tempo_State_On = false;
   // }
   // if (Manu_auto == true)
-  // 
+  // {
   //   if (tempx >= 100 || tempx < 5)
   //   {
   //     Serial.println("Manu  on");
@@ -432,7 +432,7 @@ void loop()
   // {
   //   alimOffFonc();
   // }
-  compteB = compteB;
+  int COMP = compteB;
 
   CcPhNeTe = test();
   if (CcPhNeTe > 0)
@@ -445,7 +445,7 @@ void loop()
     Serial.print("Ne <-> Te ");
     Serial.println(CcPhNeTe);
     // sosNbr34();
-    switch (compteB) //(sosNbr == 34)
+    switch (COMP) //(sosNbr == 34)
     {
     case 1:
       sosSay = 3;
@@ -475,7 +475,7 @@ void loop()
     Serial.print("Ph <-> Te ");
     Serial.println(CcPhNeTe);
     // sosNbr24();
-    switch (compteB) //(sosNbr == 24)
+    switch (COMP) //(sosNbr == 24)
     {
     case 1:
       sosSay = 2;
@@ -504,7 +504,7 @@ void loop()
   case 3: // Ph <-> Ne
     Serial.print("Ph <-> Ne ");
     Serial.println(CcPhNeTe);
-    switch (compteB) //(sosNbr == 23)
+    switch (COMP) //(sosNbr == 23)
     {
     case 1:
       sosSay = 2;
@@ -534,7 +534,7 @@ void loop()
     Serial.print("Cc-Ph-Ne-Te. test ");
     Serial.println(CcPhNeTe);
     // sosNbr234();
-    switch (compteB) //(sosNbr == 234)
+    switch (COMP) //(sosNbr == 234)
     {
     case 1:
       sosSay = 2;
@@ -572,7 +572,7 @@ void loop()
     Serial.print("Cc_Ph_Ne_Te. cuci");
     Serial.println(CcPhNeTe);
     // sosNbr55();
-    switch (compteB) //(sosNbr == 55)
+    switch (COMP) //(sosNbr == 55)
     {
     case 1:
       sosSay = 5;
@@ -921,7 +921,7 @@ int spot_cl(int sosSay, unsigned long sosTmp)
   return compteB;
 }
 /**************FONCTION****spot_cl****final*/
-int count()
+int count(int ct_state, int compteB)
 {
   unsigned long rlt = millis() - cpt_millis;
   if ((compteB == 1 || compteB == 0) && (ct_state > 2 && ct_state < 11))
@@ -1548,10 +1548,15 @@ int f_b_cl_2(int sosSay, int compteB)
     flache = flacheBleu; // sortie 12
     siren_c_i = sirenC;  // 3 sortie siren con (continute)
   }
-  if (compteB == 2 || compteB == 4 || compteB == 6)
+  if (compteB == 2 ) //|| compteB == 4 || compteB == 6)
   {
     flache = spot;      // 6 eclairage
     siren_c_i = sirenI; // 9 sortie siren iso
+  }
+  if (compteB == 4 || compteB ==6)
+  {
+    flache=spot;
+    siren_c_i=sirenC;
   }
 
   if (sosSay == 4 || sosSay == 5)
@@ -1560,7 +1565,7 @@ int f_b_cl_2(int sosSay, int compteB)
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
 
-  int cont_st = count();
+  int cont_st = count(ct_state, compteB);
   switch (cont_st)
   {
   case 1:
@@ -2273,7 +2278,7 @@ int sosNbr10() // spot_cl + s_c_cl
 int f_r_cl_2(int sosSay)
 {
 
-  int cont_st = count();
+  int cont_st = count(ct_state, compteB);
   switch (cont_st)
   {
   case 1:
