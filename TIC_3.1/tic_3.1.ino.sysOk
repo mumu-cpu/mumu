@@ -2204,3 +2204,971 @@ int sosNbr10() // spot_cl + s_c_cl
 /*************FONCTION*****sosNbr10****final*/
 
 /*************FONCTION*****T E S T****/
+int f_r_cl_2(int sosSay)
+{
+
+  int cont_st = count(ct_state, compteB);
+  switch (cont_st)
+  {
+  case 1:
+    cmpB = 1;
+  case 3:
+  case 5:
+  case 7:
+  case 9:
+    digitalWrite(flacheRouge, true);
+
+    break;
+  case 2:
+    cmpB = 1;
+    break;
+  case 4:
+    cmpB = 2;
+    break;
+  case 6:
+    cmpB = 3;
+    break;
+  case 8:
+    cmpB = 4;
+    break;
+  case 10:
+    cmpB = 5;
+    break;
+  case 11:
+    digitalWrite(flacheRouge, false);
+    break;
+  default:
+    digitalWrite(flacheRouge, false);
+    cmpB = 0;
+    break;
+  }
+  if (sosSay == cmpB)
+  {
+    ct_state = 0; // on_off x5
+    cpt_millis = millis();
+    cmpB = 1;
+    sosSay = 4;
+    return (sosSay);
+  }
+  else
+  {
+    return (sosSay = 3);
+  }
+  // return cmpB;
+}
+int sosNbr23(int compteB) // CcPhNeTe 3
+{
+  Serial.print("compteB_");
+  Serial.println(compteB);
+  switch (compteB) //(sosNbr == 23)
+  {
+  case 1:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)
+    break;
+  case 2:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
+    break;
+  case 3:
+    sosSay = 3;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 23)
+    break;
+  case 4:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
+    break;
+  case 5:
+    compteB = 0; // (sosNbr == 23)
+    break;
+  default:
+    compteB = 1; // sosNbr == 23
+    break;
+  }
+}
+int sosNbr24() // CcPhNeTe 2
+{
+  switch (compteB) //(sosNbr == 24)
+  {
+  case 1:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 24)
+    break;
+  case 2:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
+    break;
+  case 3:
+    sosSay = 4;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 24)
+    break;
+  case 4:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
+    break;
+  case 5:
+    compteB = 0; // (sosNbr == 24)
+    break;
+  default:
+    compteB = 1; // sosNbr == 24
+  }
+}
+int sosNbr34() // CcPhNeTe 1
+{
+  switch (compteB) //(sosNbr == 34)
+  {
+  case 1:
+    sosSay = 3;
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 34)
+    break;
+  case 2:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
+    break;
+  case 3:
+    sosSay = 4;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 34)
+    break;
+  case 4:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
+    break;
+  case 5:
+    compteB = 0; // (sosNbr == 34)
+    break;
+  default:
+    compteB = 1; // sosNbr == 34
+  }
+}
+int sosNbr234() // CcPhNeTe 4
+{
+  switch (compteB) //(sosNbr == 234)
+  {
+  case 1:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 234)
+    break;
+  case 2:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
+    break;
+  case 3:
+    sosSay = 3;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
+    break;
+  case 4:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
+    break;
+  case 5:
+    sosSay = 4;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
+    break;
+  case 6:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
+    break;
+  case 7:
+    compteB = 0; // (sosNbr == 23)
+    break;
+  default:
+    compteB = 1; // sosNbr == 234
+  }
+}
+int sosNbr55() // CcPhNeTe 5
+{
+  switch (compteB) //(sosNbr == 55)
+  {
+  case 1:
+    sosSay = 5;
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 55)
+    break;
+  case 2:
+    sosSay = 1;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
+    break;
+  case 3:
+    sosSay = 5;
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 55)
+    break;
+  case 4:
+    sosSay = 2;
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
+    break;
+  case 5:
+    compteB = 0; // (sosNbr == 23)
+    break;
+  default:
+    compteB = 1; // sosNbr == 55
+  }
+}
+
+int ccphnt()
+{
+
+  if (phase > seuil_pot)
+  {
+    phase = true;
+  }
+  if (neutre > seuil_pot)
+  {
+    neutre = true;
+  }
+  if (terre > seuil_pot)
+  {
+    terre = true;
+  }
+  if (phase == true && neutre == true && terre == true)
+  {
+    if (curmill - chro >= tempi)
+    {
+      while (phase == true && neutre == true && terre == true)
+      {
+        // sosNbr = 234;  	// Cc Ph Ne Te
+        // sosNbr = 23;  	  // Ph Ne
+        // sosNbr = 34;   	// Ne Te
+        // sosNbr = 42;   	// Ph Te
+        sosNbr = 55; // Ph Ne Te
+
+        if (CcPhNeTe == 4)
+        {
+          compteB = 1; // ccphnt while CcPhNeTe == 4
+        }
+        clioFlache(sosNbr, compteB);
+        CcPhNeTe = 5;
+
+        if (cp_cl <= 1)
+        {
+          sosSay = 5;
+          sosTmp = 5;
+          f_r_cl(sosSay); //(sosNbr == 55)
+        }
+        else
+        {
+          if (cp_cl <= 2)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp); //(sosNbr == 55)
+          }
+          else
+          {
+            if (cp_cl <= 3)
+            {
+              sosSay = 5;
+              sosTmp = 5;
+              f_r_cl(sosSay); //(sosNbr == 55)
+            }
+            else
+            {
+              if (cp_cl <= 4)
+              {
+                sosSay = 1;
+                sosTmp = 1;
+                spot_cl(sosSay, sosTmp); //(sosNbr == 55)
+              }
+              else
+              {
+                if (cp_cl >= 4)
+                {
+                  cp_cl = 1; // sosNbr == 55
+                }
+              }
+            }
+          }
+        }
+        phase = phaseF();
+        neutre = neutreF();
+        terre = terreF();
+      }
+    }
+    else
+    {
+      while (phase == true && neutre == true && terre == true)
+      {
+        // sosNbr = 234;  // Ph Ne Te
+        // sosNbr = 23;  	// Ph Ne
+        // sosNbr = 34;   // Ne Te
+        // sosNbr = 42;   // Ph Te
+        // sosNbr = 55;  	// CcPn
+        CcPhNeTe = 4;
+
+        if (cp_cl <= 1)
+        {
+          sosSay = 2;
+          sosTmp = 5;
+          f_r_cl(sosSay);
+        }
+        else
+        {
+          if (cp_cl <= 2)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp);
+          }
+          else
+          {
+            if (cp_cl <= 3)
+            {
+              sosSay = 3;
+              sosTmp = 5;
+              f_b_cl(sosSay);
+            }
+            else
+            {
+              if (cp_cl <= 4)
+              {
+                sosSay = 1;
+                sosTmp = 1;
+                spot_cl(sosSay, sosTmp);
+              }
+              else
+              {
+                if (cp_cl <= 5)
+                {
+                  sosSay = 4;
+                  sosTmp = 5;
+                  f_r_cl(sosSay);
+                }
+                else
+                {
+                  if (cp_cl <= 6)
+                  {
+                    sosSay = 1;
+                    sosTmp = 1;
+                    spot_cl(sosSay, sosTmp);
+                  }
+                  else
+                  {
+                    if (cp_cl >= 6)
+                    {
+                      cp_cl = 1; // sosNbr == 234
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        phase = phaseF();
+        neutre = neutreF();
+        terre = terreF();
+      }
+    }
+  }
+}
+int contPhNe()
+{
+  if (phase > seuil_pot)
+  {
+    phase = true;
+  }
+  if (neutre > seuil_pot)
+  {
+    neutre = true;
+  }
+  if (terre > seuil_pot)
+  {
+    terre = true;
+  }
+  while (phase == true && neutre == true && terre == false)
+  {
+    // sosNbr = 234;  // Ph Ne Te
+    sosNbr = 23; // Ph Ne
+    // sosNbr = 34;   // Ne Te
+    // sosNbr = 42;   // Ph Te
+    // sosNbr = 0;   // arret flache Bleu Rouge
+    // sosNbr=55;   //
+    // Serial.println(sosNbr);
+    // clioFlache(sosNbr, cp_cl);
+    CcPhNeTe = 3;
+    phase = phaseF();
+    neutre = neutreF();
+    terre = terreF();
+    sosSay = 7;
+    sosTmp = 7;
+    s_c_cl(sosSay, sosTmp);
+    if (compteB <= 1)
+    {
+      sosSay = 2;
+      sosTmp = 2;
+      f_b_cl(sosSay); //(sosNbr == 23)
+      sosSay = 0;
+      sosTmp = 0;
+      spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+    }
+    else
+    {
+      if (compteB <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+      }
+      else
+      {
+        if (compteB <= 3)
+        {
+          sosSay = 3;
+          sosTmp = 3;
+          f_r_cl(sosSay); //  (sosNbr == 23)
+          sosSay = 0;
+          sosTmp = 0;
+          spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+        }
+        else
+        {
+          if (compteB <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+          }
+          else
+          {
+            if (compteB >= 4)
+            {
+              compteB = 1; // sosNbr == 23
+            }
+          }
+        }
+      }
+    }
+  }
+}
+int contPhTe()
+{
+  if (phase > seuil_pot)
+  {
+    phase = true;
+  }
+  if (neutre > seuil_pot)
+  {
+    neutre = true;
+  }
+  if (terre > seuil_pot)
+  {
+    terre = true;
+  }
+  if (phase == true && neutre == false && terre == true)
+  {
+    while (phase == true && neutre == false && terre == true)
+    {
+      // sosNbr = 234;  // Ph Ne Te
+      // sosNbr = 23;  // Ph Ne
+      // sosNbr = 34;   // Ne Te
+      sosNbr = 42; // Ph Te
+      // sosNbr = 0;   // arret flache Bleu Rouge
+      // sosNbr=55;   //
+      // Serial.println(sosNbr);
+      clioFlache(sosNbr, cp_cl);
+      CcPhNeTe = 2;
+      phase = phaseF();
+      neutre = neutreF();
+      terre = terreF();
+    }
+  }
+}
+int contNeTe()
+{
+  if (phase > seuil_pot)
+  {
+    phase = true;
+  }
+  if (neutre > seuil_pot)
+  {
+    neutre = true;
+  }
+  if (terre > seuil_pot)
+  {
+    terre = true;
+  }
+  if (phase == false && neutre == true && terre == true)
+  {
+    while (phase == false && neutre == true && terre == true)
+    {
+      // sosNbr = 234;  // Ph Ne Te
+      // sosNbr = 23;   // Ph Ne
+      sosNbr = 34; // Ne Te
+      // sosNbr = 42;   // Ph Te
+      // sosNbr = 0;    // arret flache Bleu Rouge
+      // sosNbr = 55;   // CcPNT
+      // Serial.println(sosNbr);
+      clioFlache(sosNbr, cp_cl);
+
+      CcPhNeTe = 2;
+      phase = phaseF();
+      neutre = neutreF();
+      terre = terreF();
+    }
+  }
+}
+int contPhaseNeutreTerre()
+{
+  //   if (CcPhNeTe != 0) {
+  //     //sosSay = 0;
+  //     //sosTmp = 0;
+  //     //spot_cl(sosSay, sosTmp);
+  //   }
+  CcPhNeTe = 0;
+  CcPhNeTe = ccphnt();
+  CcPhNeTe = contPhNe();
+  CcPhNeTe = contPhTe();
+  CcPhNeTe = contNeTe();
+
+  return (CcPhNeTe);
+}
+/*************FONCTION*****cliososNbr5****/
+void cliososNbr5(int sosNbr)
+{
+  currentMillis = millis();
+  if (currentMillis - f_b_cl_Tmp < interval)
+  {
+    currentMillis; // mémorise la valeur de la fonction millis()
+    inter = interval / 5;
+    if (millis() - millisF_B_CL_5 > inter)
+    {
+      millisF_B_CL_5 = millis(); // mémorise la valeur de la fonction millis()
+      if (flacheBleuState == LOW)
+      { // inverse la variable d''état de la LED
+        flacheBleuState = HIGH;
+      }
+      else
+      {
+        flacheBleuState = LOW;
+      }
+      digitalWrite(flacheBleu, flacheBleuState);
+    }
+  }
+  else
+  {
+    f_b_cl_Tmp = currentMillis;
+    compteB = compteB + 1; // cliososNbr5
+  }
+}
+/*************FONCTION*****cliososNbr5****final*/
+/*************FONCTION*****cliososNbr****/
+void cliososNbr(int sosSay, int sosTmp)
+{
+  int say10 = sosSay;
+  if (say10 == 10)
+  {
+    sosSay = 2;
+  }
+  if (sosSay == 0)
+  {
+    digitalWrite(flacheBleu, false); // modifie l'état de la LED
+    digitalWrite(flacheRouge, false);
+    digitalWrite(spot, false);
+    digitalWrite(sirenI, false);
+    digitalWrite(sirenC, false);
+  }
+  if (millis() - f_b_cl_Tmp < 1000 * sosTmp)
+  {
+    f_b_cl_state = false;
+    if (compte30B <= sosSay)
+    {
+      if (flacheBleuState == LOW)
+      { // inverse la variable d''état de la LED
+        if (millis() - f_b_cl_Say >= 300)
+        {
+          f_b_cl_Say = millis();
+          flacheBleuState = HIGH;
+          if (say10 == 0)
+          {
+            digitalWrite(flacheBleu, false); // modifie l'état de la LED
+            digitalWrite(flacheRouge, false);
+            digitalWrite(spot, false);
+            digitalWrite(sirenI, false);
+            digitalWrite(sirenC, false);
+          }
+          else
+          {
+            if (say10 == 10)
+            {
+              digitalWrite(flacheBleu, false); // modifie l'état de la LED
+              digitalWrite(flacheRouge, false);
+              digitalWrite(spot, false);
+              digitalWrite(sirenI, false);
+              digitalWrite(sirenC, false);
+            }
+            else
+            {
+              digitalWrite(flacheBleu, flacheBleuState);
+              digitalWrite(flacheRouge, flacheBleuState);
+              digitalWrite(spot, flacheBleuState);
+              digitalWrite(sirenI, flacheBleuState);
+              digitalWrite(sirenC, flacheBleuState);
+            }
+          }
+        }
+      }
+      else
+      {
+        if (millis() - f_b_cl_Say >= 400)
+        {
+          flacheBleuState = LOW;
+          compte30B = compte30B + 1;
+          f_b_cl_Say = millis();
+          if (say10 == 10)
+          {
+            digitalWrite(flacheBleu, true);
+            digitalWrite(flacheRouge, true);
+            digitalWrite(spot, true);
+            digitalWrite(sirenI, true);
+            digitalWrite(sirenC, true);
+          }
+          else
+          {
+            if (sosSay == 0)
+            {
+              digitalWrite(flacheBleu, false);
+              digitalWrite(flacheRouge, false);
+              digitalWrite(spot, false);
+              digitalWrite(sirenI, false);
+              digitalWrite(sirenC, false);
+            }
+            else
+            {
+              digitalWrite(flacheBleu, flacheBleuState);
+              digitalWrite(flacheRouge, flacheBleuState);
+              digitalWrite(spot, flacheBleuState);
+              digitalWrite(sirenI, flacheBleuState);
+              digitalWrite(sirenC, flacheBleuState);
+            }
+          }
+        }
+      }
+      if (compte30B >= sosSay)
+      {
+        f_b_cl_state = true;
+      }
+    }
+  }
+  else
+  {
+    f_b_cl_Tmp = millis();
+    f_b_cl_Say = millis();
+    compteB = compteB + 1; // cliososNbr
+    if (compte30B >= sosSay)
+    {
+      compte30B = 0;
+    }
+  }
+}
+/*************FONCTION*****cliososNbr****final*/
+int clioFlache(int sosNbr, int cp_cl)
+{
+  int curnsosNbr = sosNbr;
+  if (sosNbr == 30)
+  {
+    sosSay = 3;
+    sosTmp = 15;
+    f_b_cl(sosSay); // (sosNbr == 30)
+    if (cp_cl > 1)
+    {
+      cp_cl = 1; // sosNbr == 30
+    }
+  }
+  if (sosNbr == 40)
+  {
+    sosSay = 3;
+    sosTmp = 15;
+    f_b_cl(sosSay); //(sosNbr == 40)
+    if (cp_cl > 1)
+    {
+      cp_cl = 1; // sosNbr == 40
+    }
+  }
+  if (sosNbr == 55)
+  {
+    if (cp_cl <= 1)
+    {
+      sosSay = 5;
+      sosTmp = 5;
+      f_r_cl(sosSay); //(sosNbr == 55)
+    }
+    else
+    {
+      if (cp_cl <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp); //(sosNbr == 55)
+      }
+      else
+      {
+        if (cp_cl <= 3)
+        {
+          sosSay = 5;
+          sosTmp = 5;
+          f_r_cl(sosSay); //(sosNbr == 55)
+        }
+        else
+        {
+          if (cp_cl <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp); //(sosNbr == 55)
+          }
+          else
+          {
+            if (cp_cl >= 4)
+            {
+              cp_cl = 1; // sosNbr == 55
+            }
+          }
+        }
+      }
+    }
+  }
+  if (sosNbr == 23)
+  {
+    sosSay = 7;
+    sosTmp = 7;
+    s_c_cl(sosSay, sosTmp);
+    if (compteB <= 1)
+    {
+      sosSay = 2;
+      sosTmp = 2;
+      f_b_cl(sosSay); //(sosNbr == 23)
+      sosSay = 0;
+      sosTmp = 0;
+      spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+    }
+    else
+    {
+      if (compteB <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+      }
+      else
+      {
+        if (compteB <= 3)
+        {
+          sosSay = 3;
+          sosTmp = 3;
+          f_r_cl(sosSay); //  (sosNbr == 23)
+          sosSay = 0;
+          sosTmp = 0;
+          spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+        }
+        else
+        {
+          if (compteB <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp); // (sosNbr == 23)
+          }
+          else
+          {
+            if (compteB >= 4)
+            {
+              compteB = 1; // sosNbr == 23
+            }
+          }
+        }
+      }
+    }
+  }
+  if (sosNbr == 34)
+  {
+    if (cp_cl <= 1)
+    {
+      sosSay = 3;
+      sosTmp = 3;
+      f_b_cl(sosSay);
+    }
+    else
+    {
+      if (cp_cl <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp);
+      }
+      else
+      {
+        if (cp_cl <= 3)
+        {
+          sosSay = 4;
+          sosTmp = 4;
+          f_r_cl(sosSay);
+        }
+        else
+        {
+          if (cp_cl <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp);
+          }
+          else
+          {
+            if (cp_cl >= 4)
+            {
+              cp_cl = 1; // sosNbr == 34
+            }
+          }
+        }
+      }
+    }
+  }
+  if (sosNbr == 42)
+  {
+    if (cp_cl <= 1)
+    {
+      sosSay = 4;
+      sosTmp = 5;
+      f_b_cl(sosSay);
+    }
+    else
+    {
+      if (cp_cl <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp);
+      }
+      else
+      {
+        if (cp_cl <= 3)
+        {
+          sosSay = 2;
+          sosTmp = 5;
+          f_r_cl(sosSay);
+        }
+        else
+        {
+          if (cp_cl <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp);
+          }
+          else
+          {
+            if (cp_cl >= 4)
+            {
+              cp_cl = 1; // sosNbr == 42
+            }
+          }
+        }
+      }
+    }
+  }
+  if (sosNbr == 234)
+  {
+    if (cp_cl <= 1)
+    {
+      sosSay = 2;
+      sosTmp = 5;
+      f_r_cl(sosSay);
+    }
+    else
+    {
+      if (cp_cl <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp);
+      }
+      else
+      {
+        if (cp_cl <= 3)
+        {
+          sosSay = 3;
+          sosTmp = 5;
+          f_b_cl(sosSay);
+        }
+        else
+        {
+          if (cp_cl <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp);
+          }
+          else
+          {
+            if (cp_cl <= 5)
+            {
+              sosSay = 4;
+              sosTmp = 5;
+              f_r_cl(sosSay);
+            }
+            else
+            {
+              if (cp_cl <= 6)
+              {
+                sosSay = 1;
+                sosTmp = 1;
+                spot_cl(sosSay, sosTmp);
+              }
+              else
+              {
+                if (cp_cl >= 6)
+                {
+                  cp_cl = 1; // sosNbr == 234
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (sosNbr == 10)
+  {
+    sosSay = 2;
+    sosTmp = 12;
+    s_c_cl(sosSay, sosTmp);
+    digitalWrite(spot, !spotState);
+    if (comptespot <= 1)
+    {
+      sosSay = 2;
+      sosTmp = 5;
+      spot_cl(sosSay, sosTmp);
+    }
+    else
+    {
+      if (comptespot <= 2)
+      {
+        sosSay = 1;
+        sosTmp = 1;
+        spot_cl(sosSay, sosTmp);
+      }
+      else
+      {
+        if (comptespot <= 3)
+        {
+          sosSay = 2;
+          sosTmp = 5;
+          spot_cl(sosSay, sosTmp);
+        }
+        else
+        {
+          if (comptespot <= 4)
+          {
+            sosSay = 1;
+            sosTmp = 1;
+            spot_cl(sosSay, sosTmp);
+          }
+          else
+          {
+            if (comptespot >= 4)
+            {
+              comptespot = 1; // sosNbr == 10
+            }
+          }
+        }
+      }
+    }
+    // return(comptespot);
+  }
+}
