@@ -106,7 +106,7 @@ unsigned long s_c_cl_Tmp = 0;
 bool s_i_cl_state = false;
 unsigned long s_i_cl_Tmp = 0;
 int cp_cl = 1;   // int declaration
-int compteB = 0; // init declaration
+volatile int compteB = 0; // init declaration
 int compteR = 0;
 int comptesC = 1;
 int comptesI = 1;
@@ -360,7 +360,7 @@ void loop()
   // ct2t_state = count_2t(ct2t_state);
   // ct1s_state = welc_1s(ct1s_state);
   // sosSay = 5;
-  // compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)// int compt = count(sosSay);
+  // compteB = f_b_cl_2(sosSay, compteB, compteB); //(sosNbr == 23)// int compt = count(sosSay);
   // Serial.println(compteB);
   // Serial.println(ct_state);
   // return;
@@ -386,7 +386,7 @@ void loop()
   //   tempo_State_On = false;
   // }
   // if (Manu_auto == true)
-  // {
+  // 
   //   if (tempx >= 100 || tempx < 5)
   //   {
   //     Serial.println("Manu  on");
@@ -449,19 +449,19 @@ void loop()
     {
     case 1:
       sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 34)
+      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 34)
       break;
     case 2:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
       break;
     case 3:
       sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 34)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 34)
       break;
     case 4:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
       break;
     case 5:
       compteB = 0; // (sosNbr == 34)
@@ -479,19 +479,19 @@ void loop()
     {
     case 1:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 24)
+      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 24)
       break;
     case 2:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
       break;
     case 3:
       sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 24)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 24)
       break;
     case 4:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
       break;
     case 5:
       compteB = 0; // (sosNbr == 24)
@@ -508,19 +508,19 @@ void loop()
     {
     case 1:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 23)
+      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)
       break;
     case 2:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
       break;
     case 3:
       sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 23)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 23)
       break;
     case 4:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
       break;
     case 5:
       compteB = 0; // (sosNbr == 23)
@@ -538,27 +538,27 @@ void loop()
     {
     case 1:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 234)
       break;
     case 2:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
       break;
     case 3:
       sosSay = 3;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
       break;
     case 4:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
       break;
     case 5:
       sosSay = 4;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
       break;
     case 6:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
       break;
     case 7:
       compteB = 0; // (sosNbr == 23)
@@ -576,19 +576,19 @@ void loop()
     {
     case 1:
       sosSay = 5;
-      compteB = f_b_cl_2(sosSay); //(sosNbr == 55)
+      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 55)
       break;
     case 2:
       sosSay = 1;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
       break;
     case 3:
       sosSay = 5;
-      compteB = f_b_cl_2(sosSay); //  (sosNbr == 55)
+      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 55)
       break;
     case 4:
       sosSay = 2;
-      compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
       break;
     case 5:
       compteB = 0; // (sosNbr == 23)
@@ -1539,7 +1539,7 @@ int welc_1s(int ct1s_state)
   ct1s_state = ct1s_ste;
   return ct1s_state;
 }
-int f_b_cl_2(int sosSay)
+int f_b_cl_2(int sosSay, int compteB)
 {
   int flache = 0;
   int siren_c_i = 0;
@@ -2330,19 +2330,19 @@ int sosNbr23(int compteB) // CcPhNeTe 3
   {
   case 1:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); //(sosNbr == 23)
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)
     break;
   case 2:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
     break;
   case 3:
     sosSay = 3;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 23)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 23)
     break;
   case 4:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 23)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
     break;
   case 5:
     compteB = 0; // (sosNbr == 23)
@@ -2358,19 +2358,19 @@ int sosNbr24() // CcPhNeTe 2
   {
   case 1:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); //(sosNbr == 24)
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 24)
     break;
   case 2:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
     break;
   case 3:
     sosSay = 4;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 24)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 24)
     break;
   case 4:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 24)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
     break;
   case 5:
     compteB = 0; // (sosNbr == 24)
@@ -2385,19 +2385,19 @@ int sosNbr34() // CcPhNeTe 1
   {
   case 1:
     sosSay = 3;
-    compteB = f_b_cl_2(sosSay); //(sosNbr == 34)
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 34)
     break;
   case 2:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
     break;
   case 3:
     sosSay = 4;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 34)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 34)
     break;
   case 4:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 34)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
     break;
   case 5:
     compteB = 0; // (sosNbr == 34)
@@ -2412,27 +2412,27 @@ int sosNbr234() // CcPhNeTe 4
   {
   case 1:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); //(sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 234)
     break;
   case 2:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
     break;
   case 3:
     sosSay = 3;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
     break;
   case 4:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
     break;
   case 5:
     sosSay = 4;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
     break;
   case 6:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 234)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
     break;
   case 7:
     compteB = 0; // (sosNbr == 23)
@@ -2447,19 +2447,19 @@ int sosNbr55() // CcPhNeTe 5
   {
   case 1:
     sosSay = 5;
-    compteB = f_b_cl_2(sosSay); //(sosNbr == 55)
+    compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 55)
     break;
   case 2:
     sosSay = 1;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
     break;
   case 3:
     sosSay = 5;
-    compteB = f_b_cl_2(sosSay); //  (sosNbr == 55)
+    compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 55)
     break;
   case 4:
     sosSay = 2;
-    compteB = f_b_cl_2(sosSay); // (sosNbr == 55)
+    compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
     break;
   case 5:
     compteB = 0; // (sosNbr == 23)
