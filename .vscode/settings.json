@@ -2,5 +2,8 @@
     "arduino.commandPath": "arduino",
     "arduino.path": "/usr/bin",
     "C_Cpp.errorSquiggles": "Disabled",
-    "github-enterprise.uri": "tic3"
+    "github-enterprise.uri": "tic3",
+    "files.associations": {
+        "*.sys_ok": "cpp"
+    }
 }
