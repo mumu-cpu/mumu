@@ -86,7 +86,7 @@ String fn = "vent	FAN";         // welc_ID_index  6
 String bch = "bat	BOSCH";       // welc_ID_index  7
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
-
+bool cpt_3t_sta[6]={false,false,false,false,false,false}
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
 unsigned long cpt2t_millis = millis();
@@ -986,6 +986,7 @@ int count_2t(int ct2t_state)
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0 = true;
+    cpt_3t_sta[0]=true;
     ct2t_sta5 = false;
   }
   // etein 1
@@ -994,6 +995,7 @@ int count_2t(int ct2t_state)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
+    cpt_3t_sta[1]=true;
     ct2t_sta1 = true;
   }
 
@@ -1004,6 +1006,7 @@ int count_2t(int ct2t_state)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
+    cpt_3t_sta[2]=true;
     ct2t_sta2 = true;
   }
   // etein 3
@@ -1012,6 +1015,7 @@ int count_2t(int ct2t_state)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
+    cpt_3t_sta[3]=true;
     ct2t_sta3 = true;
   }
   // cycle x3
@@ -1021,6 +1025,7 @@ int count_2t(int ct2t_state)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
+    cpt_3t_sta[4]=true;
     ct2t_sta4 = true;
   }
   // etein 5
@@ -1035,6 +1040,7 @@ int count_2t(int ct2t_state)
     ct2t_sta3 = false;
     ct2t_sta4 = false;
     ct2t_sta5 = true;
+    cpt_3t_sta[5]=true;
   }
   else
   {
