@@ -86,7 +86,7 @@ String fn = "vent	FAN";         // welc_ID_index  6
 String bch = "bat	BOSCH";       // welc_ID_index  7
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
-bool cpt_3t_sta[6]={false,false,false,false,false,false}
+bool cpt_3t_sta[7]={false,false,false,false,false,false,false}
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
 unsigned long cpt2t_millis = millis();
@@ -981,7 +981,7 @@ int count_2t(int ct2t_state)
 
   // cycle x1
   // allum 0
-  if (rlt2t > 200 && ct2t_sta5 == false && ct2t_sta0 == false)
+  if (rlt2t > 0 && ct2t_sta5 == false && ct2t_sta0 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1038,41 +1038,43 @@ int count_2t(int ct2t_state)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
+    ct2t_sta5=true;
+    cpt_3t_sta[5]=true;
+    cpt_3t_sta[4]=false;
+  }
+  // fin cycle maz
+  rlt2t=millis()-cpt2t_millis;
+  if(rlt2t>200&& ct2t_sta0==true && ct2t_sta1==true && ct2t_sta2==true && ct2t_sta3==true && ct2t_sta4==true && ct2t_sta5==true)
+{
+  cpt2t_millis=millis();
+  ct2t_ste=ct2t_ste+1;
     ct2t_sta0 = false;
     ct2t_sta1 = false;
     ct2t_sta2 = false;
     ct2t_sta3 = false;
     ct2t_sta4 = false;
-    ct2t_sta5 = true;
-    cpt_3t_sta[5]=true;
-    cpt_3t_sta[4]=false;
-  }
-  else
-  {
     ct2t_sta5 = false;
-  }
+    cpt_3t_sta[6]=true
+    cpt_3t_sta[5]=false;
+
+}
+
+
+
+
+
   // cycle count_2t
+  
 if(cpt_3t_sta[0]==true){ct2t_ste=0;}
 if(cpt_3t_sta[1]==true){ct2t_ste=1;}
+if(cpt_3t_sta[2]==true){ct2t_ste=0;}
+if(cpt_3t_sta[3]==true){ct2t_ste=1;}
+if(cpt_3t_sta[4]==true){ct2t_ste=0;}
+if(cpt_3t_sta[5]==true){ct2t_ste=1;}
+if(cpt_3t_sta[6]==true){ct2t_ste=6;cpt_3t_sta[6]=false;}
 
-  }
-  // cycle count_2t
-if(cpt_3t_sta[0]==true){ct2t_ste=0;}
-if(cpt_3t_sta[1]==true){ct2t_ste=1;}
-if(cpt2t_millis)
-  // return(ct2t_ste);
 
-  switch (ct2t_ste)
 
-  }
-  // cycle count_2t
-if(cpt_3t_sta[0]==true){ct2t_ste=0;}
-if(cpt_3t_sta[1]==true){ct2t_ste=1;}
-
-  }
-  // cycle count_2t
-if(cpt_3t_sta[0]==true){ct2t_ste=0;}
-)
   // return(ct2t_ste);
 
   switch (ct2t_ste)
