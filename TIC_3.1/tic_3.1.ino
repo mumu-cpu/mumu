@@ -62,6 +62,7 @@ bool ct1s_sta = false;
 bool ct1s_sta1 = false;
 
 int ct2t_state = 0;
+int cpt_3t=0;// compte cycle 3t
 bool ct2t_sta0 = false;
 bool ct2t_sta1 = false;
 bool ct2t_sta2 = false;
@@ -186,6 +187,7 @@ void setup()
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false && welc_ctr_tb_st[2] == false && welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
     Serial.println("    S Y S T E M    O K");
+    welc_ctr_err=false;
     // welc listing ID 0k
     for (int i = 0; i < 8; i++)
     {
@@ -200,6 +202,7 @@ void setup()
   {
     Serial.println("	");                                         //
     Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
+  welc_ctr_err=true;
   }
 
   //      A U T O     C O N F I G
@@ -1054,24 +1057,39 @@ int count_2t(int ct2t_state)
     ct2t_sta3 = false;
     ct2t_sta4 = false;
     ct2t_sta5 = false;
-    cpt_3t_sta[6]=true
+    cpt_3t_sta[6]=true;
     cpt_3t_sta[5]=false;
 
 }
+return(ct2t_ste);
 
+}
 
-
-
-
+void def_3t(int sosSay,int cpt_3t){
   // cycle count_2t
-  
+  count_2t(ct2t_state);
 if(cpt_3t_sta[0]==true){ct2t_ste=0;}
 if(cpt_3t_sta[1]==true){ct2t_ste=1;}
 if(cpt_3t_sta[2]==true){ct2t_ste=0;}
 if(cpt_3t_sta[3]==true){ct2t_ste=1;}
 if(cpt_3t_sta[4]==true){ct2t_ste=0;}
 if(cpt_3t_sta[5]==true){ct2t_ste=1;}
-if(cpt_3t_sta[6]==true){ct2t_ste=6;cpt_3t_sta[6]=false;}
+if(cpt_3t_sta[6]==true){ct2t_ste=6;cpt_3t_sta[6]=false;cpt_3t++;}
+
+
+  int flache = 0;
+  int siren_c_i = 0;
+  if (sosSay == 2 || sosSay == 3)
+  {
+    flache = flacheBleu; // sortie 12
+    siren_c_i = sirenC;  // 3 sortie siren con (continute)
+  }
+
+  if (sosSay == 4 || sosSay == 5)
+  {
+    flache = flacheRouge; // 11 sortie flacheRouge
+    siren_c_i = sirenI;   // 9 sortie siren iso
+  }
 
 
 
@@ -1080,22 +1098,22 @@ if(cpt_3t_sta[6]==true){ct2t_ste=6;cpt_3t_sta[6]=false;}
   switch (ct2t_ste)
   {
   case 0:
-    digitalWrite(flacheRouge, true);
+    digitalWrite(flache, true);
     break;
   case 1:
-    digitalWrite(flacheRouge, false);
+    digitalWrite(flache, false);
     break;
   case 2:
-    digitalWrite(flacheRouge, true);
+    digitalWrite(flache, true);
     break;
   case 3:
-    digitalWrite(flacheRouge, false);
+    digitalWrite(flache, false);
     break;
   case 4:
-    digitalWrite(flacheRouge, true);
+    digitalWrite(flache, true);
     break;
   case 5:
-    digitalWrite(flacheRouge, false);
+    digitalWrite(flache, false);
     break;
   case 6:
     ct2t_ste = 0;
@@ -1105,7 +1123,7 @@ if(cpt_3t_sta[6]==true){ct2t_ste=6;cpt_3t_sta[6]=false;}
     break;
   }
 
-  return (ct2t_ste);
+ return (cpt_3t);
 }
 
 int welc_1s(int ct1s_state)
