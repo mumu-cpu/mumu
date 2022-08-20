@@ -996,6 +996,7 @@ int count_2t(int ct2t_state)
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     cpt_3t_sta[1]=true;
+    cpt_3t_sta[0]=false;
     ct2t_sta1 = true;
   }
 
@@ -1007,6 +1008,7 @@ int count_2t(int ct2t_state)
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     cpt_3t_sta[2]=true;
+    cpt_3t_sta[1]=false;
     ct2t_sta2 = true;
   }
   // etein 3
@@ -1016,6 +1018,7 @@ int count_2t(int ct2t_state)
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     cpt_3t_sta[3]=true;
+    cpt_3t_sta[2]=false;
     ct2t_sta3 = true;
   }
   // cycle x3
@@ -1026,6 +1029,7 @@ int count_2t(int ct2t_state)
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     cpt_3t_sta[4]=true;
+    cpt_3t_sta[3]=false;
     ct2t_sta4 = true;
   }
   // etein 5
@@ -1041,13 +1045,34 @@ int count_2t(int ct2t_state)
     ct2t_sta4 = false;
     ct2t_sta5 = true;
     cpt_3t_sta[5]=true;
+    cpt_3t_sta[4]=false;
   }
   else
   {
     ct2t_sta5 = false;
   }
   // cycle count_2t
+if(cpt_3t_sta[0]==true){ct2t_ste=0;}
+if(cpt_3t_sta[1]==true){ct2t_ste=1;}
 
+  }
+  // cycle count_2t
+if(cpt_3t_sta[0]==true){ct2t_ste=0;}
+if(cpt_3t_sta[1]==true){ct2t_ste=1;}
+if(cpt2t_millis)
+  // return(ct2t_ste);
+
+  switch (ct2t_ste)
+
+  }
+  // cycle count_2t
+if(cpt_3t_sta[0]==true){ct2t_ste=0;}
+if(cpt_3t_sta[1]==true){ct2t_ste=1;}
+
+  }
+  // cycle count_2t
+if(cpt_3t_sta[0]==true){ct2t_ste=0;}
+)
   // return(ct2t_ste);
 
   switch (ct2t_ste)
