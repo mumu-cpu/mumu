@@ -61,14 +61,38 @@ int ct1s_state = 0;
 bool ct1s_sta = false;
 bool ct1s_sta1 = false;
 
+unsigned long cpt1t_millis = millis();
+int ct1t_state = 0;
+int cpt_1t = 0; // compte cycle 2t
+bool ct1t_sta0 = false;
+bool ct1t_sta1 = false;
+bool ct1t_sta2 = false;
+bool ct1t_sta3 = false;
+bool ct1t_sta4 = false;
+bool ct1t_sta5 = false;
+int cpt_1t_sta[8] = {false, false, false, false, false, false, false, false};
+
+unsigned long cpt2t_millis = millis();
 int ct2t_state = 0;
-int cpt_3t = 0; // compte cycle 3t
+int cpt_2t = 0; // compte cycle 2t
 bool ct2t_sta0 = false;
 bool ct2t_sta1 = false;
 bool ct2t_sta2 = false;
 bool ct2t_sta3 = false;
 bool ct2t_sta4 = false;
 bool ct2t_sta5 = false;
+int cpt_2t_sta[8] = {false, false, false, false, false, false, false, false};
+
+unsigned long cpt3t_millis = millis();
+int ct3t_state = 0;
+int cpt_3t = 0; // compte cycle 3t
+bool ct3t_sta0 = false;
+bool ct3t_sta1 = false;
+bool ct3t_sta2 = false;
+bool ct3t_sta3 = false;
+bool ct3t_sta4 = false;
+bool ct3t_sta5 = false;
+int cpt_3t_sta[8] = {false, false, false, false, false, false, false, false};
 
 int ct05s_state = 0;
 bool ct05s_sta = false;
@@ -86,11 +110,9 @@ String bch = "bat	BOSCH";       // welc_ID_index  7
 
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
-int cpt_3t_sta[8] = {false, false, false, false, false, false, false, false};
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
-unsigned long cpt2t_millis = millis();
 
 unsigned long cpt05s_millis = millis();
 bool f_b_cl_state = false;
@@ -182,7 +204,7 @@ void setup()
   //{    ct1s_state = welc_1s(ct1s_state);  }
   // welc listing ID err
   // 					   roge, bleu, sirC, sirI,	spot,	alime, fanne,	bsch
-  bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
+  bool welc_ctr_tb_st[8] = {true, false, false, false, false, false, false, false};
 
   if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false && welc_ctr_tb_st[2] == false && welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
   {
@@ -360,17 +382,21 @@ void loop()
 { //                               LOOP
 
   //  **********************TEST********************************
-  cpt_3t = def_3t(2, cpt_3t);
+  // cpt_3t = def_3t(2, cpt_3t);
 
+  /*
   for (int a = 0; a < 8; a++) // affiche welc ID
-  {
-    Serial.print(cpt_3t_sta[a]);
-  }
-  for (int i = 0; i < 8; i++) // affiche welc ID err
-  {
-  }
-  Serial.println(" ");
-  return;
+   {
+     Serial.print(cpt_3t_sta[a]);
+   }
+   for (int i = 0; i < 8; i++) // affiche welc ID err
+   {
+   }
+
+   Serial.println(" ");
+   return;
+
+   */
 
   Serial.println(" ");
   demare();
@@ -446,41 +472,95 @@ void loop()
   case 3: // Ph <-> Ne
     Serial.print("Ph <-> Ne ");
     Serial.println(CcPhNeTe);
-    switch (cpt_3t_sta[7]) //(sosNbr == 23)
+
+    if (welc_ctr_err == true)
     {
-    case 1:
+      int switch_def = cpt_3t_sta[7];
+    }
+    else
+    {
+      int switch_def = cpt_1t_sta[7];
+    }
+
+    switch (switch_def) //(sosNbr == 23)
+    {
+    case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(2, cpt_3t);
+        if (def_3t(2) == 2)
+        {
+          cpt_3t_sta[7]++;
+        }
       }
       else
       {
-        compteB = f_b_cl_2(2, compteB);
+        if (def_1t(2) == 2)
+        {
+          cpt_3t_sta[7]++;
+        }
       }
-
-      // sosSay = 2;
-      //  //(sosNbr == 23)
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        if (def_3t(6) == 1)
+        {
+          cpt_3t_sta[7]++;
+        }
+      }
+      else
+      {
+        if (def_1t(6) == 1)
+        {
+          cpt_1t_sta[7]++;
+        }
+      }
       break;
     case 2:
-      sosSay = 1;
-      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
+      if (welc_ctr_err == true)
+      {
+        if (def_3t(3) == 3)
+        {
+          cpt_3t_sta[7]++;
+        }
+      }
+      else
+      {
+        if (def_1t(3) == 3)
+        {
+          cpt_3t_sta[7]++;
+        }
+      }
       break;
     case 3:
-      sosSay = 3;
-      compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 23)
+      if (welc_ctr_err == true)
+      {
+        if (def_3t(6) == 2)
+        {
+          cpt_3t_sta[7]++;
+        }
+      }
+      else
+      {
+        if (def_1t(6) == 2)
+        {
+          cpt_3t_sta[7]++;
+        }
+      }
       break;
     case 4:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 23)
-      break;
-    case 5:
-      compteB = 0; // (sosNbr == 23)
-      break;
-    default:
-      compteB = 1; // sosNbr == 23
+      if (welc_ctr_err == true)
+      {
+        cpt_3t_sta[7] = 0;
+      }
+      else
+      {
+        cpt_3t_sta[7] = 0;
+      }
       break;
     }
     break;
+    
   case 4: // Cc-Ph-Ne-Te. test
     Serial.print("Cc-Ph-Ne-Te. test ");
     Serial.println(CcPhNeTe);
@@ -557,11 +637,11 @@ void loop()
       f_b_cl(sosSay);         // CcPhNeTe == 0
       f_r_cl(sosSay);         // CcPhNeTe == 0
       s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
-      ct2t_state = count_2t(ct2t_state);
-      // sosSay = 2;
-      // sosTmp = 12;
-      // s_c_cl(sosSay, sosTmp);
-      // spot_cl(sosSay = 10, sosTmp);
+      // ct3t_state = count_3t(ct3t_state);
+      //  sosSay = 2;
+      //  sosTmp = 12;
+      //  s_c_cl(sosSay, sosTmp);
+      //  spot_cl(sosSay = 10, sosTmp);
     }
     if (CcPhNeTe == 0 && battLow == true)
     {
@@ -996,6 +1076,224 @@ int count05s(int ct05s_state)
   return (ct05s_ste);
 }
 
+int count_1t(int ct1t_state)
+{
+  int ct1t_ste = ct1t_state;
+  unsigned long rlt1t = millis() - cpt1t_millis;
+
+  // cycle x1
+  // allum 0
+  if (rlt1t > 0 &&
+      ct1t_sta0 == false &&
+      ct1t_sta2 == false)
+  {
+    cpt1t_millis = millis();
+    ct1t_ste = ct1t_ste + 1;
+    ct1t_sta0 = true;
+    cpt_1t_sta[0] = true;
+    ct1t_sta2 = false;
+  }
+  // etein 1
+  rlt1t = millis() - cpt1t_millis;
+  if (rlt1t > 10 &&
+      ct1t_sta0 == true &&
+      ct1t_sta1 == false)
+  {
+    cpt1t_millis = millis();
+    ct1t_ste = ct1t_ste + 1;
+    cpt_1t_sta[0] = false;
+    cpt_1t_sta[1] = true;
+    ct1t_sta1 = true;
+  }
+  /*
+    // cycle x2
+    // allum 2
+    rlt1t = millis() - cpt1t_millis;
+    if (rlt1t > 10 &&
+        ct1t_sta0 == true &&
+        ct1t_sta1 == true &&
+        ct1t_sta2 == false)
+    {
+      cpt1t_millis = millis();
+      ct1t_ste = ct1t_ste + 1;
+      cpt_1t_sta[1] = false;
+      cpt_1t_sta[2] = true;
+      ct1t_sta2 = true;
+    }
+    // etein 3
+    rlt1t = millis() - cpt1t_millis;
+    if (rlt1t > 10 &&
+        ct1t_sta0 == true &&
+        ct1t_sta1 == true &&
+        ct1t_sta2 == true &&
+        ct1t_sta3 == false)
+    {
+      cpt1t_millis = millis();
+      ct1t_ste = ct1t_ste + 1;
+      cpt_1t_sta[2] = false;
+      cpt_1t_sta[3] = true;
+      ct1t_sta3 = true;
+    }
+    */
+  /*
+   // cycle x3
+   // allum 4
+   rlt1t = millis() - cpt1t_millis;
+   if (rlt1t > 10 && ct1t_sta1 == true && ct1t_sta2 == true && ct1t_sta3 == true && ct1t_sta4 == false && ct1t_sta0 == true)
+   {
+     cpt1t_millis = millis();
+     ct1t_ste = ct1t_ste + 1;
+     cpt_1t_sta[3] = false;
+     cpt_1t_sta[4] = true;
+     ct1t_sta4 = true;
+   }
+   // etein 5
+   rlt1t = millis() - cpt1t_millis;
+   if (rlt1t > 10 &&
+   ct1t_sta1 == true &&
+   ct1t_sta2 == true &&
+   ct1t_sta3 == true &&
+   ct1t_sta4 == true &&
+   ct1t_sta5 == false &&
+   ct1t_sta0 == true)
+   {
+     cpt1t_millis = millis();
+     ct1t_ste = ct1t_ste + 1;
+     ct1t_sta5 = true;
+     cpt_1t_sta[4] = false;
+     cpt_1t_sta[5] = true;
+   }
+   */
+  // fin cycle maz
+  rlt1t = millis() - cpt1t_millis;
+  if (rlt1t > 10 &&
+      ct1t_sta0 == true &&
+      ct1t_sta1 == true &&)
+  // ct1t_sta2 == true &&
+  // ct1t_sta3 == true &&
+  // ct1t_sta4 == true &&
+  // ct1t_sta5 == true
+  {
+    cpt1t_millis = millis();
+    ct1t_ste = ct1t_ste + 1;
+    ct1t_sta0 = false;
+    ct1t_sta1 = false;
+    // ct1t_sta2 = false;
+    // ct1t_sta3 = false;
+    // ct1t_sta4 = false;
+    // ct1t_sta5 = false;
+    cpt_1t_sta[1] = false;
+    cpt_1t_sta[2] = true;
+  }
+  return (ct1t_ste);
+}
+
+int def_1t(int sosSay)
+{
+  // cycle count_1t
+  int ct1t_ste;
+  count_1t(ct1t_state);
+  if (cpt_1t_sta[0] == true)
+  {
+    ct1t_ste = 0;
+  }
+  if (cpt_1t_sta[1] == true)
+  {
+    ct1t_ste = 1;
+  }
+  if (cpt_1t_sta[2] == true)
+  {
+    ct1t_ste = 2;
+    cpt_1t_sta[2] = false;
+    // cpt_1t_sta[7]++;
+  }
+  /*
+    if (cpt_1t_sta[3] == true)
+    {
+      ct1t_ste = 3;
+    }
+    if (cpt_1t_sta[4] == true)
+    {
+      ct1t_ste = 4;
+    cpt_1t_sta[4] = false;
+      cpt_1t_sta[7]++;
+    }
+  */
+  /*
+    if (cpt_1t_sta[5] == true)
+    {
+      ct1t_ste = 5;
+    }
+    if (cpt_1t_sta[6] == true)
+    {
+      ct1t_ste = 6;
+      cpt_1t_sta[6] = false;
+      // cpt_1t_sta[6]=false;
+      // cpt_1t++;
+      cpt_1t_sta[7]++;
+    }
+  */
+  int flache = 0;
+  int siren_c_i = 0;
+  if (sosSay == 2 || sosSay == 3)
+  {
+    flache = flacheBleu; // sortie 12
+    siren_c_i = sirenC;  // 3 sortie siren con (continute)
+  }
+
+  if (sosSay == 4 || sosSay == 5)
+  {
+    flache = flacheRouge; // 11 sortie flacheRouge
+    siren_c_i = sirenI;   // 9 sortie siren iso
+  }
+  if (sosSay == 6)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
+  }
+  if (sosSay == 7)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
+
+  // return(ct1t_ste);
+
+  switch (ct1t_ste)
+  {
+  case 0:
+    digitalWrite(siren_c_i, true);
+    break;
+  case 1:
+    digitalWrite(siren_c_i, false);
+    break;
+  case 2:
+    ct1t_ste = 0;
+    // digitalWrite(flache, true);
+    break;
+  case 3:
+    ct1t_ste = 0;
+    // digitalWrite(flache, false);
+    break;
+  case 4:
+    ct1t_ste = 0;
+    // digitalWrite(siren_c_i, true);
+    break;
+  case 5:
+    ct1t_ste = 0;
+    // digitalWrite(siren_c_i, false);
+    break;
+  case 6:
+    ct1t_ste = 0;
+    break;
+  case 7:
+    ct1t_ste = 0;
+    break;
+  }
+
+  return (cpt_1t_sta[7]);
+}
+
 int count_2t(int ct2t_state)
 {
   int ct2t_ste = ct2t_state;
@@ -1003,70 +1301,95 @@ int count_2t(int ct2t_state)
 
   // cycle x1
   // allum 0
-  if (rlt2t > 0 && ct2t_sta5 == false && ct2t_sta0 == false)
+  if (rlt2t > 0 &&
+      ct2t_sta0 == false &&
+      ct2t_sta3 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
     ct2t_sta0 = true;
-    cpt_3t_sta[0] = true;
-    ct2t_sta5 = false;
+    cpt_2t_sta[0] = true;
+    ct2t_sta3 = false;
   }
   // etein 1
   rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta1 == false && ct2t_sta0 == true)
+  if (rlt2t > 10 &&
+      ct2t_sta0 == true &&
+      ct2t_sta1 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
-    cpt_3t_sta[0] = false;
-    cpt_3t_sta[1] = true;
+    cpt_2t_sta[0] = false;
+    cpt_2t_sta[1] = true;
     ct2t_sta1 = true;
   }
 
   // cycle x2
   // allum 2
   rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == false && ct2t_sta0 == true)
+  if (rlt2t > 10 &&
+      ct2t_sta0 == true &&
+      ct2t_sta1 == true &&
+      ct2t_sta2 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
-    cpt_3t_sta[1] = false;
-    cpt_3t_sta[2] = true;
+    cpt_2t_sta[1] = false;
+    cpt_2t_sta[2] = true;
     ct2t_sta2 = true;
   }
   // etein 3
   rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == false && ct2t_sta0 == true)
+  if (rlt2t > 10 &&
+      ct2t_sta0 == true &&
+      ct2t_sta1 == true &&
+      ct2t_sta2 == true &&
+      ct2t_sta3 == false)
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
-    cpt_3t_sta[2] = false;
-    cpt_3t_sta[3] = true;
+    cpt_2t_sta[2] = false;
+    cpt_2t_sta[3] = true;
     ct2t_sta3 = true;
   }
-  // cycle x3
-  // allum 4
-  rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == false && ct2t_sta0 == true)
-  {
-    cpt2t_millis = millis();
-    ct2t_ste = ct2t_ste + 1;
-    cpt_3t_sta[3] = false;
-    cpt_3t_sta[4] = true;
-    ct2t_sta4 = true;
-  }
-  // etein 5
-  rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == false && ct2t_sta0 == true)
-  {
-    cpt2t_millis = millis();
-    ct2t_ste = ct2t_ste + 1;
-    ct2t_sta5 = true;
-    cpt_3t_sta[4] = false;
-    cpt_3t_sta[5] = true;
-  }
+  /*
+   // cycle x3
+   // allum 4
+   rlt2t = millis() - cpt2t_millis;
+   if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == false && ct2t_sta0 == true)
+   {
+     cpt2t_millis = millis();
+     ct2t_ste = ct2t_ste + 1;
+     cpt_2t_sta[3] = false;
+     cpt_2t_sta[4] = true;
+     ct2t_sta4 = true;
+   }
+   // etein 5
+   rlt2t = millis() - cpt2t_millis;
+   if (rlt2t > 10 &&
+   ct2t_sta1 == true &&
+   ct2t_sta2 == true &&
+   ct2t_sta3 == true &&
+   ct2t_sta4 == true &&
+   ct2t_sta5 == false &&
+   ct2t_sta0 == true)
+   {
+     cpt2t_millis = millis();
+     ct2t_ste = ct2t_ste + 1;
+     ct2t_sta5 = true;
+     cpt_2t_sta[4] = false;
+     cpt_2t_sta[5] = true;
+   }
+   */
   // fin cycle maz
   rlt2t = millis() - cpt2t_millis;
-  if (rlt2t > 10 && ct2t_sta0 == true && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == true && ct2t_sta5 == true)
+  if (rlt2t > 10 &&
+      ct2t_sta0 == true &&
+      ct2t_sta1 == true &&
+      ct2t_sta2 == true &&
+      ct2t_sta3 == true &&)
+  // ct2t_sta4 == true &&
+  // ct2t_sta5 == true
   {
     cpt2t_millis = millis();
     ct2t_ste = ct2t_ste + 1;
@@ -1074,50 +1397,234 @@ int count_2t(int ct2t_state)
     ct2t_sta1 = false;
     ct2t_sta2 = false;
     ct2t_sta3 = false;
-    ct2t_sta4 = false;
-    ct2t_sta5 = false;
-    cpt_3t_sta[5] = false;
-    cpt_3t_sta[6] = true;
+    // ct2t_sta4 = false;
+    // ct2t_sta5 = false;
+    cpt_2t_sta[3] = false;
+    cpt_2t_sta[4] = true;
   }
   return (ct2t_ste);
 }
 
-int def_3t(int sosSay, int cpt_3t)
+int def_2t(int sosSay)
 {
   // cycle count_2t
   int ct2t_ste;
   count_2t(ct2t_state);
-  if (cpt_3t_sta[0] == true)
+  if (cpt_2t_sta[0] == true)
   {
     ct2t_ste = 0;
   }
-  if (cpt_3t_sta[1] == true)
+  if (cpt_2t_sta[1] == true)
   {
     ct2t_ste = 1;
   }
-  if (cpt_3t_sta[2] == true)
+  if (cpt_2t_sta[2] == true)
   {
     ct2t_ste = 2;
   }
-  if (cpt_3t_sta[3] == true)
+  if (cpt_2t_sta[3] == true)
   {
     ct2t_ste = 3;
   }
-  if (cpt_3t_sta[4] == true)
+  if (cpt_2t_sta[4] == true)
   {
     ct2t_ste = 4;
+    cpt_2t_sta[4] = false;
+    // cpt_2t_sta[7]++;
+  }
+  /*
+    if (cpt_2t_sta[5] == true)
+    {
+      ct2t_ste = 5;
+    }
+    if (cpt_2t_sta[6] == true)
+    {
+      ct2t_ste = 6;
+      cpt_2t_sta[6] = false;
+      // cpt_2t_sta[6]=false;
+      // cpt_2t++;
+      cpt_2t_sta[7]++;
+    }
+  */
+  int flache = 0;
+  int siren_c_i = 0;
+  if (sosSay == 2 || sosSay == 3)
+  {
+    flache = flacheBleu; // sortie 12
+    siren_c_i = sirenC;  // 3 sortie siren con (continute)
+  }
+
+  if (sosSay == 4 || sosSay == 5)
+  {
+    flache = flacheRouge; // 11 sortie flacheRouge
+    siren_c_i = sirenI;   // 9 sortie siren iso
+  }
+  if (sosSay == 6)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
+  }
+  if (sosSay == 7)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
+
+  // return(ct2t_ste);
+
+  switch (ct2t_ste)
+  {
+  case 0:
+    digitalWrite(siren_c_i, true);
+    break;
+  case 1:
+    digitalWrite(siren_c_i, false);
+    break;
+  case 2:
+    digitalWrite(flache, true);
+    break;
+  case 3:
+    digitalWrite(flache, false);
+    break;
+  case 4:
+    ct2t_ste = 0;
+    // digitalWrite(siren_c_i, true);
+    break;
+  case 5:
+    ct2t_ste = 0;
+    // digitalWrite(siren_c_i, false);
+    break;
+  case 6:
+    ct2t_ste = 0;
+    break;
+  case 7:
+    ct2t_ste = 0;
+    break;
+  }
+
+  return (cpt_2t_sta[7]);
+}
+
+int count_3t(int ct3t_state)
+{
+  int ct3t_ste = ct3t_state;
+  unsigned long rlt3t = millis() - cpt3t_millis;
+
+  // cycle x1
+  // allum 0
+  if (rlt3t > 0 && ct3t_sta5 == false && ct3t_sta0 == false)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    ct3t_sta0 = true;
+    cpt_3t_sta[0] = true;
+    ct3t_sta5 = false;
+  }
+  // etein 1
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta1 == false && ct3t_sta0 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    cpt_3t_sta[0] = false;
+    cpt_3t_sta[1] = true;
+    ct3t_sta1 = true;
+  }
+
+  // cycle x2
+  // allum 2
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta1 == true && ct3t_sta2 == false && ct3t_sta0 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    cpt_3t_sta[1] = false;
+    cpt_3t_sta[2] = true;
+    ct3t_sta2 = true;
+  }
+  // etein 3
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta1 == true && ct3t_sta2 == true && ct3t_sta3 == false && ct3t_sta0 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    cpt_3t_sta[2] = false;
+    cpt_3t_sta[3] = true;
+    ct3t_sta3 = true;
+  }
+  // cycle x3
+  // allum 4
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta1 == true && ct3t_sta2 == true && ct3t_sta3 == true && ct3t_sta4 == false && ct3t_sta0 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    cpt_3t_sta[3] = false;
+    cpt_3t_sta[4] = true;
+    ct3t_sta4 = true;
+  }
+  // etein 5
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta1 == true && ct3t_sta2 == true && ct3t_sta3 == true && ct3t_sta4 == true && ct3t_sta5 == false && ct3t_sta0 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    ct3t_sta5 = true;
+    cpt_3t_sta[4] = false;
+    cpt_3t_sta[5] = true;
+  }
+  // fin cycle maz
+  rlt3t = millis() - cpt3t_millis;
+  if (rlt3t > 10 && ct3t_sta0 == true && ct3t_sta1 == true && ct3t_sta2 == true && ct3t_sta3 == true && ct3t_sta4 == true && ct3t_sta5 == true)
+  {
+    cpt3t_millis = millis();
+    ct3t_ste = ct3t_ste + 1;
+    ct3t_sta0 = false;
+    ct3t_sta1 = false;
+    ct3t_sta2 = false;
+    ct3t_sta3 = false;
+    ct3t_sta4 = false;
+    ct3t_sta5 = false;
+    cpt_3t_sta[5] = false;
+    cpt_3t_sta[6] = true;
+  }
+  return (ct3t_ste);
+}
+
+int def_3t(int sosSay)
+{
+  // cycle count_2t
+  int ct3t_ste;
+  count_3t(ct3t_state);
+  if (cpt_3t_sta[0] == true)
+  {
+    ct3t_ste = 0;
+  }
+  if (cpt_3t_sta[1] == true)
+  {
+    ct3t_ste = 1;
+  }
+  if (cpt_3t_sta[2] == true)
+  {
+    ct3t_ste = 2;
+  }
+  if (cpt_3t_sta[3] == true)
+  {
+    ct3t_ste = 3;
+  }
+  if (cpt_3t_sta[4] == true)
+  {
+    ct3t_ste = 4;
   }
   if (cpt_3t_sta[5] == true)
   {
-    ct2t_ste = 5;
+    ct3t_ste = 5;
   }
   if (cpt_3t_sta[6] == true)
   {
-    ct2t_ste = 6;
+    ct3t_ste = 6;
     cpt_3t_sta[6] = false;
-    // cpt_3t_sta[6]=false;
-    // cpt_3t++;
-    cpt_3t_sta[7]++;
+    // cpt_3t_sta[7]++;
   }
 
   int flache = 0;
@@ -1133,10 +1640,20 @@ int def_3t(int sosSay, int cpt_3t)
     flache = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
+  if (sosSay == 6)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
+  }
+  if (sosSay == 7)
+  {
+    flache = spot;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
 
-  // return(ct2t_ste);
+  // return(ct3t_ste);
 
-  switch (ct2t_ste)
+  switch (ct3t_ste)
   {
   case 0:
     digitalWrite(siren_c_i, true);
@@ -1157,10 +1674,10 @@ int def_3t(int sosSay, int cpt_3t)
     digitalWrite(siren_c_i, false);
     break;
   case 6:
-    ct2t_ste = 0;
+    ct3t_ste = 0;
     break;
   case 7:
-    ct2t_ste = 0;
+    ct3t_ste = 0;
     break;
   }
 
@@ -1561,6 +2078,7 @@ int welc_1s(int ct1s_state)
   ct1s_state = ct1s_ste;
   return ct1s_state;
 }
+
 int f_b_cl_2(int sosSay, int compteB)
 {
   int flache = 0;
