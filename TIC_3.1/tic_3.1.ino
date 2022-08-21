@@ -418,6 +418,7 @@ void loop()
     debut = millis();
     maz_int = false;
   }
+  int switch_def;
   switch (CcPhNeTe)
   {
   case 1: // Ne <-> Te
@@ -488,11 +489,11 @@ void loop()
 
     if (welc_ctr_err == true)
     {
-      int switch_def = cpt_3t_sta[7];
+      switch_def = cpt_3t_sta[7];
     }
     else
     {
-      int switch_def = cpt_1t_sta[7];
+      switch_def = cpt_1t_sta[7];
     }
 
     switch (switch_def) //(sosNbr == 23)
@@ -798,9 +799,9 @@ void maz_int_f()
     digitalWrite(alim,        false);
     digitalWrite(fan,         false);
     digitalWrite(bosch,       false);
-    cpt_3t_sta[] = {false, false, false, false, false, false, false, false, false};
-    cpt_2t_sta[] = {false, false, false, false, false, false, false, false, false};
-    cpt_1t_sta[] = {false, false, false, false, false, false, false, false, false};
+   int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
+   int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false, false};
+   int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false, false};
     cpt3t_millis = millis();
     cpt2t_millis = millis();
     cpt1t_millis = millis();
@@ -1244,7 +1245,7 @@ int count_1t(int ct1t_state)
   rlt1t = millis() - cpt1t_millis;
   if (rlt1t > 10 &&
       ct1t_sta0 == true &&
-      ct1t_sta1 == true &&)
+      ct1t_sta1 == true )
   // ct1t_sta2 == true &&
   // ct1t_sta3 == true &&
   // ct1t_sta4 == true &&
@@ -1465,7 +1466,7 @@ int count_2t(int ct2t_state)
       ct2t_sta0 == true &&
       ct2t_sta1 == true &&
       ct2t_sta2 == true &&
-      ct2t_sta3 == true &&)
+      ct2t_sta3 == true )
   // ct2t_sta4 == true &&
   // ct2t_sta5 == true
   {
