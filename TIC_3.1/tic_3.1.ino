@@ -27,6 +27,7 @@ int sosNbr = 1;           // code on_off_cl
 unsigned long sosTmp = 1; // tempt cliososNbr40 x1000
 int sosSay = 1;           //
 int CcPhNeTe = 0;         // CcPhNeTe
+int CcPhNeTe_prew = 0;
 int cmpB = 0;
 bool battLow = false; // battLow
 int batt = 0;         // batt
@@ -72,7 +73,7 @@ bool ct1t_sta2 = false;
 bool ct1t_sta3 = false;
 bool ct1t_sta4 = false;
 bool ct1t_sta5 = false;
-int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false,false};
+int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long cpt2t_millis = millis();
 int ct2t_state = 0;
@@ -83,7 +84,7 @@ bool ct2t_sta2 = false;
 bool ct2t_sta3 = false;
 bool ct2t_sta4 = false;
 bool ct2t_sta5 = false;
-int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false,false};
+int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long cpt3t_millis = millis();
 int ct3t_state = 0;
@@ -94,7 +95,7 @@ bool ct3t_sta2 = false;
 bool ct3t_sta3 = false;
 bool ct3t_sta4 = false;
 bool ct3t_sta5 = false;
-int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false,false};
+int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 int ct05s_state = 0;
 bool ct05s_sta = false;
@@ -405,11 +406,17 @@ void loop()
   int COMP = compteB;
 
   CcPhNeTe = test();
+  if (CcPhNeTe_prew != CcPhNeTe)
+  {
+    CcPhNeTe_prew = CcPhNeTe;
+    maz_int = false;
+    maz_int_f();
+  }
+
   if (CcPhNeTe > 0)
   {
     debut = millis();
-     maz_int=false;
-
+    maz_int = false;
   }
   switch (CcPhNeTe)
   {
@@ -417,6 +424,7 @@ void loop()
     Serial.print("Ne <-> Te ");
     Serial.println(CcPhNeTe);
     // sosNbr34();
+
     switch (COMP) //(sosNbr == 34)
     {
     case 1:
@@ -447,6 +455,7 @@ void loop()
     Serial.print("Ph <-> Te ");
     Serial.println(CcPhNeTe);
     // sosNbr24();
+
     switch (COMP) //(sosNbr == 24)
     {
     case 1:
@@ -569,6 +578,7 @@ void loop()
     Serial.print("Cc-Ph-Ne-Te. test ");
     Serial.println(CcPhNeTe);
     // sosNbr234();
+
     switch (COMP) //(sosNbr == 234)
     {
     case 1:
@@ -607,6 +617,7 @@ void loop()
     Serial.print("Cc_Ph_Ne_Te. cuci");
     Serial.println(CcPhNeTe);
     // sosNbr55();
+
     switch (COMP) //(sosNbr == 55)
     {
     case 1:
@@ -634,64 +645,65 @@ void loop()
     }
     break;
   default:
+
     if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
     {
-      sosSay = 0;             // CcPhNeTe == 0
-      sosTmp = 0;             // CcPhNeTe == 0
-      f_b_cl(sosSay);         // CcPhNeTe == 0
-      f_r_cl(sosSay);         // CcPhNeTe == 0
-      s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
-
-if (maz_int==false)
-{
- maz_int=true;
-     digitalWrite(flacheRouge, false);
-    digitalWrite(flacheBleu, false);
-    digitalWrite(sirenC, false);
-    digitalWrite(sirenI, false);
-    digitalWrite(spot, false);
-    digitalWrite(alim, false);
-    digitalWrite(fan, false);
-    digitalWrite(bosch, false);
-
-}
-
-
+      // pause cl x2
       unsigned long rlt_int = millis() - temp1;
       int tmp_int = 1000 * 3;
       if (rlt_int > tmp_int)
       {
         if (welc_ctr_err == true)
         {
-          if (def_3t(2) == 2)
+          int def = def_3t(2);
+
+          if (def == 2)
           {
             temp1 = millis();
-            cpt_3t_sta[8]=0;
+            cpt_3t_sta[8] = 0;
           }
         }
         else
         {
-          if (def_1t(2) == 2)
+          int def = def_1t(2);
+          if (def == 2)
           {
             temp1 = millis();
-            cpt_3t_sta[8]=0;
+            cpt_3t_sta[8] = 0;
           }
         }
       }
-
-      // ct3t_state = count_3t(ct3t_state);
-      //  sosSay = 2;
-      //  sosTmp = 12;
-      //  s_c_cl(sosSay, sosTmp);
-      //  spot_cl(sosSay = 10, sosTmp);
     }
     if (CcPhNeTe == 0 && battLow == true)
     {
-      sosSay = 1;             // CcPhNeTe == 0
-      sosTmp = 5;             // CcPhNeTe == 0
-      f_b_cl(sosSay);         // CcPhNeTe == 0
-      f_r_cl(sosSay);         // CcPhNeTe == 0
-      s_c_cl(sosSay, sosTmp); // CcPhNeTe == 0
+      // pause cl x2
+      unsigned long rlt_int = millis() - temp1;
+      int tmp_int = 1000 * 3;
+      if (rlt_int > tmp_int)
+      {
+        if (welc_ctr_err == true)
+        {
+          int def = def_3t(2);
+          def_2t(4);
+          if (def == 2)
+          {
+            temp1 = millis();
+            cpt_3t_sta[8] = 0;
+            cpt_2t_sta[8] = 0;
+          }
+        }
+        else
+        {
+          int def = def_1t(2);
+          def_2t(4);
+          if (def == 2)
+          {
+            temp1 = millis();
+            cpt_1t_sta[8] = 0;
+            cpt_2t_sta[8] = 0;
+          }
+        }
+      }
     }
     compteB = 0; // CcPhNeTe == 0
     cp_cl = 1;
@@ -772,7 +784,29 @@ void demare()
     alimOffFonc();
   }
 }
-
+void maz_int_f()
+{
+  // mise a zer0
+  if (maz_int == false)
+  {
+    maz_int = true;
+    digitalWrite(flacheRouge, false);
+    digitalWrite(flacheBleu,  false);
+    digitalWrite(sirenC,      false);
+    digitalWrite(sirenI,      false);
+    digitalWrite(spot,        false);
+    digitalWrite(alim,        false);
+    digitalWrite(fan,         false);
+    digitalWrite(bosch,       false);
+    cpt_3t_sta[] = {false, false, false, false, false, false, false, false, false};
+    cpt_2t_sta[] = {false, false, false, false, false, false, false, false, false};
+    cpt_1t_sta[] = {false, false, false, false, false, false, false, false, false};
+    cpt3t_millis = millis();
+    cpt2t_millis = millis();
+    cpt1t_millis = millis();
+    // chro = millis();
+  }
+}
 void ecl_auto(int sosSay)
 {
   eclr = analogRead(photo);
