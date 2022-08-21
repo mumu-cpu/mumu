@@ -74,7 +74,7 @@ int ct05s_state = 0;
 bool ct05s_sta = false;
 bool ct05s_sta1 = false;
 
-bool welc_ctr_err = true;
+bool welc_ctr_err = false;
 String rouge = "flache	ROUGE"; // welc_ID_index  0
 String bleu = "flache	BLEU";    // welc_ID_index  1
 String con = "siren	CONT";      // welc_ID_index  2
@@ -446,11 +446,20 @@ void loop()
   case 3: // Ph <-> Ne
     Serial.print("Ph <-> Ne ");
     Serial.println(CcPhNeTe);
-    switch (COMP) //(sosNbr == 23)
+    switch (cpt_3t_sta[7]) //(sosNbr == 23)
     {
     case 1:
-      sosSay = 2;
-      compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 23)
+      if (welc_ctr_err == true)
+      {
+        def_3t(2, cpt_3t);
+      }
+      else
+      {
+        compteB = f_b_cl_2(2, compteB);
+      }
+
+      // sosSay = 2;
+      //  //(sosNbr == 23)
       break;
     case 2:
       sosSay = 1;
@@ -1067,8 +1076,8 @@ int count_2t(int ct2t_state)
     ct2t_sta3 = false;
     ct2t_sta4 = false;
     ct2t_sta5 = false;
-    cpt_3t_sta[6] = true;
     cpt_3t_sta[5] = false;
+    cpt_3t_sta[6] = true;
   }
   return (ct2t_ste);
 }
@@ -1155,7 +1164,7 @@ int def_3t(int sosSay, int cpt_3t)
     break;
   }
 
-  return (cpt_3t);
+  return (cpt_3t_sta[7]);
 }
 
 int welc_1s(int ct1s_state)
