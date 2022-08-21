@@ -61,6 +61,8 @@ int ct1s_state = 0;
 bool ct1s_sta = false;
 bool ct1s_sta1 = false;
 
+bool maz_int = false;
+
 unsigned long cpt1t_millis = millis();
 int ct1t_state = 0;
 int cpt_1t = 0; // compte cycle 2t
@@ -70,7 +72,7 @@ bool ct1t_sta2 = false;
 bool ct1t_sta3 = false;
 bool ct1t_sta4 = false;
 bool ct1t_sta5 = false;
-int cpt_1t_sta[8] = {false, false, false, false, false, false, false, false};
+int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false,false};
 
 unsigned long cpt2t_millis = millis();
 int ct2t_state = 0;
@@ -81,7 +83,7 @@ bool ct2t_sta2 = false;
 bool ct2t_sta3 = false;
 bool ct2t_sta4 = false;
 bool ct2t_sta5 = false;
-int cpt_2t_sta[8] = {false, false, false, false, false, false, false, false};
+int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false,false};
 
 unsigned long cpt3t_millis = millis();
 int ct3t_state = 0;
@@ -92,7 +94,7 @@ bool ct3t_sta2 = false;
 bool ct3t_sta3 = false;
 bool ct3t_sta4 = false;
 bool ct3t_sta5 = false;
-int cpt_3t_sta[8] = {false, false, false, false, false, false, false, false};
+int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false,false};
 
 int ct05s_state = 0;
 bool ct05s_sta = false;
@@ -406,6 +408,8 @@ void loop()
   if (CcPhNeTe > 0)
   {
     debut = millis();
+     maz_int=false;
+
   }
   switch (CcPhNeTe)
   {
@@ -560,7 +564,7 @@ void loop()
       break;
     }
     break;
-    
+
   case 4: // Cc-Ph-Ne-Te. test
     Serial.print("Cc-Ph-Ne-Te. test ");
     Serial.println(CcPhNeTe);
@@ -637,6 +641,44 @@ void loop()
       f_b_cl(sosSay);         // CcPhNeTe == 0
       f_r_cl(sosSay);         // CcPhNeTe == 0
       s_i_cl(sosSay, sosTmp); // CcPhNeTe == 0
+
+if (maz_int==false)
+{
+ maz_int=true;
+     digitalWrite(flacheRouge, false);
+    digitalWrite(flacheBleu, false);
+    digitalWrite(sirenC, false);
+    digitalWrite(sirenI, false);
+    digitalWrite(spot, false);
+    digitalWrite(alim, false);
+    digitalWrite(fan, false);
+    digitalWrite(bosch, false);
+
+}
+
+
+      unsigned long rlt_int = millis() - temp1;
+      int tmp_int = 1000 * 3;
+      if (rlt_int > tmp_int)
+      {
+        if (welc_ctr_err == true)
+        {
+          if (def_3t(2) == 2)
+          {
+            temp1 = millis();
+            cpt_3t_sta[8]=0;
+          }
+        }
+        else
+        {
+          if (def_1t(2) == 2)
+          {
+            temp1 = millis();
+            cpt_3t_sta[8]=0;
+          }
+        }
+      }
+
       // ct3t_state = count_3t(ct3t_state);
       //  sosSay = 2;
       //  sosTmp = 12;
@@ -1262,9 +1304,11 @@ int def_1t(int sosSay)
   switch (ct1t_ste)
   {
   case 0:
+    digitalWrite(flache, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
+    digitalWrite(flache, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
@@ -1475,15 +1519,19 @@ int def_2t(int sosSay)
   switch (ct2t_ste)
   {
   case 0:
+    digitalWrite(flache, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
+    digitalWrite(flache, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
+    digitalWrite(siren_c_i, true);
     digitalWrite(flache, true);
     break;
   case 3:
+    digitalWrite(siren_c_i, false);
     digitalWrite(flache, false);
     break;
   case 4:
@@ -1624,7 +1672,7 @@ int def_3t(int sosSay)
   {
     ct3t_ste = 6;
     cpt_3t_sta[6] = false;
-    // cpt_3t_sta[7]++;
+    cpt_3t_sta[8]++;
   }
 
   int flache = 0;
@@ -1656,21 +1704,27 @@ int def_3t(int sosSay)
   switch (ct3t_ste)
   {
   case 0:
+    digitalWrite(flache, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
+    digitalWrite(flache, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
+    digitalWrite(siren_c_i, true);
     digitalWrite(flache, true);
     break;
   case 3:
+    digitalWrite(siren_c_i, false);
     digitalWrite(flache, false);
     break;
   case 4:
+    digitalWrite(flache, true);
     digitalWrite(siren_c_i, true);
     break;
   case 5:
+    digitalWrite(flache, false);
     digitalWrite(siren_c_i, false);
     break;
   case 6:
@@ -1681,7 +1735,7 @@ int def_3t(int sosSay)
     break;
   }
 
-  return (cpt_3t_sta[7]);
+  return (cpt_3t_sta[8]);
 }
 
 int welc_1s(int ct1s_state)
