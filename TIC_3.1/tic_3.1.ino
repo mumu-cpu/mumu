@@ -501,30 +501,34 @@ void loop()
     case 0:
       if (welc_ctr_err == true)
       {
-        if (def_3t(2) == 2)
+        int def = def_3t(2);
+        if (def == 2)
         {
           cpt_3t_sta[7]++;
         }
       }
       else
       {
-        if (def_1t(2) == 2)
+        int def = def_1t(2);
+        if (def == 2)
         {
-          cpt_3t_sta[7]++;
+          cpt_1t_sta[7]++;
         }
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        if (def_3t(6) == 1)
+        int def = def_3t(6);
+        if (def == 1)
         {
           cpt_3t_sta[7]++;
         }
       }
       else
       {
-        if (def_1t(6) == 1)
+        int def = def_1t(6);
+        if (def == 1)
         {
           cpt_1t_sta[7]++;
         }
@@ -533,32 +537,36 @@ void loop()
     case 2:
       if (welc_ctr_err == true)
       {
-        if (def_3t(3) == 3)
+        int def = def_3t(3);
+        if (def == 3)
         {
           cpt_3t_sta[7]++;
         }
       }
       else
       {
-        if (def_1t(3) == 3)
+        int def = def_1t(3);
+        if (def == 3)
         {
-          cpt_3t_sta[7]++;
+          cpt_1t_sta[7]++;
         }
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        if (def_3t(6) == 2)
+        int def = def_3t(6);
+        if (def == 2)
         {
           cpt_3t_sta[7]++;
         }
       }
       else
       {
-        if (def_1t(6) == 2)
+        int def =def_1t(6);
+            if (def == 2)
         {
-          cpt_3t_sta[7]++;
+          cpt_1t_sta[7]++;
         }
       }
       break;
@@ -651,7 +659,7 @@ void loop()
     {
       // pause cl x2
       unsigned long rlt_int = millis() - temp1;
-      int tmp_int = 1000 * 3;
+      unsigned long tmp_int = 1000 * 3;
       if (rlt_int > tmp_int)
       {
         if (welc_ctr_err == true)
@@ -670,7 +678,7 @@ void loop()
           if (def == 2)
           {
             temp1 = millis();
-            cpt_3t_sta[8] = 0;
+            cpt_1t_sta[8] = 0;
           }
         }
       }
@@ -792,16 +800,16 @@ void maz_int_f()
   {
     maz_int = true;
     digitalWrite(flacheRouge, false);
-    digitalWrite(flacheBleu,  false);
-    digitalWrite(sirenC,      false);
-    digitalWrite(sirenI,      false);
-    digitalWrite(spot,        false);
-    digitalWrite(alim,        false);
-    digitalWrite(fan,         false);
-    digitalWrite(bosch,       false);
-   int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
-   int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false, false};
-   int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false, false};
+    digitalWrite(flacheBleu, false);
+    digitalWrite(sirenC, false);
+    digitalWrite(sirenI, false);
+    digitalWrite(spot, false);
+    digitalWrite(alim, false);
+    digitalWrite(fan, false);
+    digitalWrite(bosch, false);
+    int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
+    int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false, false};
+    int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false, false};
     cpt3t_millis = millis();
     cpt2t_millis = millis();
     cpt1t_millis = millis();
@@ -1245,7 +1253,7 @@ int count_1t(int ct1t_state)
   rlt1t = millis() - cpt1t_millis;
   if (rlt1t > 10 &&
       ct1t_sta0 == true &&
-      ct1t_sta1 == true )
+      ct1t_sta1 == true)
   // ct1t_sta2 == true &&
   // ct1t_sta3 == true &&
   // ct1t_sta4 == true &&
@@ -1466,7 +1474,7 @@ int count_2t(int ct2t_state)
       ct2t_sta0 == true &&
       ct2t_sta1 == true &&
       ct2t_sta2 == true &&
-      ct2t_sta3 == true )
+      ct2t_sta3 == true)
   // ct2t_sta4 == true &&
   // ct2t_sta5 == true
   {
