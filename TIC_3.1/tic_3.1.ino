@@ -489,11 +489,11 @@ void loop()
 
     if (welc_ctr_err == true)
     {
-      switch_def = cpt_3t_sta[7];
+      switch_def = cpt_3t_sta[8];
     }
     else
     {
-      switch_def = cpt_1t_sta[7];
+      switch_def = cpt_1t_sta[8];
     }
 
     switch (switch_def) //(sosNbr == 23)
@@ -501,83 +501,92 @@ void loop()
     case 0:
       if (welc_ctr_err == true)
       {
-        int def = def_3t(2);
-        if (def == 2)
-        {
-          cpt_3t_sta[7]++;
-        }
+        def_3t(2);
+        // int def =
+        // if (def == 2)
+        // {
+        //   cpt_3t_sta[7]++;
+        // }
       }
       else
       {
-        int def = def_1t(2);
-        if (def == 2)
-        {
-          cpt_1t_sta[7]++;
-        }
+        def_1t(2);
+        // int def =
+        // if (def == 2)
+        // {
+        //   cpt_1t_sta[7]++;
+        // }
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        int def = def_3t(6);
-        if (def == 1)
-        {
-          cpt_3t_sta[7]++;
-        }
+        def_3t(6); // int def =
+        // if (def == 1)
+        // {
+        //   cpt_3t_sta[7]++;
+        // }
       }
       else
       {
-        int def = def_1t(6);
-        if (def == 1)
-        {
-          cpt_1t_sta[7]++;
-        }
+        def_1t(6);
+        // int def =
+        // if (def == 1)
+        // {
+        //   cpt_1t_sta[7]++;
+        // }
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        int def = def_3t(3);
-        if (def == 3)
-        {
-          cpt_3t_sta[7]++;
-        }
+        def_3t(3);
+        //  int def =
+        //   if (def == 3)
+        //   {
+        //     cpt_3t_sta[7]++;
+        //   }
       }
       else
       {
-        int def = def_1t(3);
-        if (def == 3)
-        {
-          cpt_1t_sta[7]++;
-        }
+        def_1t(3);
+        // int def =
+        // if (def == 3)
+        // {
+        //   cpt_1t_sta[7]++;
+        // }
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        int def = def_3t(6);
-        if (def == 2)
-        {
-          cpt_3t_sta[7]++;
-        }
+        def_3t(6);
+        // int def =
+        // if (def == 2)
+        // {
+        //   cpt_3t_sta[7]++;
+        // }
       }
       else
       {
-        int def =def_1t(6);
-            if (def == 2)
-        {
-          cpt_1t_sta[7]++;
-        }
+        def_1t(6);
+        // int def =
+        //     if (def == 2)
+        // {
+        //   cpt_1t_sta[7]++;
+        // }
       }
       break;
     case 4:
       if (welc_ctr_err == true)
       {
-        cpt_3t_sta[7] = 0;
+        int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
+        // cpt_3t_sta[7] = 0;
       }
       else
       {
-        cpt_3t_sta[7] = 0;
+        int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
+        // cpt_3t_sta[7] = 0;
       }
       break;
     }
@@ -1715,7 +1724,11 @@ int def_3t(int sosSay)
   {
     ct3t_ste = 6;
     cpt_3t_sta[6] = false;
-    cpt_3t_sta[8]++;
+    cpt_3t_sta[7]++;
+    if (cpt_3t_sta[7] == sosSay)
+    {
+      cpt_3t_sta[8]++;
+    }
   }
 
   int flache = 0;
