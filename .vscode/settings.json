@@ -4,6 +4,7 @@
     "C_Cpp.errorSquiggles": "Disabled",
     "github-enterprise.uri": "tic3",
     "files.associations": {
-        "*.sys_ok": "cpp"
+        "*.sys_ok": "cpp",
+        "*.crtb": "cpp"
     }
 }
