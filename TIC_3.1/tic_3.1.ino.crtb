@@ -67,36 +67,21 @@ bool maz_int = false;
 unsigned long cpt1t_millis = millis();
 int ct1t_state = 0;
 int cpt_1t = 0; // compte cycle 2t
-bool ct1t_sta0 = false;
-bool ct1t_sta1 = false;
-bool ct1t_sta2 = false;
-bool ct1t_sta3 = false;
-bool ct1t_sta4 = false;
-bool ct1t_sta5 = false;
+bool ct1t_sta[6] = {false,false,false,false,false,false}
 int cpt_1t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long cpt2t_millis = millis();
 int ct2t_state = 0;
 int cpt_2t = 0; // compte cycle 2t
-bool ct2t_sta0 = false;
-bool ct2t_sta1 = false;
-bool ct2t_sta2 = false;
-bool ct2t_sta3 = false;
-bool ct2t_sta4 = false;
-bool ct2t_sta5 = false;
+
+bool ct2t_sta[6] = {false,false,false,false,false,false}
 int cpt_2t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long cpt3t_millis = millis();
 int ct3t_state = 0;
 int cpt_3t = 0; // compte cycle 3t
-bool ct3t_sta[0] = false;
-bool ct3t_sta[1] = false;
-bool ct3t_sta[2] = false;
-bool ct3t_sta[3] = false;
-bool ct3t_sta[4] = false;
-bool ct3t_sta[5] = false;
-bool ct3t_sta[6] = {false, false, false, false, false, false};
 
+bool ct3t_sta[6] = {false, false, false, false, false, false};
 int cpt_3t_sta[9] = {false, false, false, false, false, false, false, false, false};
 
 int ct05s_state = 0;
@@ -1180,82 +1165,82 @@ int count_1t(int ct1t_state)
   // cycle x1
   // allum 0
   if (rlt1t > 0 &&
-      ct1t_sta0 == false &&
-      ct1t_sta2 == false)
+      ct1t_sta[0] == false &&
+      ct1t_sta[2] == false)
   {
     cpt1t_millis = millis();
     ct1t_ste = ct1t_ste + 1;
-    ct1t_sta0 = true;
+    ct1t_sta[0] = true;
     cpt_1t_sta[0] = true;
-    ct1t_sta2 = false;
+    ct1t_sta[2] = false;
   }
   // etein 1
   rlt1t = millis() - cpt1t_millis;
   if (rlt1t > 10 &&
-      ct1t_sta0 == true &&
-      ct1t_sta1 == false)
+      ct1t_sta[0] == true &&
+      ct1t_sta[1] == false)
   {
     cpt1t_millis = millis();
     ct1t_ste = ct1t_ste + 1;
     cpt_1t_sta[0] = false;
     cpt_1t_sta[1] = true;
-    ct1t_sta1 = true;
+    ct1t_sta[1] = true;
   }
   /*
     // cycle x2
     // allum 2
     rlt1t = millis() - cpt1t_millis;
     if (rlt1t > 10 &&
-        ct1t_sta0 == true &&
-        ct1t_sta1 == true &&
-        ct1t_sta2 == false)
+        ct1t_sta[0] == true &&
+        ct1t_sta[1] == true &&
+        ct1t_sta[2] == false)
     {
       cpt1t_millis = millis();
       ct1t_ste = ct1t_ste + 1;
       cpt_1t_sta[1] = false;
       cpt_1t_sta[2] = true;
-      ct1t_sta2 = true;
+      ct1t_sta[2] = true;
     }
     // etein 3
     rlt1t = millis() - cpt1t_millis;
     if (rlt1t > 10 &&
-        ct1t_sta0 == true &&
-        ct1t_sta1 == true &&
-        ct1t_sta2 == true &&
-        ct1t_sta3 == false)
+        ct1t_sta[0] == true &&
+        ct1t_sta[1] == true &&
+        ct1t_sta[2] == true &&
+        ct1t_sta[3] == false)
     {
       cpt1t_millis = millis();
       ct1t_ste = ct1t_ste + 1;
       cpt_1t_sta[2] = false;
       cpt_1t_sta[3] = true;
-      ct1t_sta3 = true;
+      ct1t_sta[3] = true;
     }
     */
   /*
    // cycle x3
    // allum 4
    rlt1t = millis() - cpt1t_millis;
-   if (rlt1t > 10 && ct1t_sta1 == true && ct1t_sta2 == true && ct1t_sta3 == true && ct1t_sta4 == false && ct1t_sta0 == true)
+   if (rlt1t > 10 && ct1t_sta[1] == true && ct1t_sta[2] == true && ct1t_sta[3] == true && ct1t_sta[4] == false && ct1t_sta[0] == true)
    {
      cpt1t_millis = millis();
      ct1t_ste = ct1t_ste + 1;
      cpt_1t_sta[3] = false;
      cpt_1t_sta[4] = true;
-     ct1t_sta4 = true;
+     ct1t_sta[4] = true;
    }
    // etein 5
    rlt1t = millis() - cpt1t_millis;
    if (rlt1t > 10 &&
-   ct1t_sta1 == true &&
-   ct1t_sta2 == true &&
-   ct1t_sta3 == true &&
-   ct1t_sta4 == true &&
-   ct1t_sta5 == false &&
-   ct1t_sta0 == true)
+   ct1t_sta[1] == true &&
+   ct1t_sta[2] == true &&
+   ct1t_sta[3] == true &&
+   ct1t_sta[4] == true &&
+   ct1t_sta[5] == false &&
+   ct1t_sta[0] == true)
    {
      cpt1t_millis = millis();
      ct1t_ste = ct1t_ste + 1;
-     ct1t_sta5 = true;
+     ct1t_sta[5] = true;
      cpt_1t_sta[4] = false;
      cpt_1t_sta[5] = true;
    }
@@ -1263,21 +1248,21 @@ int count_1t(int ct1t_state)
   // fin cycle maz
   rlt1t = millis() - cpt1t_millis;
   if (rlt1t > 10 &&
-      ct1t_sta0 == true &&
-      ct1t_sta1 == true)
-  // ct1t_sta2 == true &&
-  // ct1t_sta3 == true &&
-  // ct1t_sta4 == true &&
-  // ct1t_sta5 == true
+      ct1t_sta[0] == true &&
+      ct1t_sta[1] == true)
+  // ct1t_sta[2] == true &&
+  // ct1t_sta[3] == true &&
+  // ct1t_sta[4] == true &&
+  // ct1t_sta[5] == true
   {
     cpt1t_millis = millis();
     ct1t_ste = ct1t_ste + 1;
-    ct1t_sta0 = false;
-    ct1t_sta1 = false;
-    // ct1t_sta2 = false;
-    // ct1t_sta3 = false;
-    // ct1t_sta4 = false;
-    // ct1t_sta5 = false;
+    ct1t_sta[0] = false;
+    ct1t_sta[1] = false;
+    // ct1t_sta[2] = false;
+    // ct1t_sta[3] = false;
+    // ct1t_sta[4] = false;
+    // ct1t_sta[5] = false;
     cpt_1t_sta[1] = false;
     cpt_1t_sta[2] = true;
   }
@@ -1400,76 +1385,76 @@ int count_2t()
   // cycle x1
   // allum 0
   if (rlt2t > 0 &&
-      ct2t_sta0 == false &&
-      ct2t_sta3 == false)
+      ct2t_sta[0] == false &&
+      ct2t_sta[3] == false)
   {
     cpt2t_millis = millis();
-    ct2t_sta0 = true;
+    ct2t_sta[0] = true;
     cpt_2t_sta[0] = true;
-    ct2t_sta3 = false;
+    ct2t_sta[3] = false;
   }
   // etein 1
   rlt2t = millis() - cpt2t_millis;
   if (rlt2t > 10 &&
-      ct2t_sta0 == true &&
-      ct2t_sta1 == false)
+      ct2t_sta[0] == true &&
+      ct2t_sta[1] == false)
   {
     cpt2t_millis = millis();
     cpt_2t_sta[0] = false;
     cpt_2t_sta[1] = true;
-    ct2t_sta1 = true;
+    ct2t_sta[1] = true;
   }
 
   // cycle x2
   // allum 2
   rlt2t = millis() - cpt2t_millis;
   if (rlt2t > 10 &&
-      ct2t_sta0 == true &&
-      ct2t_sta1 == true &&
-      ct2t_sta2 == false)
+      ct2t_sta[0] == true &&
+      ct2t_sta[1] == true &&
+      ct2t_sta[2] == false)
   {
     cpt2t_millis = millis();
     cpt_2t_sta[1] = false;
     cpt_2t_sta[2] = true;
-    ct2t_sta2 = true;
+    ct2t_sta[2] = true;
   }
   // etein 3
   rlt2t = millis() - cpt2t_millis;
   if (rlt2t > 10 &&
-      ct2t_sta0 == true &&
-      ct2t_sta1 == true &&
-      ct2t_sta2 == true &&
-      ct2t_sta3 == false)
+      ct2t_sta[0] == true &&
+      ct2t_sta[1] == true &&
+      ct2t_sta[2] == true &&
+      ct2t_sta[3] == false)
   {
     cpt2t_millis = millis();
     cpt_2t_sta[2] = false;
     cpt_2t_sta[3] = true;
-    ct2t_sta3 = true;
+    ct2t_sta[3] = true;
   }
   /*
    // cycle x3
    // allum 4
    rlt2t = millis() - cpt2t_millis;
-   if (rlt2t > 10 && ct2t_sta1 == true && ct2t_sta2 == true && ct2t_sta3 == true && ct2t_sta4 == false && ct2t_sta0 == true)
+   if (rlt2t > 10 && ct2t_sta[1] == true && ct2t_sta[2] == true && ct2t_sta[3] == true && ct2t_sta[4] == false && ct2t_sta[0] == true)
    {
      cpt2t_millis = millis();
      ct2t_ste = ct2t_ste + 1;
      cpt_2t_sta[3] = false;
      cpt_2t_sta[4] = true;
-     ct2t_sta4 = true;
+     ct2t_sta[4] = true;
    }
    // etein 5
    rlt2t = millis() - cpt2t_millis;
    if (rlt2t > 10 &&
-   ct2t_sta1 == true &&
-   ct2t_sta2 == true &&
-   ct2t_sta3 == true &&
-   ct2t_sta4 == true &&
-   ct2t_sta5 == false &&
-   ct2t_sta0 == true)
+   ct2t_sta[1] == true &&
+   ct2t_sta[2] == true &&
+   ct2t_sta[3] == true &&
+   ct2t_sta[4] == true &&
+   ct2t_sta[5] == false &&
+   ct2t_sta[0] == true)
    {
      cpt2t_millis = millis();
-     ct2t_sta5 = true;
+     ct2t_sta[5] = true;
      cpt_2t_sta[4] = false;
      cpt_2t_sta[5] = true;
    }
@@ -1477,20 +1462,20 @@ int count_2t()
   // fin cycle maz
   rlt2t = millis() - cpt2t_millis;
   if (rlt2t > 10 &&
-      ct2t_sta0 == true &&
-      ct2t_sta1 == true &&
-      ct2t_sta2 == true &&
-      ct2t_sta3 == true)
-  // ct2t_sta4 == true &&
-  // ct2t_sta5 == true
+      ct2t_sta[0] == true &&
+      ct2t_sta[1] == true &&
+      ct2t_sta[2] == true &&
+      ct2t_sta[3] == true)
+  // ct2t_sta[4] == true &&
+  // ct2t_sta[5] == true
   {
     cpt2t_millis = millis();
-    ct2t_sta0 = false;
-    ct2t_sta1 = false;
-    ct2t_sta2 = false;
-    ct2t_sta3 = false;
-    // ct2t_sta4 = false;
-    // ct2t_sta5 = false;
+    ct2t_sta[0] = false;
+    ct2t_sta[1] = false;
+    ct2t_sta[2] = false;
+    ct2t_sta[3] = false;
+    // ct2t_sta[4] = false;
+    // ct2t_sta[5] = false;
     cpt_2t_sta[3] = false;
     cpt_2t_sta[4] = true;
   }
