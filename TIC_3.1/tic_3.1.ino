@@ -958,7 +958,6 @@ void maz_int_f()
 		ct1t_millis = millis();
 		ct2t_millis = millis();
 		ct3t_millis = millis();
-		// chro = millis();
 	}
 }
 void ecl_auto(int sosSay)
