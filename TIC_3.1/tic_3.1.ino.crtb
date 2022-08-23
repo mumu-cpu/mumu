@@ -63,19 +63,20 @@ bool ct1s_sta = false;
 bool ct1s_sta1 = false;
 
 bool maz_int = false;
-
+int ccphnete0 = 0;
+int ccphnete0_st = 0;
 unsigned long ct1t_millis = millis();
 bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
 int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-
+int ct1t_switch;
 unsigned long ct2t_millis = millis();
 bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
 int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-
+int ct2t_switch;
 unsigned long ct3t_millis = millis();
 bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
 int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-
+int ct3t_switch;
 int ct05s_state = 0;
 bool ct05s_sta = false;
 bool ct05s_sta1 = false;
@@ -325,7 +326,24 @@ void loop()
 { //                               LOOP
 
 	//  **********************TEST********************************
+	for (int i = 0; i < 9; i++)
+	{
+		Serial.print(ct1t_posi_st[i]);
+	}
 	Serial.println(" ");
+	for (int i = 0; i < 9; i++)
+	{
+		Serial.print(ct2t_posi_st[i]);
+	}
+	Serial.println(" ");
+	for (int i = 0; i < 9; i++)
+	{
+		Serial.print(ct3t_posi_st[i]);
+	}
+	Serial.println(" ");
+
+	maz_int_f();
+
 	demare();
 	int COMP = compteB;
 
@@ -334,13 +352,11 @@ void loop()
 	{
 		CcPhNeTe_prew = CcPhNeTe;
 		maz_int = false;
-		maz_int_f();
 	}
 
 	if (CcPhNeTe > 0)
 	{
 		debut = millis();
-		maz_int = false;
 	}
 	int switch_def;
 	switch (CcPhNeTe)
@@ -349,69 +365,6 @@ void loop()
 		Serial.print("Ne <-> Te ");
 		Serial.println(CcPhNeTe);
 		// sosNbr34();
-
-		switch (COMP) //(sosNbr == 34)
-		{
-		case 1:
-			sosSay = 3;
-			compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 34)
-			break;
-		case 2:
-			sosSay = 1;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
-			break;
-		case 3:
-			sosSay = 4;
-			compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 34)
-			break;
-		case 4:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 34)
-			break;
-		case 5:
-			compteB = 0; // (sosNbr == 34)
-			break;
-		default:
-			compteB = 1; // sosNbr == 34
-			break;
-		}
-		break;
-	case 2: // Ph <-> Te
-		Serial.print("Ph <-> Te ");
-		Serial.println(CcPhNeTe);
-		// sosNbr24();
-
-		switch (COMP) //(sosNbr == 24)
-		{
-		case 1:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 24)
-			break;
-		case 2:
-			sosSay = 1;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
-			break;
-		case 3:
-			sosSay = 4;
-			compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 24)
-			break;
-		case 4:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 24)
-			break;
-		case 5:
-			compteB = 0; // (sosNbr == 24)
-			break;
-		default:
-			compteB = 1; // sosNbr == 24
-			break;
-		}
-		break;
-
-	case 3: // Ph <-> Ne
-		Serial.print("Ph <-> Ne ");
-		Serial.println(CcPhNeTe);
-
 		if (welc_ctr_err == true)
 		{
 			switch_def = ct3t_posi_st[8];
@@ -420,8 +373,84 @@ void loop()
 		{
 			switch_def = ct1t_posi_st[8];
 		}
+		switch (switch_def) //(sosNbr == 3_61_4_72)
+		{
+		case 0:
+			if (welc_ctr_err == true)
+			{
+				def_3t(3);
+			}
+			else
+			{
+				def_1t(3);
+			}
+			break;
+		case 1:
+			if (welc_ctr_err == true)
+			{
+				def_3t(61);
+			}
+			else
+			{
+				def_1t(61);
+			}
+			break;
+		case 2:
+			if (welc_ctr_err == true)
+			{
+				def_3t(4);
+			}
+			else
+			{
+				def_1t(4);
+			}
+			break;
+		case 3:
+			if (welc_ctr_err == true)
+			{
+				def_3t(72);
+			}
+			else
+			{
+				def_1t(72);
+			}
+			break;
+		case 4:
+			if (welc_ctr_err == true)
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			break;
+		}
+		break;
 
-		switch (switch_def) //(sosNbr == 23)
+	case 2: // Ph <-> Te
+		Serial.print("Ph <-> Te ");
+		Serial.println(CcPhNeTe);
+		// sosNbr24();
+		if (welc_ctr_err == true)
+		{
+			switch_def = ct3t_posi_st[8];
+		}
+		else
+		{
+			switch_def = ct1t_posi_st[8];
+		}
+		switch (switch_def) //(sosNbr == 2_61_4_72)
 		{
 		case 0:
 			if (welc_ctr_err == true)
@@ -436,11 +465,87 @@ void loop()
 		case 1:
 			if (welc_ctr_err == true)
 			{
-				def_3t(6);
+				def_3t(61);
 			}
 			else
 			{
-				def_1t(6);
+				def_1t(61);
+			}
+			break;
+		case 2:
+			if (welc_ctr_err == true)
+			{
+				def_3t(4);
+			}
+			else
+			{
+				def_1t(4);
+			}
+			break;
+		case 3:
+			if (welc_ctr_err == true)
+			{
+				def_3t(72);
+			}
+			else
+			{
+				def_1t(72);
+			}
+			break;
+		case 4:
+			if (welc_ctr_err == true)
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			break;
+		}
+		break;
+
+	case 3: // Ph <-> Ne
+		Serial.print("Ph <-> Ne ");
+		Serial.println(CcPhNeTe);
+		if (welc_ctr_err == true)
+		{
+			switch_def = ct3t_posi_st[8];
+		}
+		else
+		{
+			switch_def = ct1t_posi_st[8];
+		}
+		switch (switch_def) //(sosNbr == 2_61_3_62)
+		{
+		case 0:
+			if (welc_ctr_err == true)
+			{
+				def_3t(2);
+			}
+			else
+			{
+				def_1t(2);
+			}
+			break;
+		case 1:
+			if (welc_ctr_err == true)
+			{
+				def_3t(61);
+			}
+			else
+			{
+				def_1t(61);
 			}
 			break;
 		case 2:
@@ -456,23 +561,31 @@ void loop()
 		case 3:
 			if (welc_ctr_err == true)
 			{
-				def_3t(6);
+				def_3t(62);
 			}
 			else
 			{
-				def_1t(6);
+				def_1t(62);
 			}
 			break;
 		case 4:
 			if (welc_ctr_err == true)
 			{
-				int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-				int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
 			}
 			else
 			{
-				int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-				int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
 			}
 			break;
 		}
@@ -482,85 +595,195 @@ void loop()
 		Serial.print("Cc-Ph-Ne-Te. test ");
 		Serial.println(CcPhNeTe);
 		// sosNbr234();
-
-		switch (COMP) //(sosNbr == 234)
+		if (welc_ctr_err == true)
 		{
+			switch_def = ct3t_posi_st[8];
+		}
+		else
+		{
+			switch_def = ct1t_posi_st[8];
+		}
+		switch (switch_def) //(sosNbr == 2_61_3_61_4_72)
+		{
+		case 0:
+			if (welc_ctr_err == true)
+			{
+				def_3t(2);
+			}
+			else
+			{
+				def_1t(2);
+			}
+			break;
 		case 1:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 234)
+			if (welc_ctr_err == true)
+			{
+				def_3t(61);
+			}
+			else
+			{
+				def_1t(61);
+			}
 			break;
 		case 2:
-			sosSay = 1;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
+			if (welc_ctr_err == true)
+			{
+				def_3t(3);
+			}
+			else
+			{
+				def_1t(3);
+			}
 			break;
 		case 3:
-			sosSay = 3;
-			compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
+			if (welc_ctr_err == true)
+			{
+				def_3t(61);
+			}
+			else
+			{
+				def_1t(61);
+			}
 			break;
 		case 4:
-			sosSay = 1;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
+			if (welc_ctr_err == true)
+			{
+				def_3t(4);
+			}
+			else
+			{
+				def_1t(4);
+			}
 			break;
 		case 5:
-			sosSay = 4;
-			compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 234)
+			if (welc_ctr_err == true)
+			{
+				def_3t(72);
+			}
+			else
+			{
+				def_1t(72);
+			}
 			break;
 		case 6:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 234)
-			break;
-		case 7:
-			compteB = 0; // (sosNbr == 23)
-			break;
-		default:
-			compteB = 1; // sosNbr == 234
+			if (welc_ctr_err == true)
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
 			break;
 		}
 		break;
+
 	case 5: // Cc_Ph_Ne_Te. cuci
 		Serial.print("Cc_Ph_Ne_Te. cuci");
 		Serial.println(CcPhNeTe);
 		// sosNbr55();
-
-		switch (COMP) //(sosNbr == 55)
+		if (welc_ctr_err == true)
 		{
+			switch_def = ct3t_posi_st[8];
+		}
+		else
+		{
+			switch_def = ct1t_posi_st[8];
+		}
+		switch (switch_def) //(sosNbr == 5_71_5_72)
+		{
+		case 0:
+			if (welc_ctr_err == true)
+			{
+				def_3t(5);
+			}
+			else
+			{
+				def_1t(5);
+			}
+			break;
 		case 1:
-			sosSay = 5;
-			compteB = f_b_cl_2(sosSay, compteB); //(sosNbr == 55)
+			if (welc_ctr_err == true)
+			{
+				def_3t(71);
+			}
+			else
+			{
+				def_1t(71);
+			}
 			break;
 		case 2:
-			sosSay = 1;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
+			if (welc_ctr_err == true)
+			{
+				def_3t(5);
+			}
+			else
+			{
+				def_1t(5);
+			}
 			break;
 		case 3:
-			sosSay = 5;
-			compteB = f_b_cl_2(sosSay, compteB); //  (sosNbr == 55)
+			if (welc_ctr_err == true)
+			{
+				def_3t(72);
+			}
+			else
+			{
+				def_1t(72);
+			}
 			break;
 		case 4:
-			sosSay = 2;
-			compteB = f_b_cl_2(sosSay, compteB); // (sosNbr == 55)
-			break;
-		case 5:
-			compteB = 0; // (sosNbr == 23)
-			break;
-		default:
-			compteB = 1; // sosNbr == 55
+			if (welc_ctr_err == true)
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
+			else
+			{
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			}
 			break;
 		}
 		break;
+
 	default:
+		unsigned long rlt_int = millis() - temp1;
+		if (ccphnete0 != ccphnete0_st)
+		{
+			ccphnete0 = ccphnete0_st;
+			maz_int = false;
+		}
 
 		if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
 		{
+			ccphnete0_st = 1;
 			// pause cl x2
-			unsigned long rlt_int = millis() - temp1;
-			if (rlt_int > 1000 * 3)
+			if (rlt_int > 1000 * 5)
 			{
 				if (welc_ctr_err == true)
 				{
 					int def = def_3t(2);
 
-					if (def == 2)
+					if (def == 1)
 					{
 						temp1 = millis();
 						ct3t_posi_st[8] = 0;
@@ -579,6 +802,7 @@ void loop()
 		}
 		if (CcPhNeTe == 0 && battLow == true)
 		{
+			ccphnete0_st = 2;
 			// pause cl x2
 			unsigned long rlt_int = millis() - temp1;
 			if (rlt_int > 1000 * 3)
@@ -587,7 +811,7 @@ void loop()
 				{
 					int def = def_3t(2);
 					def_2t(4);
-					if (def == 2)
+					if (def == 1)
 					{
 						temp1 = millis();
 						ct3t_posi_st[8] = 0;
@@ -598,7 +822,7 @@ void loop()
 				{
 					int def = def_1t(2);
 					def_2t(4);
-					if (def == 2)
+					if (def == 1)
 					{
 						temp1 = millis();
 						ct1t_posi_st[8] = 0;
@@ -607,6 +831,30 @@ void loop()
 				}
 			}
 		}
+		if (rlt_int > 1000 * 50)
+		{
+			ccphnete0_st = 3;
+			if (welc_ctr_err == true)
+			{
+				int def = def_1t(2);
+
+				if (def == 1)
+				{
+					temp1 = millis();
+					ct1t_posi_st[8] = 0;
+				}
+			}
+			else
+			{
+				int def = def_1t(2);
+				if (def == 1)
+				{
+					temp1 = millis();
+					ct1t_posi_st[8] = 0;
+				}
+			}
+		}
+
 		compteB = 0; // CcPhNeTe == 0
 		cp_cl = 1;
 		comptespot = 1;
@@ -700,9 +948,13 @@ void maz_int_f()
 		digitalWrite(alim, false);
 		digitalWrite(fan, false);
 		digitalWrite(bosch, false);
-		int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 		ct1t_millis = millis();
 		ct2t_millis = millis();
 		ct3t_millis = millis();
@@ -1038,6 +1290,46 @@ int count_1t()
 }
 int def_1t(int sosSay)
 {
+		int flache = 0;
+	int siren_c_i = 0;
+	if (sosSay == 2 || sosSay == 3)
+	{
+		flache = flacheBleu; // sortie 12
+		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
+	}
+	if (sosSay == 4 || sosSay == 5)
+	{
+		flache = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = sirenI;		// 9 sortie siren iso
+	}
+	if (sosSay == 61)
+	{
+		sosSay=1;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 62)
+	{
+		sosSay=2;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 71)
+	{
+				sosSay=1;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+	if (sosSay == 72)
+	{
+				sosSay=2;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+
+
 	// cycle count_1t
 	count_1t();
 	for (int i = 0; i < 6; i++)
@@ -1057,29 +1349,6 @@ int def_1t(int sosSay)
 		}
 	}
 
-	int flache = 0;
-	int siren_c_i = 0;
-	if (sosSay == 2 || sosSay == 3)
-	{
-		flache = flacheBleu; // sortie 12
-		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
-	}
-
-	if (sosSay == 4 || sosSay == 5)
-	{
-		flache = flacheRouge; // 11 sortie flacheRouge
-		siren_c_i = sirenI;		// 9 sortie siren iso
-	}
-	if (sosSay == 6)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenI; // 9 sortie siren iso
-	}
-	if (sosSay == 7)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenC; // 9 sortie siren iso
-	}
 	switch (ct1t_switch)
 	{
 	case 0:
@@ -1108,9 +1377,13 @@ int def_1t(int sosSay)
 		break;
 	case 6:
 		ct1t_switch = 0;
-		int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 		ct1t_millis = millis();
 		ct2t_millis = millis();
 		ct3t_millis = millis();
@@ -1228,6 +1501,46 @@ int count_2t()
 }
 int def_2t(int sosSay)
 {
+		int flache = 0;
+	int siren_c_i = 0;
+	if (sosSay == 2 || sosSay == 3)
+	{
+		flache = flacheBleu; // sortie 12
+		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
+	}
+	if (sosSay == 4 || sosSay == 5)
+	{
+		flache = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = sirenI;		// 9 sortie siren iso
+	}
+	if (sosSay == 61)
+	{
+		sosSay=1;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 62)
+	{
+		sosSay=2;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 71)
+	{
+				sosSay=1;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+	if (sosSay == 72)
+	{
+				sosSay=2;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+
+
 	// cycle count_2t
 	count_2t();
 	for (int i = 0; i < 6; i++)
@@ -1247,29 +1560,6 @@ int def_2t(int sosSay)
 		}
 	}
 
-	int flache = 0;
-	int siren_c_i = 0;
-	if (sosSay == 2 || sosSay == 3)
-	{
-		flache = flacheBleu; // sortie 12
-		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
-	}
-
-	if (sosSay == 4 || sosSay == 5)
-	{
-		flache = flacheRouge; // 11 sortie flacheRouge
-		siren_c_i = sirenI;		// 9 sortie siren iso
-	}
-	if (sosSay == 6)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenI; // 9 sortie siren iso
-	}
-	if (sosSay == 7)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenC; // 9 sortie siren iso
-	}
 	switch (ct2t_switch)
 	{
 	case 0:
@@ -1298,9 +1588,13 @@ int def_2t(int sosSay)
 		break;
 	case 6:
 		ct2t_switch = 0;
-		int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 		ct1t_millis = millis();
 		ct2t_millis = millis();
 		ct3t_millis = millis();
@@ -1330,7 +1624,7 @@ int count_3t()
 	}
 	// etein 1
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 200 &&
+	if (ct3t_resu > 20 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == false)
 	{
@@ -1343,7 +1637,7 @@ int count_3t()
 	// cycle x2
 	// allum 2
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 200 &&
+	if (ct3t_resu > 20 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == true &&
 			ct3t_cycl_st[2] == false)
@@ -1355,7 +1649,7 @@ int count_3t()
 	}
 	// etein 3
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 500 &&
+	if (ct3t_resu > 50 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == true &&
 			ct3t_cycl_st[2] == true &&
@@ -1369,7 +1663,7 @@ int count_3t()
 	// cycle x3
 	// allum 4
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 200 &&
+	if (ct3t_resu > 20 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == true &&
 			ct3t_cycl_st[2] == true &&
@@ -1383,7 +1677,7 @@ int count_3t()
 	}
 	// etein 5
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 200 &&
+	if (ct3t_resu > 20 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == true &&
 			ct3t_cycl_st[2] == true &&
@@ -1398,7 +1692,7 @@ int count_3t()
 	}
 	// fin cycle maz
 	ct3t_resu = millis() - ct3t_millis;
-	if (ct3t_resu > 400 &&
+	if (ct3t_resu > 40 &&
 			ct3t_cycl_st[0] == true &&
 			ct3t_cycl_st[1] == true &&
 			ct3t_cycl_st[2] == true &&
@@ -1417,7 +1711,46 @@ int count_3t()
 	}
 }
 int def_3t(int sosSay)
-{
+{	
+	int flache = 0;
+	int siren_c_i = 0;
+	if (sosSay == 2 || sosSay == 3)
+	{
+		flache = flacheBleu; // sortie 12
+		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
+	}
+	if (sosSay == 4 || sosSay == 5)
+	{
+		flache = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = sirenI;		// 9 sortie siren iso
+	}
+	if (sosSay == 61)
+	{
+		sosSay=1;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 62)
+	{
+		sosSay=2;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 71)
+	{
+				sosSay=1;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+	if (sosSay == 72)
+	{
+				sosSay=2;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+
 	// cycle count_3t
 	count_3t();
 	for (int i = 0; i < 6; i++)
@@ -1434,32 +1767,10 @@ int def_3t(int sosSay)
 		if (ct3t_posi_st[7] == sosSay)
 		{
 			ct3t_posi_st[8]++; // compteur
+			ct3t_posi_st[7] = 0;
 		}
 	}
 
-	int flache = 0;
-	int siren_c_i = 0;
-	if (sosSay == 2 || sosSay == 3)
-	{
-		flache = flacheBleu; // sortie 12
-		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
-	}
-
-	if (sosSay == 4 || sosSay == 5)
-	{
-		flache = flacheRouge; // 11 sortie flacheRouge
-		siren_c_i = sirenI;		// 9 sortie siren iso
-	}
-	if (sosSay == 6)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenI; // 9 sortie siren iso
-	}
-	if (sosSay == 7)
-	{
-		flache = spot;			// 11 sortie flacheRouge
-		siren_c_i = sirenC; // 9 sortie siren iso
-	}
 	switch (ct3t_switch)
 	{
 	case 0:
@@ -1488,9 +1799,13 @@ int def_3t(int sosSay)
 		break;
 	case 6:
 		ct3t_switch = 0;
-		int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-		int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 		ct3t_millis = millis();
 		ct2t_millis = millis();
 		ct1t_millis = millis();
