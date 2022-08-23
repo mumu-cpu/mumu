@@ -65,10 +65,12 @@ bool ct1s_sta1 = false;
 bool maz_int = false;
 
 unsigned long ct1t_millis = millis();
-bool ct1t_cycl_st[6] = {false, false, false, false, false, false} int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
+int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long ct2t_millis = millis();
-bool ct2t_cycl_st[6] = {false, false, false, false, false, false} int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
+int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
 
 unsigned long ct3t_millis = millis();
 bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
@@ -416,7 +418,7 @@ void loop()
 		}
 		else
 		{
-			switch_def = cpt_1t_sta[8];
+			switch_def = ct1t_posi_st[8];
 		}
 
 		switch (switch_def) //(sosNbr == 23)
@@ -466,13 +468,11 @@ void loop()
 			{
 				int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
 				int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-				// ct3t_posi_st[7] = 0;
 			}
 			else
 			{
 				int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
 				int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-				// ct3t_posi_st[7] = 0;
 			}
 			break;
 		}
@@ -601,7 +601,7 @@ void loop()
 					if (def == 2)
 					{
 						temp1 = millis();
-						cpt_1t_sta[8] = 0;
+						ct1t_posi_st[8] = 0;
 						ct2t_posi_st[8] = 0;
 					}
 				}
@@ -1035,7 +1035,6 @@ int count_1t()
 		ct1t_posi_st[5] = false;
 		ct1t_posi_st[6] = true;
 	}
-	// return (ct1t_switch);
 }
 int def_1t(int sosSay)
 {
@@ -1416,7 +1415,6 @@ int count_3t()
 		ct3t_posi_st[5] = false;
 		ct3t_posi_st[6] = true;
 	}
-	// return (ct3t_switch);
 }
 int def_3t(int sosSay)
 {
