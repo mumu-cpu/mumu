@@ -360,21 +360,9 @@ void loop()
 
 
 	//  **********************TEST********************************
-	for (int i = 0; i < 9; i++)
-	{
-		Serial.print(ct1t_posi_st[i]);
-	}
-	Serial.println(" ");
-	for (int i = 0; i < 9; i++)
-	{
-		Serial.print(ct2t_posi_st[i]);
-	}
-	Serial.println(" ");
-	for (int i = 0; i < 9; i++)
-	{
-		Serial.print(ct3t_posi_st[i]);
-	}
-	Serial.println(" ");
+	for (int i = 0; i < 9; i++){Serial.print(ct1t_posi_st[i]);}
+	for (int i = 0; i < 9; i++){Serial.print(ct2t_posi_st[i]);}
+	for (int i = 0; i < 9; i++){Serial.print(ct3t_posi_st[i]);}
 	//  **********************TEST********************************
 
 
