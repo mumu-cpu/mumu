@@ -789,6 +789,15 @@ void loop()
 				if (welc_ctr_err == true)
 				{
 					int def = def_3t(2);
+		if (ct3t_posi_st[7] == sosSay)
+		{
+			ct3t_posi_st[8]++; // compteur
+			ct3t_posi_st[7] = 0;
+		}
+
+
+
+
 					if (def == 1)
 					{
 						temp1 = millis();
@@ -802,7 +811,7 @@ void loop()
 				else
 				{
 					int def = def_1t(2);
-					if (def == 2)
+					if (def >= 2)
 					{
 						temp1 = millis();
             		for (int i = 0; i < 9; i++)
@@ -825,7 +834,7 @@ void loop()
 				{
 					int def = def_3t(2);
 					def_2t(4);
-					if (def == 1)
+					if (def >= 1)
 					{
 						temp1 = millis();
 								for (int i = 0; i < 9; i++)
@@ -841,7 +850,7 @@ void loop()
 				{
 					int def = def_1t(2);
 					def_2t(4);
-					if (def == 1)
+					if (def >= 1)
 					{
 						temp1 = millis();
 								for (int i = 0; i < 9; i++)
@@ -862,7 +871,7 @@ void loop()
 			{
 				int def = def_1t(2);
 
-				if (def == 1)
+				if (def >= 1)
 				{
 					temp1 = millis();
 							for (int i = 0; i < 9; i++)
@@ -877,7 +886,7 @@ void loop()
 			else
 			{
 				int def = def_1t(2);
-				if (def == 1)
+				if (def >= 1)
 				{
 					temp1 = millis();
 							for (int i = 0; i < 9; i++)
