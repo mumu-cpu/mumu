@@ -3086,3 +3086,5 @@ int sosNbr10() // spot_cl + s_c_cl
 /*************FONCTION*****sosNbr10****final*/
 
 /*************FONCTION*****T E S T****/
+
+>>>>>>> c0b75936ad3d22cd559e12d94094fa14c87f42a5
