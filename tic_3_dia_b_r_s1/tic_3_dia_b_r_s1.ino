@@ -792,7 +792,11 @@ void loop()
 					if (def == 1)
 					{
 						temp1 = millis();
-						ct3t_posi_st[8] = 0;
+            		for (int i = 0; i < 9; i++)
+		{
+			ct3t_posi_st[i] = false;
+		}
+
 					}
 				}
 				else
@@ -801,7 +805,11 @@ void loop()
 					if (def == 2)
 					{
 						temp1 = millis();
-						ct1t_posi_st[8] = 0;
+            		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+		}
+
 					}
 				}
 			}
@@ -820,8 +828,13 @@ void loop()
 					if (def == 1)
 					{
 						temp1 = millis();
-						ct3t_posi_st[8] = 0;
-						ct2t_posi_st[8] = 0;
+								for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 					}
 				}
 				else
@@ -831,8 +844,13 @@ void loop()
 					if (def == 1)
 					{
 						temp1 = millis();
-						ct1t_posi_st[8] = 0;
-						ct2t_posi_st[8] = 0;
+								for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 					}
 				}
 			}
@@ -847,7 +865,13 @@ void loop()
 				if (def == 1)
 				{
 					temp1 = millis();
-					ct1t_posi_st[8] = 0;
+							for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 				}
 			}
 			else
@@ -856,7 +880,13 @@ void loop()
 				if (def == 1)
 				{
 					temp1 = millis();
-					ct1t_posi_st[8] = 0;
+							for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
 				}
 			}
 		}
@@ -3087,4 +3117,3 @@ int sosNbr10() // spot_cl + s_c_cl
 
 /*************FONCTION*****T E S T****/
 
->>>>>>> c0b75936ad3d22cd559e12d94094fa14c87f42a5
