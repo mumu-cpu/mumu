@@ -5,6 +5,10 @@
     "github-enterprise.uri": "tic3",
     "files.associations": {
         "*.sys_ok": "cpp",
-        "*.crtb": "cpp"
-    }
+        "*.crtb": "cpp",
+        "*.ino": "cpp",
+        "*.mumu": "cpp"
+    },
+    "editor.tabSize": 2,
+    "editor.fontSize": 16
 }
