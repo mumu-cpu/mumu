@@ -6,5 +6,6 @@
     "files.associations": {
         "*.sys_ok": "cpp",
         "*.crtb": "cpp"
-    }
+    },
+    "editor.accessibilityPageSize": 12
 }
