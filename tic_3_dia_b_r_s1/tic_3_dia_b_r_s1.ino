@@ -58,6 +58,14 @@ unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
 unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
 int ct_state = 0;
 
+//                GEN
+long minut=60000;
+long sec=1000;
+long gen_debut=0;
+long gen_tmp_230=15*minut;
+bool GEN_ste=false;
+
+
 int ct1s_state = 0;
 bool ct1s_sta = false;
 bool ct1s_sta1 = false;
@@ -97,6 +105,10 @@ String bch = "bat	BOSCH";       // welc_ID_index  7
 
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
+
+int etalon [3] [4] = {0,0,0,0},
+                     {0,0,0,0},
+                     {0,0,0,0};
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
@@ -911,6 +923,82 @@ void loop()
 //                                   FIN LOOP
 //                                   FONCTION
 
+int GEN_mode()
+{
+  temp1=millis();
+  temp2=millis();
+  unsigned long rlt_int = millis() - temp1;
+  unsigned long rlt_inp = millis() - temp2;
+  while(rlt_inp <= sec*3)
+  {
+    rlt_inp = millis() - temp2;
+        if (etalon[0][0]==0 && etalon[0][1]==0 && phase > 1 && temp1-millis()< 100)
+          {
+            temp1=millis();
+            etalon[0][0] = 1;
+        }
+if(etalon[0][0]==1 && etalon[0][1]==0 && phase<1 && temp1-millis()< 100)
+{
+temp1=millis();
+            etalon[0][1] = 1;
+}
+if(etalon[0][0] == 1 && etalon[0][1] == 1)
+{
+  etalon[0][2]++;
+}
+
+if(etalon[0][2]==1)
+{
+  etalon[0][3]=etalon[0][2];
+}
+if(etalon[0][2]==2)
+{
+  etalon[0][3]=etalon[0][2];
+}
+
+if(etalon[0][2]==3)
+{
+  etalon[0][3]=etalon[0][2];
+  for(int i = 0; i < 3; i++)
+  {
+ etalon[0][i]=0;
+  }
+ 
+}
+  for (int i = 0; i < 4; i++)
+  {
+ etalon[0][i]=0;
+  }
+
+if(etalon[0][3]==2)
+{
+  GEN();
+  break;
+}
+
+
+      }
+      temp1=millis();
+      temp2=millis();
+
+}
+
+void GEN()
+{
+long gen_rlt = millis()-gen_debut;
+if(gen_rlt <= gen_tmp_230)
+{
+    GEN_ste = true;
+digitalWrite(alim,true);
+  digitalWrite(bosch,true);
+}
+else 
+{
+GEN_ste=false;  
+}
+
+}
+
 void demare()
 {
   //            MANU_AUTO_VEILLE
@@ -1053,6 +1141,8 @@ void fane(int sosSay)
 int phaseF()
 {
   int phase = analogRead(testPh);
+ 
+  
   return (phase);
 }
 int neutreF()
