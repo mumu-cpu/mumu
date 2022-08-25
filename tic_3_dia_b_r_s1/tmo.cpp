@@ -34,6 +34,7 @@ void manu()
 }
 
 //					FINI A REMETTRE
+//					FINI A REMETTRE
 void cyl_def_source()
 {
 		if (welc_ctr_err == true)
@@ -76,7 +77,6 @@ void cyl_def_source()
 
 }
 
-//					FINI A REMETTRE
 int def_source(int sosSay)
 {	
 	int flache = 0;
@@ -268,13 +268,23 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
 	debut = millis();
 }
 
+/*								SOSSAY												*/
+/*			2-3 flacheBleu		sirenC								*/
+/*			4-5 flacheRouge		sirenI								*/
+/*			60	spot																*/
+/*			61	spot					sirenI		sosSay=1		*/
+/*			62	spot					sirenI		sosSay=2		*/
+/*			71	spot					sirenC		sosSay=1		*/
+/*			72	spot					sirenC		sosSay=2		*/
+/*			81	sirenC															*/
+/*			82	sirenI															*/
+/*								SOSSAY												*/
 
 
 
 
 
-
-int GEN_mode()
+void GEN_mode()
 {
   debut_gen_inp = millis();
   debut_gen_cyl = millis();
@@ -348,7 +358,7 @@ void GEN()
     GEN_ste = true;
     digitalWrite(alim, true);
     digitalWrite(bosch, true);
-		
+
     long rlt_3m=millis()-debut_3m;
     if (rlt_3m > minut * 3)
     {

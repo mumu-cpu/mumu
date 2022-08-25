@@ -806,11 +806,18 @@ void loop()
     {
       ccphnete0 = 1;
       // pause cl x2
+      
+      
+      
+      
+      
+      
       if (rlt_int > sec * 3)
       {
         if (welc_ctr_err == true)
         {
-          def_3t(2);
+          def_3t(60);
+          def_3t(81);
           if (ct3t_posi_st[7] == 2)
           {
             ct3t_posi_st[8]++; // compteur
@@ -824,7 +831,7 @@ void loop()
         }
         else
         {
-          def_1t(2);
+          def_1t(60);
           if (ct1t_posi_st[7] == 2)
           {
             ct1t_posi_st[8]++; // compteur
@@ -927,7 +934,20 @@ void loop()
 //                                   FIN LOOP
 //                                   FONCTION
 
-int GEN_mode()
+/*								SOSSAY												*/
+/*			2-3 flacheBleu		sirenC								*/
+/*			4-5 flacheRouge		sirenI								*/
+/*			60	spot																*/
+/*			61	spot					sirenI		sosSay=1		*/
+/*			62	spot					sirenI		sosSay=2		*/
+/*			71	spot					sirenC		sosSay=1		*/
+/*			72	spot					sirenC		sosSay=2		*/
+/*			81	sirenC															*/
+/*			82	sirenI															*/
+/*								SOSSAY												*/
+
+
+void GEN_mode()
 {
   debut_gen_inp = millis();
   debut_gen_cyl = millis();
@@ -2087,6 +2107,157 @@ int def_3t(int sosSay)
   int CcPhNeTe_switch = ct3t_posi_st[8];
   return (CcPhNeTe_switch);
 }
+void cyl_def_source()
+{
+		if (welc_ctr_err == true)
+		{
+			switch_def = ct3t_posi_st[8];
+		}
+		else
+		{
+			switch_def = ct1t_posi_st[8];
+		}
+		switch (switch_def) //(sosNbr == 2_61_3_61_4_72)
+		{
+		case 0:
+		def_3t(3);
+			break;
+		case 1:
+				def_3t(61);
+			break;
+		case 2:
+		def_2t(2);
+			break;
+		case 3:
+				def_3t(71);
+			break;
+		case 4:
+				def_1t(1);
+			break;
+		case 5:
+				def_3t(62);
+			break;
+		case 6:
+				for (int i = 0; i < 9; i++)
+				{
+					ct1t_posi_st[i] = false;
+					ct2t_posi_st[i] = false;
+					ct3t_posi_st[i] = false;
+				}
+			break;
+		}
+
+}
+int def_source(int sosSay)
+{	
+	int flache = 0;
+	int siren_c_i = 0;
+	if (sosSay == 2 || sosSay == 3)
+	{
+		flache = flacheBleu; // sortie 12
+		siren_c_i = sirenC;	 // 3 sortie siren con (continute)
+	}
+	if (sosSay == 4 || sosSay == 5)
+	{
+		flache = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = sirenI;		// 9 sortie siren iso
+	}
+	if (sosSay == 61)
+	{
+		sosSay=1;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 62)
+	{
+		sosSay=2;
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenI; // 9 sortie siren iso
+	}
+	if (sosSay == 71)
+	{
+				sosSay=1;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+	if (sosSay == 72)
+	{
+				sosSay=2;
+
+		flache = spot;			// 11 sortie flacheRouge
+		siren_c_i = sirenC; // 9 sortie siren iso
+	}
+
+	// cycle count_3t
+	count_3t();
+	for (int i = 0; i < 6; i++)
+	{
+		if (ct3t_posi_st[i] == true)
+		{
+			ct3t_switch = i;
+		}
+	}
+	if (ct3t_posi_st[6] == true)
+	{
+		ct3t_posi_st[6] = false;
+		ct3t_posi_st[7]++; // compteur cycle
+		if (ct3t_posi_st[7] == sosSay)
+		{
+			ct3t_posi_st[8]++; // compteur
+			ct3t_posi_st[7] = 0;
+		}
+	}
+
+	switch (ct3t_switch)
+	{
+	case 0:
+		digitalWrite(flache, true);
+		digitalWrite(siren_c_i, true);
+		break;
+	case 1:
+		digitalWrite(flache, true);
+		digitalWrite(siren_c_i, false);
+		break;
+	case 2:
+		digitalWrite(siren_c_i, true);
+		digitalWrite(flache, true);
+		break;
+	case 3:
+		digitalWrite(siren_c_i, false);
+		digitalWrite(flache, false);
+		break;
+	case 4:
+		digitalWrite(flache, true);
+		digitalWrite(siren_c_i, false);
+		break;
+	case 5:
+		digitalWrite(flache, false);
+		digitalWrite(siren_c_i, false);
+		break;
+	case 6:
+		ct3t_switch = 0;
+		for (int i = 0; i < 9; i++)
+		{
+			ct1t_posi_st[i] = false;
+			ct2t_posi_st[i] = false;
+			ct3t_posi_st[i] = false;
+		}
+
+		ct3t_millis = millis();
+		ct2t_millis = millis();
+		ct1t_millis = millis();
+
+		break;
+	case 7:
+		ct3t_switch = 0;
+		break;
+	}
+	int CcPhNeTe_switch = ct3t_posi_st[8];
+	return (CcPhNeTe_switch);
+}
+
+
 /*              AUTO COFIG                     */
 int welc_1s(int ct1s_state)
 {
