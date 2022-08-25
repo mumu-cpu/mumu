@@ -66,6 +66,9 @@ long gen_tmp_230 = 15 * minut;
 bool GEN_ste = false;
 long debut_3m = 0;
 long debut_1m = 0;
+long debut_gen_inp =0;
+long debut_gen_cyl =0;
+
 int ct1s_state = 0;
 bool ct1s_sta = false;
 bool ct1s_sta1 = false;
@@ -106,9 +109,10 @@ String bch = "bat	BOSCH";       // welc_ID_index  7
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
 
-int etalon[3][4] = {0, 0, 0, 0},
-    {0, 0, 0, 0},
-    {0, 0, 0, 0};
+int etalon[3][4] = 
+  {0, 0, 0, 0},
+  {0, 0, 0, 0},
+  {0, 0, 0, 0};
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
@@ -802,7 +806,7 @@ void loop()
     {
       ccphnete0 = 1;
       // pause cl x2
-      if (rlt_int > 1000 * 3)
+      if (rlt_int > sec * 3)
       {
         if (welc_ctr_err == true)
         {
@@ -839,7 +843,7 @@ void loop()
       ccphnete0 = 2;
       // pause cl x2
       unsigned long rlt_int = millis() - temp1;
-      if (rlt_int > 1000 * 3)
+      if (rlt_int > sec * 3)
       {
         if (welc_ctr_err == true)
         {
@@ -879,7 +883,7 @@ void loop()
         }
       }
     }
-    if (rlt_int > 1000 * 50)
+    if (rlt_int > sec * 50)
     {
       ccphnete0 = 3;
       if (welc_ctr_err == true)
@@ -925,21 +929,22 @@ void loop()
 
 int GEN_mode()
 {
-  temp1 = millis();
-  temp2 = millis();
-  unsigned long rlt_int = millis() - temp1;
-  unsigned long rlt_inp = millis() - temp2;
-  while (rlt_inp <= sec * 3)
+  debut_gen_inp = millis();
+  debut_gen_cyl = millis();
+  unsigned long rlt_gen_inp = millis() - debut_gen_inp;
+  unsigned long rlt_gen_cyl = millis() - debut_gen_cyl;
+  while (rlt_gen_cyl <= sec * 3)
   {
-    rlt_inp = millis() - temp2;
-    if (etalon[0][0] == 0 && etalon[0][1] == 0 && phase > 1 && temp1 - millis() < 100)
+    rlt_gen_cyl = millis() - debut_gen_cyl;
+
+    if (etalon[0][0] == 0 && etalon[0][1] == 0 && phase > 1 && rlt_gen_inp < 100)
     {
-      temp1 = millis();
+      debut_gen_inp = millis();
       etalon[0][0] = 1;
     }
-    if (etalon[0][0] == 1 && etalon[0][1] == 0 && phase < 1 && temp1 - millis() < 100)
+    if (etalon[0][0] == 1 && etalon[0][1] == 0 && phase < 1 && rlt_gen_inp < 100)
     {
-      temp1 = millis();
+      debut_gen_inp = millis();
       etalon[0][1] = 1;
     }
     if (etalon[0][0] == 1 && etalon[0][1] == 1)
@@ -984,8 +989,8 @@ int GEN_mode()
     // GEN();
     break;
   }
-  temp1 = millis();
-  temp2 = millis();
+  debut_gen_inp = millis();
+  debut_gen_cyl = millis();
 }
 
 void GEN()
@@ -996,8 +1001,9 @@ void GEN()
     GEN_ste = true;
     digitalWrite(alim, true);
     digitalWrite(bosch, true);
+		
     long rlt_3m=millis()-debut_3m;
-    if (rlt_int > minut * 3)
+    if (rlt_3m > minut * 3)
     {
       def_3t(60);
       def_3t(4);
@@ -1046,9 +1052,9 @@ void GEN()
       //   }
       // }
     }
-    long rlt_1m=millis()-debut_1m;
 
-    if (rlt_int > minut)
+    long rlt_1m=millis()-debut_1m;
+    if (rlt_1m > minut)
     {
       def_3t(60);
       if (ct3t_posi_st[7] == 3)

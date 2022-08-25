@@ -33,8 +33,9 @@ void manu()
   }
 }
 
-
-
+//					FINI A REMETTRE
+void cyl_def_source()
+{
 		if (welc_ctr_err == true)
 		{
 			switch_def = ct3t_posi_st[8];
@@ -73,9 +74,9 @@ void manu()
 			break;
 		}
 
+}
 
-
-
+//					FINI A REMETTRE
 int def_source(int sosSay)
 {	
 	int flache = 0;
@@ -189,6 +190,7 @@ int def_source(int sosSay)
 
 
 
+//					EN COURS
 
 void veilleF(int alim_State, bool BPmarcheState, int batt)
 {
@@ -271,5 +273,164 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
 
 
 
+
+int GEN_mode()
+{
+  debut_gen_inp = millis();
+  debut_gen_cyl = millis();
+  unsigned long rlt_gen_inp = millis() - debut_gen_inp;
+  unsigned long rlt_gen_cyl = millis() - debut_gen_cyl;
+  while (rlt_gen_cyl <= sec * 3)
+  {
+    rlt_gen_cyl = millis() - debut_gen_cyl;
+
+    if (etalon[0][0] == 0 && etalon[0][1] == 0 && phase > 1 && rlt_gen_inp < 100)
+    {
+      debut_gen_inp = millis();
+      etalon[0][0] = 1;
+    }
+    if (etalon[0][0] == 1 && etalon[0][1] == 0 && phase < 1 && rlt_gen_inp < 100)
+    {
+      debut_gen_inp = millis();
+      etalon[0][1] = 1;
+    }
+    if (etalon[0][0] == 1 && etalon[0][1] == 1)
+    {
+      etalon[0][2]++;
+    }
+
+    if (etalon[0][2] == 1)
+    {
+      etalon[0][3] = etalon[0][2];
+    }
+    if (etalon[0][2] == 2)
+    {
+      etalon[0][3] = etalon[0][2];
+    }
+
+    if (etalon[0][2] == 3)
+    {
+      etalon[0][3] = etalon[0][2];
+      for (int i = 0; i < 3; i++)
+      {
+        etalon[0][i] = 0;
+      }
+    }
+    for (int i = 0; i < 4; i++)
+    {
+      etalon[0][i] = 0;
+    }
+  }
+  if (etalon[0][3] == 3)
+  {
+    // GEN(); // active 230v pendent 15min
+    break;
+  }
+  if (etalon[0][3] == 2)
+  {
+    GEN(); // active 230v pendent 15min
+    break;
+  }
+  if (etalon[0][3] == 1)
+  {
+    // GEN();
+    break;
+  }
+  debut_gen_inp = millis();
+  debut_gen_cyl = millis();
+}
+
+void GEN()
+{
+  long gen_rlt = millis() - gen_debut;
+  if (gen_rlt <= gen_tmp_230)
+  {
+    GEN_ste = true;
+    digitalWrite(alim, true);
+    digitalWrite(bosch, true);
+		
+    long rlt_3m=millis()-debut_3m;
+    if (rlt_3m > minut * 3)
+    {
+      def_3t(60);
+      def_3t(4);
+      def_3t(2);
+      if (ct3t_posi_st[7] == 2)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_3m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+      // def_3t(4);
+      // if (ct3t_posi_st[7] == 2)
+      // {
+      //   ct3t_posi_st[8]++; // compteur
+      //   ct3t_posi_st[7] = 0;
+      //   gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct3t_posi_st[i] = false;
+      //   }
+      // }
+      // def_3t(60);
+      // if (ct3t_posi_st[7] == 2)
+      // {
+      //   ct3t_posi_st[8]++; // compteur
+      //   ct3t_posi_st[7] = 0;
+      //   // gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct3t_posi_st[i] = false;
+      //   }
+      // }
+      // def_1t(4);
+      // if (ct1t_posi_st[7] == 2)
+      // {
+      //   ct1t_posi_st[8]++; // compteur
+      //   ct1t_posi_st[7] = 0;
+      //   gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct1t_posi_st[i] = false;
+      //   }
+      // }
+    }
+
+    long rlt_1m=millis()-debut_1m;
+    if (rlt_1m > minut)
+    {
+      def_3t(60);
+      if (ct3t_posi_st[7] == 3)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_1m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+      def_1t(4);
+      if (ct1t_posi_st[7] == 2)
+      {
+        ct1t_posi_st[8]++; // compteur
+        ct1t_posi_st[7] = 0;
+        // debut_1m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct1t_posi_st[i] = false;
+        }
+      }
+    }
+  }
+  else
+  {
+    GEN_ste = false;
+  }
+}
 
 
