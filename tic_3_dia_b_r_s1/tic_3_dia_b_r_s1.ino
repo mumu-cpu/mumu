@@ -59,13 +59,13 @@ unsigned long currentMillis = millis(); // stocke la valeur courante de la fonct
 int ct_state = 0;
 
 //                GEN
-long minut=60000;
-long sec=1000;
-long gen_debut=0;
-long gen_tmp_230=15*minut;
-bool GEN_ste=false;
-
-
+long minut = 60000;
+long sec = 1000;
+long gen_debut = 0;
+long gen_tmp_230 = 15 * minut;
+bool GEN_ste = false;
+long debut_3m = 0;
+long debut_1m = 0;
 int ct1s_state = 0;
 bool ct1s_sta = false;
 bool ct1s_sta1 = false;
@@ -106,9 +106,9 @@ String bch = "bat	BOSCH";       // welc_ID_index  7
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
 
-int etalon [3] [4] = {0,0,0,0},
-                     {0,0,0,0},
-                     {0,0,0,0};
+int etalon[3][4] = {0, 0, 0, 0},
+    {0, 0, 0, 0},
+    {0, 0, 0, 0};
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
@@ -925,78 +925,159 @@ void loop()
 
 int GEN_mode()
 {
-  temp1=millis();
-  temp2=millis();
+  temp1 = millis();
+  temp2 = millis();
   unsigned long rlt_int = millis() - temp1;
   unsigned long rlt_inp = millis() - temp2;
-  while(rlt_inp <= sec*3)
+  while (rlt_inp <= sec * 3)
   {
     rlt_inp = millis() - temp2;
-        if (etalon[0][0]==0 && etalon[0][1]==0 && phase > 1 && temp1-millis()< 100)
-          {
-            temp1=millis();
-            etalon[0][0] = 1;
-        }
-if(etalon[0][0]==1 && etalon[0][1]==0 && phase<1 && temp1-millis()< 100)
-{
-temp1=millis();
-            etalon[0][1] = 1;
-}
-if(etalon[0][0] == 1 && etalon[0][1] == 1)
-{
-  etalon[0][2]++;
-}
+    if (etalon[0][0] == 0 && etalon[0][1] == 0 && phase > 1 && temp1 - millis() < 100)
+    {
+      temp1 = millis();
+      etalon[0][0] = 1;
+    }
+    if (etalon[0][0] == 1 && etalon[0][1] == 0 && phase < 1 && temp1 - millis() < 100)
+    {
+      temp1 = millis();
+      etalon[0][1] = 1;
+    }
+    if (etalon[0][0] == 1 && etalon[0][1] == 1)
+    {
+      etalon[0][2]++;
+    }
 
-if(etalon[0][2]==1)
-{
-  etalon[0][3]=etalon[0][2];
-}
-if(etalon[0][2]==2)
-{
-  etalon[0][3]=etalon[0][2];
-}
+    if (etalon[0][2] == 1)
+    {
+      etalon[0][3] = etalon[0][2];
+    }
+    if (etalon[0][2] == 2)
+    {
+      etalon[0][3] = etalon[0][2];
+    }
 
-if(etalon[0][2]==3)
-{
-  etalon[0][3]=etalon[0][2];
-  for(int i = 0; i < 3; i++)
-  {
- etalon[0][i]=0;
-  }
- 
-}
-  for (int i = 0; i < 4; i++)
-  {
- etalon[0][i]=0;
-  }
-
-if(etalon[0][3]==2)
-{
-  GEN();
-  break;
-}
-
-
+    if (etalon[0][2] == 3)
+    {
+      etalon[0][3] = etalon[0][2];
+      for (int i = 0; i < 3; i++)
+      {
+        etalon[0][i] = 0;
       }
-      temp1=millis();
-      temp2=millis();
-
+    }
+    for (int i = 0; i < 4; i++)
+    {
+      etalon[0][i] = 0;
+    }
+  }
+  if (etalon[0][3] == 3)
+  {
+    // GEN(); // active 230v pendent 15min
+    break;
+  }
+  if (etalon[0][3] == 2)
+  {
+    GEN(); // active 230v pendent 15min
+    break;
+  }
+  if (etalon[0][3] == 1)
+  {
+    // GEN();
+    break;
+  }
+  temp1 = millis();
+  temp2 = millis();
 }
 
 void GEN()
 {
-long gen_rlt = millis()-gen_debut;
-if(gen_rlt <= gen_tmp_230)
-{
+  long gen_rlt = millis() - gen_debut;
+  if (gen_rlt <= gen_tmp_230)
+  {
     GEN_ste = true;
-digitalWrite(alim,true);
-  digitalWrite(bosch,true);
-}
-else 
-{
-GEN_ste=false;  
-}
+    digitalWrite(alim, true);
+    digitalWrite(bosch, true);
+    long rlt_3m=millis()-debut_3m;
+    if (rlt_int > minut * 3)
+    {
+      def_3t(60);
+      def_3t(4);
+      def_3t(2);
+      if (ct3t_posi_st[7] == 2)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_3m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+      // def_3t(4);
+      // if (ct3t_posi_st[7] == 2)
+      // {
+      //   ct3t_posi_st[8]++; // compteur
+      //   ct3t_posi_st[7] = 0;
+      //   gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct3t_posi_st[i] = false;
+      //   }
+      // }
+      // def_3t(60);
+      // if (ct3t_posi_st[7] == 2)
+      // {
+      //   ct3t_posi_st[8]++; // compteur
+      //   ct3t_posi_st[7] = 0;
+      //   // gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct3t_posi_st[i] = false;
+      //   }
+      // }
+      // def_1t(4);
+      // if (ct1t_posi_st[7] == 2)
+      // {
+      //   ct1t_posi_st[8]++; // compteur
+      //   ct1t_posi_st[7] = 0;
+      //   gen_debut = millis();
+      //   for (int i = 0; i < 8; i++)
+      //   {
+      //     ct1t_posi_st[i] = false;
+      //   }
+      // }
+    }
+    long rlt_1m=millis()-debut_1m;
 
+    if (rlt_int > minut)
+    {
+      def_3t(60);
+      if (ct3t_posi_st[7] == 3)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_1m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+      def_1t(4);
+      if (ct1t_posi_st[7] == 2)
+      {
+        ct1t_posi_st[8]++; // compteur
+        ct1t_posi_st[7] = 0;
+        // debut_1m = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct1t_posi_st[i] = false;
+        }
+      }
+    }
+  }
+  else
+  {
+    GEN_ste = false;
+  }
 }
 
 void demare()
@@ -1141,8 +1222,7 @@ void fane(int sosSay)
 int phaseF()
 {
   int phase = analogRead(testPh);
- 
-  
+
   return (phase);
 }
 int neutreF()
@@ -1437,6 +1517,12 @@ int def_1t(int sosSay)
     flache = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
+  if (sosSay == 60)
+  {
+    sosSay = 2;
+    flache = spot; // 11 sortie flacheRouge
+    siren_c_i = false; // 9 sortie siren iso
+  }
   if (sosSay == 61)
   {
     sosSay = 1;
@@ -1452,16 +1538,26 @@ int def_1t(int sosSay)
   if (sosSay == 71)
   {
     sosSay = 1;
-
     flache = spot;      // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 72)
   {
     sosSay = 2;
-
     flache = spot;      // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 81)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 82)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
   }
 
   // cycle count_1t
@@ -1647,6 +1743,12 @@ int def_2t(int sosSay)
     flache = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
+  if (sosSay == 60)
+  {
+    sosSay = 2;
+    flache = spot; // 11 sortie flacheRouge
+    siren_c_i = false; // 9 sortie siren iso
+  }
   if (sosSay == 61)
   {
     sosSay = 1;
@@ -1672,6 +1774,18 @@ int def_2t(int sosSay)
 
     flache = spot;      // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 81)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 82)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
   }
 
   // cycle count_2t
@@ -1857,6 +1971,12 @@ int def_3t(int sosSay)
     flache = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
+  if (sosSay == 60)
+  {
+    sosSay = 2;
+    flache = spot; // 11 sortie flacheRouge
+    siren_c_i = false; // 9 sortie siren iso
+  }
   if (sosSay == 61)
   {
     sosSay = 1;
@@ -1872,16 +1992,26 @@ int def_3t(int sosSay)
   if (sosSay == 71)
   {
     sosSay = 1;
-
     flache = spot;      // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 72)
   {
     sosSay = 2;
-
     flache = spot;      // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 81)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenC; // 9 sortie siren iso
+  }
+  if (sosSay == 82)
+  {
+    sosSay = 2;
+    flache = false;      // 11 sortie flacheRouge
+    siren_c_i = sirenI; // 9 sortie siren iso
   }
 
   // cycle count_3t
