@@ -98,6 +98,8 @@ String bch = "bat	BOSCH";       // welc_ID_index  7
 bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
 
+int etalon[4]={0,0,0,0};
+
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
 
@@ -910,6 +912,18 @@ void loop()
 }
 //                                   FIN LOOP
 //                                   FONCTION
+
+  float b = analogRead(BATTERYPIN);                  // valeur analogique
+
+etalon[0] = phaseF();
+etalon[1] = neutreF();
+etalon[2] = terreF();
+
+
+
+
+
+
 
 void demare()
 {

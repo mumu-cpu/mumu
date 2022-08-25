@@ -266,3 +266,10 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
 	debut = millis();
 }
 
+
+
+
+
+
+
+
