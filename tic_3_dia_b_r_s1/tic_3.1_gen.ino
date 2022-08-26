@@ -66,10 +66,10 @@ long gen_tmp_230 = 15 * minut;
 bool GEN_ste = false;
 long debut_3m = 0;
 long debut_1m = 0;
-long debut_gen_inp =0;
-long debut_gen_cyl =0;
-long debut_cc0_lop =0;
-long debut_gen_lop =0;
+long debut_gen_inp = 0;
+long debut_gen_cyl = 0;
+long debut_cc0_lop = 0;
+long debut_gen_lop = 0;
 
 int ct1s_state = 0;
 bool ct1s_sta = false;
@@ -342,10 +342,10 @@ void setup()
 }
 void loop()
 { //                               LOOP
-if(GEN_ste==true)
-{
-  GEN_ALM();
-}
+  if (GEN_ste == true)
+  {
+    GEN_ALM();
+  }
   demare();
   CcPhNeTe = test();
 
@@ -370,73 +370,16 @@ if(GEN_ste==true)
   {
     debut = millis();
   }
-    unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
-  if (ccphnete0 == 1)// sys ras  
-{
-        if (rlt_cc0_lop > sec * 5)
-      {
-        if (welc_ctr_err == true)
-        {
-          def_3t(60);
-          def_3t(81);
-          
-          if (ct3t_posi_st[7] == 2)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct3t_posi_st[i] = false;
-            }
-          }
-        }
-        else
-        {
-          def_1t(60);
-          if (ct1t_posi_st[7] == 2)
-          {
-            ct1t_posi_st[8]++; // compteur
-            ct1t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct1t_posi_st[i] = false;
-            }
-          }
-        }
-      }
-    unsigned long rlt_gen_lop=millis()-debut_gen_lop;
-      if(rlt_gen_lop > minut)// GEN_mode
-      {
-        GEN_mode();
-      }
-
-}
-if(ccphnete0 == 2)
-{
-      if (rlt_cc0_lop > sec * 10)
-      {
-          def_source(2);
-          def_source(4);
-          def_source(60);
-          if (ct3t_posi_st[7] == 2)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct3t_posi_st[i] = false;
-            }
-          }
-      }
-}
-if(ccphnete0 == 3)
-{
+  unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
+  if (ccphnete0 == 1) // sys ras
+  {
+    if (rlt_cc0_lop > sec * 5)
+    {
       if (welc_ctr_err == true)
       {
-        def_3t(62);
+        def_3t(60);
+        def_3t(81);
+
         if (ct3t_posi_st[7] == 2)
         {
           ct3t_posi_st[8]++; // compteur
@@ -450,7 +393,7 @@ if(ccphnete0 == 3)
       }
       else
       {
-        def_1t(62);
+        def_1t(60);
         if (ct1t_posi_st[7] == 2)
         {
           ct1t_posi_st[8]++; // compteur
@@ -462,7 +405,63 @@ if(ccphnete0 == 3)
           }
         }
       }
-}
+    }
+    unsigned long rlt_gen_lop = millis() - debut_gen_lop;
+    if (rlt_gen_lop > minut) // GEN_mode
+    {
+      GEN_mode();
+    }
+  }
+  if (ccphnete0 == 2)
+  {
+    if (rlt_cc0_lop > sec * 10)
+    {
+      def_source(2);
+      def_source(4);
+      def_source(60);
+      if (ct3t_posi_st[7] == 2)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_cc0_lop = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+    }
+  }
+  if (ccphnete0 == 3)
+  {
+    if (welc_ctr_err == true)
+    {
+      def_3t(62);
+      if (ct3t_posi_st[7] == 2)
+      {
+        ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[7] = 0;
+        debut_cc0_lop = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct3t_posi_st[i] = false;
+        }
+      }
+    }
+    else
+    {
+      def_1t(62);
+      if (ct1t_posi_st[7] == 2)
+      {
+        ct1t_posi_st[8]++; // compteur
+        ct1t_posi_st[7] = 0;
+        debut_cc0_lop = millis();
+        for (int i = 0; i < 8; i++)
+        {
+          ct1t_posi_st[i] = false;
+        }
+      }
+    }
+  }
 
   maz_int_f();
 
@@ -470,17 +469,20 @@ if(ccphnete0 == 3)
   for (int i = 0; i < 9; i++)
   {
     Serial.print(ct1t_posi_st[i]);
-  }    Serial.println(" ");
+  }
+  Serial.println(" ");
 
   for (int i = 0; i < 9; i++)
-  {  
+  {
 
     Serial.print(ct2t_posi_st[i]);
-  }Serial.println(" ");
+  }
+  Serial.println(" ");
   for (int i = 0; i < 9; i++)
   {
     Serial.print(ct3t_posi_st[i]);
-  }Serial.println(" ");
+  }
+  Serial.println(" ");
   //  **********************TEST********************************
 
   /* int switch_def;
@@ -896,7 +898,7 @@ if(ccphnete0 == 3)
     {
       ccphnete0 = 1;
       // pause cl x2
-      
+
       //            tt 5s     cl 60   &   81
       /*if (rlt_cc0_lop > sec * 5)
       {
@@ -904,7 +906,7 @@ if(ccphnete0 == 3)
         {
           def_3t(60);
           def_3t(81);
-          
+
           if (ct3t_posi_st[7] == 2)
           {
             ct3t_posi_st[8]++; // compteur
@@ -930,70 +932,73 @@ if(ccphnete0 == 3)
             }
           }
         }
-      }*//*
-    }
-    //                  BOSCH LOW
-    if (CcPhNeTe == 0 && battLow == true)
-    {
-      ccphnete0 = 2;
-      // pause cl x2
-      /*if (rlt_cc0_lop > sec * 10)
-      {
-          def_source(2);
-          def_source(4);
-          def_source(60);
-          if (ct3t_posi_st[7] == 2)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct3t_posi_st[i] = false;
-            }
-          }
-      }*//*
-    }
-    //                  TEMPO 5 minutes
-    if (rlt_cc0_lop > minut * 5)
-    {
-      ccphnete0 = 3;
+      }*/
+  /*
+}
+//                  BOSCH LOW
+if (CcPhNeTe == 0 && battLow == true)
+{
+ccphnete0 = 2;
+// pause cl x2
+/*if (rlt_cc0_lop > sec * 10)
+{
+   def_source(2);
+   def_source(4);
+   def_source(60);
+   if (ct3t_posi_st[7] == 2)
+   {
+     ct3t_posi_st[8]++; // compteur
+     ct3t_posi_st[7] = 0;
+     debut_cc0_lop = millis();
+     for (int i = 0; i < 8; i++)
+     {
+       ct3t_posi_st[i] = false;
+     }
+   }
+}*/
+  /*
+}
+//                  TEMPO 5 minutes
+if (rlt_cc0_lop > minut * 5)
+{
+ccphnete0 = 3;
 
-      /*if (welc_ctr_err == true)
-      {
-        def_3t(62);
-        if (ct3t_posi_st[7] == 2)
-        {
-          ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[7] = 0;
-          debut_cc0_lop = millis();
-          for (int i = 0; i < 8; i++)
-          {
-            ct3t_posi_st[i] = false;
-          }
-        }
-      }
-      else
-      {
-        def_1t(62);
-        if (ct1t_posi_st[7] == 2)
-        {
-          ct1t_posi_st[8]++; // compteur
-          ct1t_posi_st[7] = 0;
-          debut_cc0_lop = millis();
-          for (int i = 0; i < 8; i++)
-          {
-            ct1t_posi_st[i] = false;
-          }
-        }
-      }*//*
-    }
-    compteB = 0; // CcPhNeTe == 0
-    cp_cl = 1;
-    comptespot = 1;
-    chro = millis();
-    break;
-  }*/
+/*if (welc_ctr_err == true)
+{
+ def_3t(62);
+ if (ct3t_posi_st[7] == 2)
+ {
+   ct3t_posi_st[8]++; // compteur
+   ct3t_posi_st[7] = 0;
+   debut_cc0_lop = millis();
+   for (int i = 0; i < 8; i++)
+   {
+     ct3t_posi_st[i] = false;
+   }
+ }
+}
+else
+{
+ def_1t(62);
+ if (ct1t_posi_st[7] == 2)
+ {
+   ct1t_posi_st[8]++; // compteur
+   ct1t_posi_st[7] = 0;
+   debut_cc0_lop = millis();
+   for (int i = 0; i < 8; i++)
+   {
+     ct1t_posi_st[i] = false;
+   }
+ }
+}*/
+  /*
+}
+compteB = 0; // CcPhNeTe == 0
+cp_cl = 1;
+comptespot = 1;
+chro = millis();
+break;
+}*/
   //  **********************TEST**********************
 }
 //                                   FIN LOOP
@@ -1010,7 +1015,6 @@ if(ccphnete0 == 3)
 /*			81	sirenC															*/
 /*			82	sirenI															*/
 /*								SOSSAY												*/
-
 
 void GEN_mode()
 {
@@ -1061,22 +1065,22 @@ void GEN_mode()
   }
   if (etalon[3] == 3)
   {
-    //break;
+    // break;
   }
   if (etalon[3] == 2)
   {
-    //break;
+    // break;
   }
   if (etalon[3] == 1)
   {
-    //break;
+    // break;
   }
   debut_gen_inp = millis();
   debut_gen_cyl = millis();
 }
 void GEN_TST()
 {
-    int switch_def;
+  int switch_def;
   switch (CcPhNeTe)
   {
   case 1: // Ne <-> Te
@@ -1489,7 +1493,7 @@ void GEN_TST()
     {
       ccphnete0 = 1;
       // pause cl x2
-      
+
       //            tt 5s     cl 60   &   81
       /*if (rlt_cc0_lop > sec * 5)
       {
@@ -1497,7 +1501,7 @@ void GEN_TST()
         {
           def_3t(60);
           def_3t(81);
-          
+
           if (ct3t_posi_st[7] == 2)
           {
             ct3t_posi_st[8]++; // compteur
@@ -1587,7 +1591,6 @@ void GEN_TST()
     chro = millis();
     break;
   }
-
 }
 void GEN_ALM()
 {
@@ -1597,8 +1600,8 @@ void GEN_ALM()
     GEN_ste = true;
     digitalWrite(alim, true);
     digitalWrite(bosch, true);
-		
-    long rlt_3m=millis()-debut_3m;
+
+    long rlt_3m = millis() - debut_3m;
     if (rlt_3m > minut * 3)
     {
       def_3t(60);
@@ -1616,7 +1619,7 @@ void GEN_ALM()
       }
     }
 
-    long rlt_1m=millis()-debut_1m;
+    long rlt_1m = millis() - debut_1m;
     if (rlt_1m > minut)
     {
       def_3t(60);
@@ -2089,7 +2092,7 @@ int def_1t(int sosSay)
   if (sosSay == 60)
   {
     sosSay = 2;
-    flache = spot; // 11 sortie flacheRouge
+    flache = spot;     // 11 sortie flacheRouge
     siren_c_i = false; // 9 sortie siren iso
   }
   if (sosSay == 61)
@@ -2119,13 +2122,13 @@ int def_1t(int sosSay)
   if (sosSay == 81)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 82)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenI; // 9 sortie siren iso
   }
 
@@ -2315,7 +2318,7 @@ int def_2t(int sosSay)
   if (sosSay == 60)
   {
     sosSay = 2;
-    flache = spot; // 11 sortie flacheRouge
+    flache = spot;     // 11 sortie flacheRouge
     siren_c_i = false; // 9 sortie siren iso
   }
   if (sosSay == 61)
@@ -2347,13 +2350,13 @@ int def_2t(int sosSay)
   if (sosSay == 81)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 82)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenI; // 9 sortie siren iso
   }
 
@@ -2543,7 +2546,7 @@ int def_3t(int sosSay)
   if (sosSay == 60)
   {
     sosSay = 2;
-    flache = spot; // 11 sortie flacheRouge
+    flache = spot;     // 11 sortie flacheRouge
     siren_c_i = false; // 9 sortie siren iso
   }
   if (sosSay == 61)
@@ -2573,13 +2576,13 @@ int def_3t(int sosSay)
   if (sosSay == 81)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 82)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenI; // 9 sortie siren iso
   }
 
@@ -2652,42 +2655,41 @@ int def_3t(int sosSay)
 }
 void cyl_def_source()
 {
-			int switch_def_src = ct3t_posi_st[8];
-		switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
-		{
-		case 0:
-		def_source(3);
-			break;
-		case 1:
-				def_source(61);
-			break;
-		case 2:
-		def_source(2);
-			break;
-		case 3:
-				def_source(71);
-			break;
-		case 4:
-				def_source(1);
-			break;
-		case 5:
-				def_source(62);
-			break;
-		case 6:
-				for (int i = 0; i < 9; i++)
-				{
-					ct1t_posi_st[i] = false;
-					ct2t_posi_st[i] = false;
-					ct3t_posi_st[i] = false;
-				}
-			break;
-		}
-
+  int switch_def_src = ct3t_posi_st[8];
+  switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
+  {
+  case 0:
+    def_source(3);
+    break;
+  case 1:
+    def_source(61);
+    break;
+  case 2:
+    def_source(2);
+    break;
+  case 3:
+    def_source(71);
+    break;
+  case 4:
+    def_source(1);
+    break;
+  case 5:
+    def_source(62);
+    break;
+  case 6:
+    for (int i = 0; i < 9; i++)
+    {
+      ct1t_posi_st[i] = false;
+      ct2t_posi_st[i] = false;
+      ct3t_posi_st[i] = false;
+    }
+    break;
+  }
 }
 int def_source(int sosSay)
-{	
-	int flache = 0;
-	int siren_c_i = 0;
+{
+  int flache = 0;
+  int siren_c_i = 0;
   if (sosSay == 2 || sosSay == 3)
   {
     flache = flacheBleu; // sortie 12
@@ -2701,7 +2703,7 @@ int def_source(int sosSay)
   if (sosSay == 60)
   {
     sosSay = 2;
-    flache = spot; // 11 sortie flacheRouge
+    flache = spot;     // 11 sortie flacheRouge
     siren_c_i = false; // 9 sortie siren iso
   }
   if (sosSay == 61)
@@ -2731,84 +2733,83 @@ int def_source(int sosSay)
   if (sosSay == 81)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenC; // 9 sortie siren iso
   }
   if (sosSay == 82)
   {
     sosSay = 2;
-    flache = false;      // 11 sortie flacheRouge
+    flache = false;     // 11 sortie flacheRouge
     siren_c_i = sirenI; // 9 sortie siren iso
   }
 
-	// cycle count_3t
-	count_3t();
-	for (int i = 0; i < 6; i++)
-	{
-		if (ct3t_posi_st[i] == true)
-		{
-			ct3t_switch = i;
-		}
-	}
-	if (ct3t_posi_st[6] == true)
-	{
-		ct3t_posi_st[6] = false;
-		ct3t_posi_st[7]++; // compteur cycle
-		if (ct3t_posi_st[7] == sosSay)
-		{
-			ct3t_posi_st[8]++; // compteur
-			ct3t_posi_st[7] = 0;
-		}
-	}
+  // cycle count_3t
+  count_3t();
+  for (int i = 0; i < 6; i++)
+  {
+    if (ct3t_posi_st[i] == true)
+    {
+      ct3t_switch = i;
+    }
+  }
+  if (ct3t_posi_st[6] == true)
+  {
+    ct3t_posi_st[6] = false;
+    ct3t_posi_st[7]++; // compteur cycle
+    if (ct3t_posi_st[7] == sosSay)
+    {
+      ct3t_posi_st[8]++; // compteur
+      ct3t_posi_st[7] = 0;
+    }
+  }
 
-	switch (ct3t_switch)
-	{
-	case 0:
-		digitalWrite(flache, true);
-		digitalWrite(siren_c_i, true);
-		break;
-	case 1:
-		digitalWrite(flache, true);
-		digitalWrite(siren_c_i, false);
-		break;
-	case 2:
-		digitalWrite(siren_c_i, true);
-		digitalWrite(flache, true);
-		break;
-	case 3:
-		digitalWrite(siren_c_i, false);
-		digitalWrite(flache, false);
-		break;
-	case 4:
-		digitalWrite(flache, true);
-		digitalWrite(siren_c_i, false);
-		break;
-	case 5:
-		digitalWrite(flache, false);
-		digitalWrite(siren_c_i, false);
-		break;
-	case 6:
-		ct3t_switch = 0;
-		for (int i = 0; i < 9; i++)
-		{
-			ct1t_posi_st[i] = false;
-			ct2t_posi_st[i] = false;
-			ct3t_posi_st[i] = false;
-		}
+  switch (ct3t_switch)
+  {
+  case 0:
+    digitalWrite(flache, true);
+    digitalWrite(siren_c_i, true);
+    break;
+  case 1:
+    digitalWrite(flache, true);
+    digitalWrite(siren_c_i, false);
+    break;
+  case 2:
+    digitalWrite(siren_c_i, true);
+    digitalWrite(flache, true);
+    break;
+  case 3:
+    digitalWrite(siren_c_i, false);
+    digitalWrite(flache, false);
+    break;
+  case 4:
+    digitalWrite(flache, true);
+    digitalWrite(siren_c_i, false);
+    break;
+  case 5:
+    digitalWrite(flache, false);
+    digitalWrite(siren_c_i, false);
+    break;
+  case 6:
+    ct3t_switch = 0;
+    for (int i = 0; i < 9; i++)
+    {
+      ct1t_posi_st[i] = false;
+      ct2t_posi_st[i] = false;
+      ct3t_posi_st[i] = false;
+    }
 
-		ct3t_millis = millis();
-		ct2t_millis = millis();
-		ct1t_millis = millis();
+    ct3t_millis = millis();
+    ct2t_millis = millis();
+    ct1t_millis = millis();
 
-		break;
-	case 7:
-		ct3t_switch = 0;
-		break;
-	}
-	int CcPhNeTe_switch = ct3t_posi_st[8];
-	return (CcPhNeTe_switch);
+    break;
+  case 7:
+    ct3t_switch = 0;
+    break;
+  }
+  int CcPhNeTe_switch = ct3t_posi_st[8];
+  return (CcPhNeTe_switch);
 }
-
 
 /*              AUTO COFIG                     */
 int welc_1s(int ct1s_state)
