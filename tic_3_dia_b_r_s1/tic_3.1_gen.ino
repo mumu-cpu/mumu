@@ -342,6 +342,10 @@ void setup()
 }
 void loop()
 { //                               LOOP
+if(GEN_ste==true)
+{
+  GEN();
+}
   demare();
   CcPhNeTe = test();
 
@@ -352,38 +356,27 @@ void loop()
     veille_def_st = veille_def;
     maz_int = false;
   }
-
   if (CcPhNeTe_prew != CcPhNeTe)
   {
     CcPhNeTe_prew = CcPhNeTe;
     maz_int = false;
   }
-
   if (ccphnete_0_st != ccphnete0)
   {
     ccphnete_0_st = ccphnete0;
     maz_int = false;
   }
-
   if (CcPhNeTe > 0)
   {
     debut = millis();
   }
-  if (ccphnete0 == 1)
+  if (ccphnete0 == 1)// sys ras  
 {
       unsigned long rlt_gen_lop=millis()-debut_gen_lop;
-
       if(rlt_gen_lop > minut)
-
       {
-
         GEN_mode();
-
       }
-}
-if(GEN_ste==true)
-{
-  GEN();
 }
 
   maz_int_f();
@@ -819,13 +812,6 @@ if(GEN_ste==true)
     {
       ccphnete0 = 1;
       // pause cl x2
-      // unsigned long rlt_gen_lop=millis()-debut_gen_lop;
-      // if(rlt_gen_lop > minut)
-      // {
-      //  GEN_ste();
-      // }
-      
-      
       
       //            tt 5s     cl 60   &   81
       if (rlt_cc0_lop > sec * 5)
@@ -1032,39 +1018,6 @@ void GEN()
           ct3t_posi_st[i] = false;
         }
       }
-      // def_3t(4);
-      // if (ct3t_posi_st[7] == 2)
-      // {
-      //   ct3t_posi_st[8]++; // compteur
-      //   ct3t_posi_st[7] = 0;
-      //   gen_debut = millis();
-      //   for (int i = 0; i < 8; i++)
-      //   {
-      //     ct3t_posi_st[i] = false;
-      //   }
-      // }
-      // def_3t(60);
-      // if (ct3t_posi_st[7] == 2)
-      // {
-      //   ct3t_posi_st[8]++; // compteur
-      //   ct3t_posi_st[7] = 0;
-      //   // gen_debut = millis();
-      //   for (int i = 0; i < 8; i++)
-      //   {
-      //     ct3t_posi_st[i] = false;
-      //   }
-      // }
-      // def_1t(4);
-      // if (ct1t_posi_st[7] == 2)
-      // {
-      //   ct1t_posi_st[8]++; // compteur
-      //   ct1t_posi_st[7] = 0;
-      //   gen_debut = millis();
-      //   for (int i = 0; i < 8; i++)
-      //   {
-      //     ct1t_posi_st[i] = false;
-      //   }
-      // }
     }
 
     long rlt_1m=millis()-debut_1m;
