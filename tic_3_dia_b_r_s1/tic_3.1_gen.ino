@@ -344,7 +344,7 @@ void loop()
 { //                               LOOP
 if(GEN_ste==true)
 {
-  GEN();
+  GEN_ALM();
 }
   demare();
   CcPhNeTe = test();
@@ -370,12 +370,97 @@ if(GEN_ste==true)
   {
     debut = millis();
   }
+    unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
   if (ccphnete0 == 1)// sys ras  
 {
-      unsigned long rlt_gen_lop=millis()-debut_gen_lop;
-      if(rlt_gen_lop > minut)
+        if (rlt_cc0_lop > sec * 5)
+      {
+        if (welc_ctr_err == true)
+        {
+          def_3t(60);
+          def_3t(81);
+          
+          if (ct3t_posi_st[7] == 2)
+          {
+            ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+          }
+        }
+        else
+        {
+          def_1t(60);
+          if (ct1t_posi_st[7] == 2)
+          {
+            ct1t_posi_st[8]++; // compteur
+            ct1t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct1t_posi_st[i] = false;
+            }
+          }
+        }
+      }
+    unsigned long rlt_gen_lop=millis()-debut_gen_lop;
+      if(rlt_gen_lop > minut)// GEN_mode
       {
         GEN_mode();
+      }
+
+}
+if(ccphnete0 == 2)
+{
+      if (rlt_cc0_lop > sec * 10)
+      {
+          def_source(2);
+          def_source(4);
+          def_source(60);
+          if (ct3t_posi_st[7] == 2)
+          {
+            ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+          }
+      }
+}
+if(ccphnete0 == 3)
+{
+      if (welc_ctr_err == true)
+      {
+        def_3t(62);
+        if (ct3t_posi_st[7] == 2)
+        {
+          ct3t_posi_st[8]++; // compteur
+          ct3t_posi_st[7] = 0;
+          debut_cc0_lop = millis();
+          for (int i = 0; i < 8; i++)
+          {
+            ct3t_posi_st[i] = false;
+          }
+        }
+      }
+      else
+      {
+        def_1t(62);
+        if (ct1t_posi_st[7] == 2)
+        {
+          ct1t_posi_st[8]++; // compteur
+          ct1t_posi_st[7] = 0;
+          debut_cc0_lop = millis();
+          for (int i = 0; i < 8; i++)
+          {
+            ct1t_posi_st[i] = false;
+          }
+        }
       }
 }
 
@@ -398,7 +483,7 @@ if(GEN_ste==true)
   }Serial.println(" ");
   //  **********************TEST********************************
 
-  int switch_def;
+  /* int switch_def;
   switch (CcPhNeTe)
   {
   case 1: // Ne <-> Te
@@ -806,7 +891,6 @@ if(GEN_ste==true)
     break;
 
   default:
-    unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
     //                  SYSTEM 0K
     if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
     {
@@ -814,7 +898,7 @@ if(GEN_ste==true)
       // pause cl x2
       
       //            tt 5s     cl 60   &   81
-      if (rlt_cc0_lop > sec * 5)
+      /*if (rlt_cc0_lop > sec * 5)
       {
         if (welc_ctr_err == true)
         {
@@ -846,14 +930,14 @@ if(GEN_ste==true)
             }
           }
         }
-      }
+      }*//*
     }
     //                  BOSCH LOW
     if (CcPhNeTe == 0 && battLow == true)
     {
       ccphnete0 = 2;
       // pause cl x2
-      if (rlt_cc0_lop > sec * 10)
+      /*if (rlt_cc0_lop > sec * 10)
       {
           def_source(2);
           def_source(4);
@@ -868,13 +952,14 @@ if(GEN_ste==true)
               ct3t_posi_st[i] = false;
             }
           }
-      }
+      }*//*
     }
     //                  TEMPO 5 minutes
     if (rlt_cc0_lop > minut * 5)
     {
       ccphnete0 = 3;
-      if (welc_ctr_err == true)
+
+      /*if (welc_ctr_err == true)
       {
         def_3t(62);
         if (ct3t_posi_st[7] == 2)
@@ -901,14 +986,14 @@ if(GEN_ste==true)
             ct1t_posi_st[i] = false;
           }
         }
-      }
+      }*//*
     }
     compteB = 0; // CcPhNeTe == 0
     cp_cl = 1;
     comptespot = 1;
     chro = millis();
     break;
-  }
+  }*/
   //  **********************TEST**********************
 }
 //                                   FIN LOOP
@@ -976,24 +1061,535 @@ void GEN_mode()
   }
   if (etalon[3] == 3)
   {
-    // GEN(); // active 230v pendent 15min
     //break;
   }
   if (etalon[3] == 2)
   {
-    GEN(); // active 230v pendent 15min
     //break;
   }
   if (etalon[3] == 1)
   {
-    // GEN();
     //break;
   }
   debut_gen_inp = millis();
   debut_gen_cyl = millis();
 }
+void GEN_TST()
+{
+    int switch_def;
+  switch (CcPhNeTe)
+  {
+  case 1: // Ne <-> Te
+    Serial.print("Ne <-> Te ");
+    Serial.println(CcPhNeTe);
+    // sosNbr34();
+    if (welc_ctr_err == true)
+    {
+      switch_def = ct3t_posi_st[8];
+    }
+    else
+    {
+      switch_def = ct1t_posi_st[8];
+    }
+    switch (switch_def) //(sosNbr == 3_61_4_72)
+    {
+    case 0:
+      if (welc_ctr_err == true)
+      {
+        def_3t(3);
+      }
+      else
+      {
+        def_1t(3);
+      }
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        def_3t(61);
+      }
+      else
+      {
+        def_1t(61);
+      }
+      break;
+    case 2:
+      if (welc_ctr_err == true)
+      {
+        def_3t(4);
+      }
+      else
+      {
+        def_1t(4);
+      }
+      break;
+    case 3:
+      if (welc_ctr_err == true)
+      {
+        def_3t(72);
+      }
+      else
+      {
+        def_1t(72);
+      }
+      break;
+    case 4:
+      if (welc_ctr_err == true)
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      break;
+    }
+    break;
 
-void GEN()
+  case 2: // Ph <-> Te
+    Serial.print("Ph <-> Te ");
+    Serial.println(CcPhNeTe);
+    // sosNbr24();
+    if (welc_ctr_err == true)
+    {
+      switch_def = ct3t_posi_st[8];
+    }
+    else
+    {
+      switch_def = ct1t_posi_st[8];
+    }
+    switch (switch_def) //(sosNbr == 2_61_4_72)
+    {
+    case 0:
+      if (welc_ctr_err == true)
+      {
+        def_3t(2);
+      }
+      else
+      {
+        def_1t(2);
+      }
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        def_3t(61);
+      }
+      else
+      {
+        def_1t(61);
+      }
+      break;
+    case 2:
+      if (welc_ctr_err == true)
+      {
+        def_3t(4);
+      }
+      else
+      {
+        def_1t(4);
+      }
+      break;
+    case 3:
+      if (welc_ctr_err == true)
+      {
+        def_3t(72);
+      }
+      else
+      {
+        def_1t(72);
+      }
+      break;
+    case 4:
+      if (welc_ctr_err == true)
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      break;
+    }
+    break;
+
+  case 3: // Ph <-> Ne
+    Serial.print("Ph <-> Ne ");
+    Serial.println(CcPhNeTe);
+    if (welc_ctr_err == true)
+    {
+      switch_def = ct3t_posi_st[8];
+    }
+    else
+    {
+      switch_def = ct1t_posi_st[8];
+    }
+    switch (switch_def) //(sosNbr == 2_61_3_62)
+    {
+    case 0:
+      if (welc_ctr_err == true)
+      {
+        def_3t(2);
+      }
+      else
+      {
+        def_1t(2);
+      }
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        def_3t(61);
+      }
+      else
+      {
+        def_1t(61);
+      }
+      break;
+    case 2:
+      if (welc_ctr_err == true)
+      {
+        def_3t(3);
+      }
+      else
+      {
+        def_1t(3);
+      }
+      break;
+    case 3:
+      if (welc_ctr_err == true)
+      {
+        def_3t(62);
+      }
+      else
+      {
+        def_1t(62);
+      }
+      break;
+    case 4:
+      if (welc_ctr_err == true)
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      break;
+    }
+    break;
+
+  case 4: // Cc-Ph-Ne-Te. test
+    Serial.print("Cc-Ph-Ne-Te. test ");
+    Serial.println(CcPhNeTe);
+    // sosNbr234();
+    if (welc_ctr_err == true)
+    {
+      switch_def = ct3t_posi_st[8];
+    }
+    else
+    {
+      switch_def = ct1t_posi_st[8];
+    }
+    switch (switch_def) //(sosNbr == 2_61_3_61_4_72)
+    {
+    case 0:
+      if (welc_ctr_err == true)
+      {
+        def_3t(2);
+      }
+      else
+      {
+        def_1t(2);
+      }
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        def_3t(61);
+      }
+      else
+      {
+        def_1t(61);
+      }
+      break;
+    case 2:
+      if (welc_ctr_err == true)
+      {
+        def_3t(3);
+      }
+      else
+      {
+        def_1t(3);
+      }
+      break;
+    case 3:
+      if (welc_ctr_err == true)
+      {
+        def_3t(61);
+      }
+      else
+      {
+        def_1t(61);
+      }
+      break;
+    case 4:
+      if (welc_ctr_err == true)
+      {
+        def_3t(4);
+      }
+      else
+      {
+        def_1t(4);
+      }
+      break;
+    case 5:
+      if (welc_ctr_err == true)
+      {
+        def_3t(72);
+      }
+      else
+      {
+        def_1t(72);
+      }
+      break;
+    case 6:
+      if (welc_ctr_err == true)
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      break;
+    }
+    break;
+
+  case 5: // Cc_Ph_Ne_Te. cuci
+    Serial.print("Cc_Ph_Ne_Te. cuci");
+    Serial.println(CcPhNeTe);
+    // sosNbr55();
+    if (welc_ctr_err == true)
+    {
+      switch_def = ct3t_posi_st[8];
+    }
+    else
+    {
+      switch_def = ct1t_posi_st[8];
+    }
+    switch (switch_def) //(sosNbr == 5_71_5_72)
+    {
+    case 0:
+      if (welc_ctr_err == true)
+      {
+        def_3t(5);
+      }
+      else
+      {
+        def_1t(5);
+      }
+      break;
+    case 1:
+      if (welc_ctr_err == true)
+      {
+        def_3t(71);
+      }
+      else
+      {
+        def_1t(71);
+      }
+      break;
+    case 2:
+      if (welc_ctr_err == true)
+      {
+        def_3t(5);
+      }
+      else
+      {
+        def_1t(5);
+      }
+      break;
+    case 3:
+      if (welc_ctr_err == true)
+      {
+        def_3t(72);
+      }
+      else
+      {
+        def_1t(72);
+      }
+      break;
+    case 4:
+      if (welc_ctr_err == true)
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      else
+      {
+        for (int i = 0; i < 9; i++)
+        {
+          ct1t_posi_st[i] = false;
+          ct2t_posi_st[i] = false;
+          ct3t_posi_st[i] = false;
+        }
+      }
+      break;
+    }
+    break;
+
+  default:
+    //                  SYSTEM 0K
+    if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
+    {
+      ccphnete0 = 1;
+      // pause cl x2
+      
+      //            tt 5s     cl 60   &   81
+      /*if (rlt_cc0_lop > sec * 5)
+      {
+        if (welc_ctr_err == true)
+        {
+          def_3t(60);
+          def_3t(81);
+          
+          if (ct3t_posi_st[7] == 2)
+          {
+            ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+          }
+        }
+        else
+        {
+          def_1t(60);
+          if (ct1t_posi_st[7] == 2)
+          {
+            ct1t_posi_st[8]++; // compteur
+            ct1t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct1t_posi_st[i] = false;
+            }
+          }
+        }
+      }*/
+    }
+    //                  BOSCH LOW
+    if (CcPhNeTe == 0 && battLow == true)
+    {
+      ccphnete0 = 2;
+      // pause cl x2
+      /*if (rlt_cc0_lop > sec * 10)
+      {
+          def_source(2);
+          def_source(4);
+          def_source(60);
+          if (ct3t_posi_st[7] == 2)
+          {
+            ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+          }
+      }*/
+    }
+    //                  TEMPO 5 minutes
+    if (rlt_cc0_lop > minut * 5)
+    {
+      ccphnete0 = 3;
+
+      /*if (welc_ctr_err == true)
+      {
+        def_3t(62);
+        if (ct3t_posi_st[7] == 2)
+        {
+          ct3t_posi_st[8]++; // compteur
+          ct3t_posi_st[7] = 0;
+          debut_cc0_lop = millis();
+          for (int i = 0; i < 8; i++)
+          {
+            ct3t_posi_st[i] = false;
+          }
+        }
+      }
+      else
+      {
+        def_1t(62);
+        if (ct1t_posi_st[7] == 2)
+        {
+          ct1t_posi_st[8]++; // compteur
+          ct1t_posi_st[7] = 0;
+          debut_cc0_lop = millis();
+          for (int i = 0; i < 8; i++)
+          {
+            ct1t_posi_st[i] = false;
+          }
+        }
+      }*/
+    }
+    compteB = 0; // CcPhNeTe == 0
+    cp_cl = 1;
+    comptespot = 1;
+    chro = millis();
+    break;
+  }
+
+}
+void GEN_ALM()
 {
   long gen_rlt = millis() - gen_debut;
   if (gen_rlt <= gen_tmp_230)
