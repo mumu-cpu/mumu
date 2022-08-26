@@ -380,10 +380,10 @@ void loop()
         def_3t(60);
         def_3t(81);
 
-        if (ct3t_posi_st[7] == 2)
+        if (ct3t_posi_st[8] == 1)
         {
-          ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[7] = 0;
+          //ct3t_posi_st[8]++; // compteur
+          ct3t_posi_st[8] = 0;
           debut_cc0_lop = millis();
           for (int i = 0; i < 8; i++)
           {
@@ -419,10 +419,10 @@ void loop()
       def_source(2);
       def_source(4);
       def_source(60);
-      if (ct3t_posi_st[7] == 2)
+      if (ct3t_posi_st[8] == 1)
       {
-        ct3t_posi_st[8]++; // compteur
-        ct3t_posi_st[7] = 0;
+        //ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
         {
@@ -436,10 +436,10 @@ void loop()
     if (welc_ctr_err == true)
     {
       def_3t(62);
-      if (ct3t_posi_st[7] == 2)
+      if (ct3t_posi_st[8] == 1)
       {
-        ct3t_posi_st[8]++; // compteur
-        ct3t_posi_st[7] = 0;
+        //ct3t_posi_st[8]++; // compteur
+        ct3t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
         {
@@ -450,10 +450,10 @@ void loop()
     else
     {
       def_1t(62);
-      if (ct1t_posi_st[7] == 2)
+      if (ct1t_posi_st[8] == 1)
       {
-        ct1t_posi_st[8]++; // compteur
-        ct1t_posi_st[7] = 0;
+        //ct1t_posi_st[8]++; // compteur
+        ct1t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
         {
@@ -484,7 +484,7 @@ void loop()
   }
   Serial.println(" ");
   //  **********************TEST********************************
-
+  GEN_TST();
   /* int switch_def;
   switch (CcPhNeTe)
   {
@@ -1552,6 +1552,8 @@ void GEN_TST()
       }*/
     }
     //                  TEMPO 5 minutes
+   unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
+   
     if (rlt_cc0_lop > minut * 5)
     {
       ccphnete0 = 3;
@@ -2807,7 +2809,7 @@ int def_source(int sosSay)
     ct3t_switch = 0;
     break;
   }
-  int CcPhNeTe_switch = ct3t_posi_st[8];
+  int CcPhNeTe_switch = ct3t_posi_st[7];
   return (CcPhNeTe_switch);
 }
 
