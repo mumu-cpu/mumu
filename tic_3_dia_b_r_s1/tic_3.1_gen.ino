@@ -25,7 +25,7 @@ int seuil_lux = 30;       // seuil_lux
 int seuil_term = 30;      // seuil_term
 int sosNbr = 1;           // code on_off_cl
 unsigned long sosTmp = 1; // tempt cliososNbr40 x1000
-int sosSay = 1;           //
+int sosSay = 0;           //
 int CcPhNeTe = 0;         // CcPhNeTe
 int CcPhNeTe_prew = 0;
 int cmpB = 0;
@@ -113,6 +113,8 @@ bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false
 String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
 
 int etalon[4] = {0, 0, 0, 0};
+  int flache_b_r_s = 0;
+  int siren_c_i = 0;
 
 unsigned long cpt_millis = millis();
 unsigned long cpt1s_millis = millis();
@@ -508,66 +510,64 @@ void loop()
 /*								SOSSAY												*/
 void sosSay_slc(int sosSay)
 {
-  int flache = 0;
-  int siren_c_i = 0;
   if (sosSay == 2 || sosSay == 3) // flacheBleu,sirenC
   {
-    flache = flacheBleu; // sortie 12
+    flache_b_r_s = flacheBleu; // sortie 12
     siren_c_i = sirenC;  // 3 sortie siren con (continute)
   }
   if (sosSay == 4 || sosSay == 5) // flacheRouge,sirenI
   {
-    flache = flacheRouge; // 11 sortie flacheRouge
+    flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
   if (sosSay == 50) // fan
   {
-    flache = fan;    // 5 ventilateur
+    flache_b_r_s = fan;    // 5 ventilateur
     siren_c_i = fan; // 5 ventilateur
   }
   if (sosSay == 60) // spot
   {
-    flache = spot;     // 6 sortie spot
+    flache_b_r_s = spot;     // 6 sortie spot
     siren_c_i = false; // "<&>"
   }
   if (sosSay == 61) // spot,sirenI
   {
-    flache = spot;      // 6 sortie spot
+    flache_b_r_s = spot;      // 6 sortie spot
     siren_c_i = sirenI; // 9 sortie siren iso
   }
   if (sosSay == 62) // spot,sirenI
   {
-    flache = spot;      // 6 sortie spot
+    flache_b_r_s = spot;      // 6 sortie spot
     siren_c_i = sirenI; // 9 sortie siren iso
   }
   if (sosSay == 71) // spot,sirenC
   {
-    flache = spot;      // 6 sortie spot
+    flache_b_r_s = spot;      // 6 sortie spot
     siren_c_i = sirenC; // 3 sortie siren con
   }
   if (sosSay == 72) // spot,sirenC
   {
-    flache = spot;      // 6 sortie spot
+    flache_b_r_s = spot;      // 6 sortie spot
     siren_c_i = sirenC; // 3 sortie siren con
   }
   if (sosSay == 81) // sirenC
   {
-    flache = false;     // "<&>"
+    flache_b_r_s = false;     // "<&>"
     siren_c_i = sirenC; // 3 sortie siren con
   }
   if (sosSay == 82) // sirenI
   {
-    flache = false;     // "<&>"
+    flache_b_r_s = false;     // "<&>"
     siren_c_i = sirenI; // 9 sortie siren iso
   }
   if (sosSay == 91) // flacheBleu
   {
-    flache = flacheBleu; // 12 sortie flacheBleu
+    flache_b_r_s = flacheBleu; // 12 sortie flacheBleu
     siren_c_i = false;   // "<&>"
   }
   if (sosSay == 92) // flacheRouge
   {
-    flache = flacheRouge; // 11 sortie flacheRouge
+    flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = false;    // "<&>"
   }
 }
@@ -1723,27 +1723,27 @@ int def_1t(int sosSay, int cl)
   switch (ct1t_switch)
   {
   case 0:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
     digitalWrite(siren_c_i, true);
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     break;
   case 3:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     break;
   case 4:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 5:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 6:
@@ -1895,27 +1895,27 @@ int def_2t(int sosSay, int cl)
   switch (ct2t_switch)
   {
   case 0:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
     digitalWrite(siren_c_i, true);
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     break;
   case 3:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     break;
   case 4:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 5:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 6:
@@ -2045,8 +2045,6 @@ int count_3t()
 int def_3t(int sosSay, int cl)
 {
   sosSay_slc(sosSay);
-
-  // cycle count_3t
   count_3t();
   for (int i = 0; i < 6; i++)
   {
@@ -2069,27 +2067,27 @@ int def_3t(int sosSay, int cl)
   switch (ct3t_switch)
   {
   case 0:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
     digitalWrite(siren_c_i, true);
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     break;
   case 3:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     break;
   case 4:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 5:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 6:
@@ -2152,7 +2150,6 @@ void cyl_def_source()
 int def_source(int sosSay, int cl)
 {
   sosSay_slc(sosSay);
-  // cycle count_3t
   count_3t();
   for (int i = 0; i < 6; i++)
   {
@@ -2171,31 +2168,30 @@ int def_source(int sosSay, int cl)
       ct3t_posi_st[7] = 0;
     }
   }
-
   switch (ct3t_switch)
   {
   case 0:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, true);
     break;
   case 1:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, false);
     break;
   case 2:
     digitalWrite(siren_c_i, true);
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     break;
   case 3:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     break;
   case 4:
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     digitalWrite(siren_c_i, false);
     break;
   case 5:
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     digitalWrite(siren_c_i, false);
     break;
   case 6:
@@ -2736,30 +2732,27 @@ int count05s(int ct05s_state)
   }
   return (ct05s_ste);
 }
-
 int f_b_cl_2(int sosSay, int compteB)
 {
-  int flache = 0;
-  int siren_c_i = 0;
   if (sosSay == 2 || sosSay == 3)
   {
-    flache = flacheBleu; // sortie 12
+    flache_b_r_s = flacheBleu; // sortie 12
     siren_c_i = sirenC;  // 3 sortie siren con (continute)
   }
   if (compteB == 2) //|| compteB == 4 || compteB == 6)
   {
-    flache = spot;      // 6 eclairage
+    flache_b_r_s = spot;      // 6 eclairage
     siren_c_i = sirenI; // 9 sortie siren iso
   }
   if (compteB == 4 || compteB == 6)
   {
-    flache = spot;
+    flache_b_r_s = spot;
     siren_c_i = sirenC;
   }
 
   if (sosSay == 4 || sosSay == 5)
   {
-    flache = flacheRouge; // 11 sortie flacheRouge
+    flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
 
@@ -2772,7 +2765,7 @@ int f_b_cl_2(int sosSay, int compteB)
   case 7:
   case 9:
     digitalWrite(siren_c_i, true);
-    digitalWrite(flache, true);
+    digitalWrite(flache_b_r_s, true);
     break;
   case 2:
     cmpB = 1;
@@ -2791,11 +2784,11 @@ int f_b_cl_2(int sosSay, int compteB)
     break;
   case 11:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     break;
   default:
     digitalWrite(siren_c_i, false);
-    digitalWrite(flache, false);
+    digitalWrite(flache_b_r_s, false);
     cmpB = 0;
     break;
   }
@@ -2816,7 +2809,6 @@ int f_b_cl_2(int sosSay, int compteB)
   }
   // return(cmpB);
 }
-
 int getBattery(int batt, bool battLow)
 {
   float b = analogRead(BATTERYPIN);                  // valeur analogique
@@ -3094,8 +3086,6 @@ void battOffFonc()
   }
   debut = millis();
 }
-
-/**************FONCTION****s_i_cl*/
 int s_i_cl(int sosSay, int sosTmp)
 {
   int say10 = sosSay;
@@ -3104,7 +3094,7 @@ int s_i_cl(int sosSay, int sosTmp)
     sosSay = 2;
   }
   if (sosSay == 0)
-  { // arret s_i_cl
+  { // arret s_i_c_l
     sosTmp = 1;
     digitalWrite(sirenC, false); // modifie l'état de la LED
   }
@@ -3149,7 +3139,7 @@ int s_i_cl(int sosSay, int sosTmp)
           }
           else
           {
-            if (sosSay == 0) // arret s_i_cl
+            if (sosSay == 0) // arret s_i_c_l
             {
               // modifie l'état de la LED
             }
@@ -3177,8 +3167,6 @@ int s_i_cl(int sosSay, int sosTmp)
     }
   }
 }
-/**************FONCTION****s_i_cl****final*/
-/**************FONCTION****s_c_cl*/
 int s_c_cl(int sosSay, int sosTmp)
 {
   int say10 = sosSay;
@@ -3264,8 +3252,6 @@ int s_c_cl(int sosSay, int sosTmp)
     }
   }
 }
-/**************FONCTION****s_c_cl****final*/
-/**************FONCTION****f_r_cl*/
 int f_r_cl(int sosSay) //, int sosTmp)
 {
   int say10 = sosSay;
@@ -3355,8 +3341,6 @@ int f_r_cl(int sosSay) //, int sosTmp)
     f_r_cl_state = true;
   }
 }
-/*************FONCTION*****f_r_cl****final*/
-/*************FONCTION*****f_b_cl*/
 int f_b_cl(int sosSay)
 {
   int say10 = sosSay;
@@ -3450,8 +3434,6 @@ int f_b_cl(int sosSay)
     f_b_cl_state = true;   // f_b_cl fin cycle
   }
 }
-/*************FONCTION*****f_b_cl////final*/
-/*************FONCTION*****sosNbr10*/
 int sosNbr10() // spot_cl + s_c_cl
 {
   switch (comptespot) //(sosNbr == 10)
@@ -3479,6 +3461,3 @@ int sosNbr10() // spot_cl + s_c_cl
     comptespot = 1; // sosNbr == 10
   }
 }
-/*************FONCTION*****sosNbr10****final*/
-
-/*************FONCTION*****T E S T****/
