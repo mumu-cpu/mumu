@@ -1479,7 +1479,7 @@ int test()
   }
   if ((phase == false && neutre == false && terre == false) || (phase == true && neutre == false && terre == false) || (phase == false && neutre == true && terre == false) || (phase == false && neutre == false && terre == true))
   {
-    CcPhNeTe = 0;
+    CcPhNeTe = 0; // sosNbr10()
   }
   return (CcPhNeTe);
 }
@@ -2732,6 +2732,83 @@ int count05s(int ct05s_state)
   }
   return (ct05s_ste);
 }
+int f_b_cl_2(int sosSay, int compteB)
+{
+  if (sosSay == 2 || sosSay == 3)
+  {
+    flache_b_r_s = flacheBleu; // sortie 12
+    siren_c_i = sirenC;  // 3 sortie siren con (continute)
+  }
+  if (compteB == 2) //|| compteB == 4 || compteB == 6)
+  {
+    flache_b_r_s = spot;      // 6 eclairage
+    siren_c_i = sirenI; // 9 sortie siren iso
+  }
+  if (compteB == 4 || compteB == 6)
+  {
+    flache_b_r_s = spot;
+    siren_c_i = sirenC;
+  }
+
+  if (sosSay == 4 || sosSay == 5)
+  {
+    flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
+    siren_c_i = sirenI;   // 9 sortie siren iso
+  }
+
+  int cont_st = count(ct_state, compteB);
+  switch (cont_st)
+  {
+  case 1:
+  case 3:
+  case 5:
+  case 7:
+  case 9:
+    digitalWrite(siren_c_i, true);
+    digitalWrite(flache_b_r_s, true);
+    break;
+  case 2:
+    cmpB = 1;
+    break;
+  case 4:
+    cmpB = 2;
+    break;
+  case 6:
+    cmpB = 3;
+    break;
+  case 8:
+    cmpB = 4;
+    break;
+  case 10:
+    cmpB = 5;
+    break;
+  case 11:
+    digitalWrite(siren_c_i, false);
+    digitalWrite(flache_b_r_s, false);
+    break;
+  default:
+    digitalWrite(siren_c_i, false);
+    digitalWrite(flache_b_r_s, false);
+    cmpB = 0;
+    break;
+  }
+
+  if (sosSay == cmpB)
+  {
+    ct_state = 0; // on_off x5
+    cpt_millis = millis();
+    cmpB = 0;
+    sosSay = compteB + 1;
+    return (sosSay);
+  }
+  else
+  {
+    // if(compteB == 2||compteB == 4)
+
+    return (compteB);
+  }
+  // return(cmpB);
+}
 int getBattery(int batt, bool battLow)
 {
   float b = analogRead(BATTERYPIN);                  // valeur analogique
@@ -2831,6 +2908,8 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
         temp1 = millis();
         sosSay = 3;
         sosTmp = 3;
+        // f_b_cl(sosSay);
+        // f_r_cl(sosSay);
         spot_cl(sosSay, sosTmp);
       }
     }
@@ -2845,6 +2924,8 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
         temp1 = millis();
         sosSay = 3;
         sosTmp = 3;
+        f_b_cl(sosSay);
+        f_r_cl(sosSay);
         spot_cl(sosSay, sosTmp);
       }
     }
@@ -2860,6 +2941,8 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
       temp1 = millis();
       sosSay = 3;              // battLow 5%
       sosTmp = 3;              // battLow 5%
+      f_b_cl(sosSay);          // battLow 5%
+      f_r_cl(sosSay);          // battLow 5%
       spot_cl(sosSay, sosTmp); // battLow 5%
     }
   }
@@ -2891,6 +2974,8 @@ void veilleFonc(bool tempo_State_On, bool BPmarcheState, bool battLow, int batt)
         temp1 = millis();
         sosSay = 3;
         sosTmp = 2;
+        // f_b_cl(sosSay);
+        // f_r_cl(sosSay);
         spot_cl(sosSay, sosTmp);
       }
     }
@@ -2941,6 +3026,12 @@ void alimOffFonc()
     { // si entree actif
       digitalWrite(alim, false);
       alim_State = 20;
+      sosSay = 2;
+      sosTmp = 2;
+      f_b_cl(sosSay);
+      sosSay = 3;
+      sosTmp = 3;
+      f_r_cl(sosSay);
       sosSay = 1;
       sosTmp = 1;
       spot_cl(sosSay, sosTmp);
@@ -2973,6 +3064,11 @@ void battOffFonc()
       batState = getBattery(batt, battLow);
       digitalWrite(alim, false);
       sosSay = 1;
+      sosTmp = 2;
+      f_b_cl(sosSay);
+      sosSay = 2;
+      f_r_cl(sosSay);
+      sosSay = 1;
       spot_cl(sosSay, sosTmp);
     }
     else
@@ -2989,4 +3085,379 @@ void battOffFonc()
     veilleF(alim_State, BPmarcheState, batt);
   }
   debut = millis();
+}
+int s_i_cl(int sosSay, int sosTmp)
+{
+  int say10 = sosSay;
+  if (say10 == 10)
+  {
+    sosSay = 2;
+  }
+  if (sosSay == 0)
+  { // arret s_i_c_l
+    sosTmp = 1;
+    digitalWrite(sirenC, false); // modifie l'état de la LED
+  }
+  if (millis() - s_i_cl_Tmp < 1000 * sosTmp)
+  {
+    s_i_cl_state = false;
+    if (compte30sI <= sosSay)
+    {
+      if (sirenIState == LOW)
+      {
+        if ((millis() - millisSi_BR_CLon) >= 300)
+        {
+          sirenIState = HIGH; // change the state of LED
+          millisSi_BR_CLon = millis();
+          if (say10 == 0)
+          {
+            digitalWrite(sirenI, false); // modifie l'état de la LED
+          }
+          else
+          {
+            if (say10 == 10)
+            {
+              digitalWrite(sirenI, false); // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(sirenI, sirenIState);
+            }
+          }
+        }
+      }
+      else
+      {
+        if ((millis() - millisSi_BR_CLon) >= 550)
+        {
+          compte30sI = compte30sI + 1;
+          sirenIState = LOW; // change the state of LED
+          millisSi_BR_CLon = millis();
+          if (say10 == 10)
+          {
+            digitalWrite(sirenI, true);
+          }
+          else
+          {
+            if (sosSay == 0) // arret s_i_c_l
+            {
+              // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(sirenI, sirenIState); // modifie l'état de la LED
+            }
+          }
+        }
+      }
+      if (compte30sI >= sosSay)
+      {
+        s_i_cl_state = true;
+      }
+    }
+  }
+  else
+  {
+    s_i_cl_Tmp = millis(); // mémorise la valeur de la fonction millis()
+    millisSi_BR_CLon = millis();
+    comptesI = comptesI + 1;
+    if (compte30sI >= sosSay)
+    {
+      compte30sI = 1;
+    }
+  }
+}
+int s_c_cl(int sosSay, int sosTmp)
+{
+  int say10 = sosSay;
+  if (say10 == 10)
+  {
+    sosSay = 2;
+  }
+  if (sosSay == 0)
+  {
+    sosTmp = 1;
+    digitalWrite(sirenC, false); // modifie l'état de la LED
+  }
+  if (compte30sC <= sosSay)
+  {
+    s_c_cl_state = false;
+    if (sirenCState == LOW)
+    {
+      if ((millis() - millisSc_BR_CLon) >= 300)
+      {
+        sirenCState = HIGH; // change the state of LED
+        millisSc_BR_CLon = millis();
+        if (say10 == 0 || say10 == 10)
+        {
+          digitalWrite(sirenC, false); // modifie l'état de la LED
+        }
+        else
+        {
+          digitalWrite(sirenC, sirenCState); // remember Current millis() time
+                                             // if ()
+                                             // {
+                                             //   digitalWrite(sirenC, false); // modifie l'état de la LED
+                                             // }
+                                             // else
+                                             // {
+                                             // }
+        }
+      }
+    }
+    else
+    {
+      if ((millis() - millisSc_BR_CLon) >= 500)
+      {
+        compte30sC = compte30sC + 1;
+        sirenCState = LOW; // change the state of LED
+        millisSc_BR_CLon = millis();
+        if (say10 == 10)
+        {
+          digitalWrite(sirenC, true);
+        }
+        else
+        {
+          if (sosSay == 0)
+          {
+            digitalWrite(sirenC, false);
+          }
+          else
+          {
+            digitalWrite(sirenC, sirenCState);
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    s_c_cl_state = true;
+    compte30sC = 1;
+    s_c_cl_Tmp = millis();
+    millisSc_BR_CLon = millis();
+    comptesC = comptesC + 1;
+    if (compte30sC >= sosSay)
+    {
+    }
+  }
+  if (millis() - s_c_cl_Tmp < 1000 * sosTmp)
+  {
+  }
+  else
+  {
+    // compte30=0;
+    if (compte30sC >= sosSay)
+    {
+    }
+  }
+}
+int f_r_cl(int sosSay) //, int sosTmp)
+{
+  int say10 = sosSay;
+  if (say10 == 10)
+  {
+    sosSay = 2;
+  }
+  if (say10 == 0)
+  {
+    sosSay = 1;
+    sosTmp = 1;
+    flacheRougeState = false;
+    digitalWrite(flacheRouge, flacheRougeState); // modifie l'état de la LED
+  }
+  sosTmp = sosSay + 1;
+  if (millis() - f_r_cl_Tmp <= 1000 * sosTmp)
+  {
+    if (compte30R < sosSay)
+    {
+      f_r_cl_state = false;
+      if (flacheRougeState == LOW)
+      { // inverse la variable d''état de la LED
+        if (millis() - f_r_cl_Say >= 300)
+        {
+          f_r_cl_Say = millis();
+          flacheRougeState = HIGH;
+          if (say10 == 0)
+          {
+            flacheRougeState = false;
+            digitalWrite(flacheRouge, flacheRougeState); // modifie l'état de la LED
+          }
+          else
+          {
+            if (say10 == 10)
+            {
+              flacheRougeState = false;
+              digitalWrite(flacheRouge, flacheRougeState); // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(flacheRouge, flacheRougeState);
+            }
+          }
+        }
+      }
+      else
+      {
+        if (millis() - f_r_cl_Say >= 400)
+        {
+          flacheRougeState = LOW;
+          compte30R = compte30R + 1;
+          f_r_cl_Say = millis();
+          if (say10 == 10)
+          {
+            flacheRougeState = true;
+            digitalWrite(flacheRouge, flacheRougeState);
+          }
+          else
+          {
+            if (say10 == 0)
+            {
+              flacheRougeState = false;
+              digitalWrite(flacheRouge, flacheRougeState); // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(flacheRouge, flacheRougeState); // modifie l'état de la LED
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      f_r_cl_Say = millis(); // mémorise millis()
+      compte30R = 0;
+      f_r_cl_Tmp = millis() + (1000 * (sosTmp + 1)); // mémorise millis()
+    }
+  }
+  else
+  {
+    if (say10 == true)
+    {
+      compteB = compteB + 1; // f_r_cl
+    }
+    f_r_cl_Tmp = millis(); // mémorise millis()
+    f_r_cl_state = true;
+  }
+}
+int f_b_cl(int sosSay)
+{
+  int say10 = sosSay;
+  if (say10 == 10)
+  {
+    sosSay = 2;
+  }
+  if (say10 == 0)
+  {
+    sosSay = 1;
+    // sosTmp = 1;
+    digitalWrite(flacheBleu, flacheBleuState); // modifie l'état de la LED
+  }
+  sosTmp = sosSay + 1;
+  if (millis() - f_b_cl_Tmp <= 1000 * sosTmp)
+  {
+    flacheBleuState = false;
+    if (compte30B < sosSay)
+    {
+      f_b_cl_state = false; // cycle en cours
+      if (flacheBleuState == LOW)
+      { // inverse la variable d''état de la LED
+        if (millis() - f_b_cl_Say >= 300)
+        {
+          f_b_cl_Say = millis();
+          flacheBleuState = HIGH;
+          if (say10 == 0)
+          {
+            flacheBleuState = false;
+            digitalWrite(flacheBleu, flacheBleuState); // modifie l'état de la LED
+          }
+          else
+          {
+            if (say10 == 10)
+            {
+              flacheBleuState = false;
+              digitalWrite(flacheBleu, flacheBleuState); // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(flacheBleu, flacheBleuState);
+            }
+          }
+        }
+      }
+      else
+      {
+        if (millis() - f_b_cl_Say >= 400)
+        {
+          flacheBleuState = LOW;
+          compte30B = compte30B + 1;
+          f_b_cl_Say = millis(); // mémorise millis()
+          if (say10 == 10)
+          {
+            flacheBleuState = true;
+            digitalWrite(flacheBleu, flacheBleuState);
+          }
+          else
+          {
+            if (sosSay == 0)
+            {
+              flacheBleuState = false;
+              digitalWrite(flacheBleu, flacheBleuState); // modifie l'état de la LED
+            }
+            else
+            {
+              digitalWrite(flacheBleu, flacheBleuState);
+            }
+          }
+        }
+      }
+      // if (compte30B > sosSay)
+      // {
+      //   f_b_cl_Tmp = millis() + (1050 * sosTmp); // mémorise millis()
+      // }
+    }
+    else
+    {
+      compte30B = 0;
+      f_b_cl_Say = millis();                         // mémorise millis()
+      f_b_cl_Tmp = millis() + (1000 * (sosTmp + 1)); // mémorise millis()
+    }
+  }
+  else
+  {
+    if (say10 == true)
+    {
+      compteB = compteB + 1; // f_b_cl
+    }
+    f_b_cl_Tmp = millis(); // mémorise millis()
+    f_b_cl_state = true;   // f_b_cl fin cycle
+  }
+}
+int sosNbr10() // spot_cl + s_c_cl
+{
+  switch (comptespot) //(sosNbr == 10)
+  {
+
+  case 1:
+    sosSay = 2;
+    sosTmp = 5;
+    spot_cl(sosSay, sosTmp); // (sosNbr == 10)
+    break;
+  case 2:
+    sosSay = 1;
+    sosTmp = 1;
+    spot_cl(sosSay, sosTmp); // (sosNbr == 10)
+    break;
+  case 3:
+    sosSay = 2;
+    sosTmp = 5;
+    spot_cl(sosSay, sosTmp); // (sosNbr == 10)
+  case 4:
+    sosSay = 1;
+    sosTmp = 1;
+    spot_cl(sosSay, sosTmp); // (sosNbr == 10)
+  default:
+    comptespot = 1; // sosNbr == 10
+  }
 }
