@@ -70,7 +70,7 @@ long debut_gen_inp = 0;
 long debut_gen_cyl = 0;
 long debut_cc0_lop = 0;
 long debut_gen_lop = 0;
-long debut_fan_bch =0;
+long debut_fan_bch = 0;
 
 int ct1s_state = 0;
 bool ct1s_sta = false;
@@ -378,12 +378,12 @@ void loop()
     {
       if (welc_ctr_err == true)
       {
-        def_3t(60,2);
-        def_3t(81,2);
+        def_3t(60, 2);
+        def_3t(81, 2);
 
         if (ct3t_posi_st[8] == 1)
         {
-          //ct3t_posi_st[8]++; // compteur
+          // ct3t_posi_st[8]++; // compteur
           ct3t_posi_st[8] = 0;
           debut_cc0_lop = millis();
           for (int i = 0; i < 8; i++)
@@ -394,7 +394,7 @@ void loop()
       }
       else
       {
-        def_1t(60,2);
+        def_1t(60, 2);
         if (ct1t_posi_st[7] == 2)
         {
           ct1t_posi_st[8]++; // compteur
@@ -417,12 +417,12 @@ void loop()
   {
     if (rlt_cc0_lop > sec * 10)
     {
-      def_source(2,2);
-      def_source(4,2);
-      def_source(60,2);
+      def_source(2, 2);
+      def_source(4, 2);
+      def_source(60, 2);
       if (ct3t_posi_st[8] == 1)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
@@ -436,10 +436,10 @@ void loop()
   {
     if (welc_ctr_err == true)
     {
-      def_3t(62,2);
+      def_3t(62, 2);
       if (ct3t_posi_st[8] == 1)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
@@ -450,10 +450,10 @@ void loop()
     }
     else
     {
-      def_1t(62,2);
+      def_1t(62, 2);
       if (ct1t_posi_st[8] == 1)
       {
-        //ct1t_posi_st[8]++; // compteur
+        // ct1t_posi_st[8]++; // compteur
         ct1t_posi_st[8] = 0;
         debut_cc0_lop = millis();
         for (int i = 0; i < 8; i++)
@@ -508,70 +508,68 @@ void loop()
 /*								SOSSAY												*/
 void sosSay_slc(int sosSay)
 {
-    int flache = 0;
+  int flache = 0;
   int siren_c_i = 0;
-  if (sosSay == 2 || sosSay == 3)   // flacheBleu,sirenC
+  if (sosSay == 2 || sosSay == 3) // flacheBleu,sirenC
   {
     flache = flacheBleu; // sortie 12
     siren_c_i = sirenC;  // 3 sortie siren con (continute)
   }
-  if (sosSay == 4 || sosSay == 5)   // flacheRouge,sirenI
+  if (sosSay == 4 || sosSay == 5) // flacheRouge,sirenI
   {
     flache = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = sirenI;   // 9 sortie siren iso
   }
-  if (sosSay == 50)                 // fan
+  if (sosSay == 50) // fan
   {
-    flache = fan;     // 5 ventilateur
-    siren_c_i = fan;    // 5 ventilateur
+    flache = fan;    // 5 ventilateur
+    siren_c_i = fan; // 5 ventilateur
   }
-  if (sosSay == 60)                 // spot
+  if (sosSay == 60) // spot
   {
     flache = spot;     // 6 sortie spot
     siren_c_i = false; // "<&>"
   }
-  if (sosSay == 61)                 // spot,sirenI
+  if (sosSay == 61) // spot,sirenI
   {
     flache = spot;      // 6 sortie spot
     siren_c_i = sirenI; // 9 sortie siren iso
   }
-  if (sosSay == 62)                 // spot,sirenI
+  if (sosSay == 62) // spot,sirenI
   {
     flache = spot;      // 6 sortie spot
     siren_c_i = sirenI; // 9 sortie siren iso
   }
-  if (sosSay == 71)                 // spot,sirenC
+  if (sosSay == 71) // spot,sirenC
   {
     flache = spot;      // 6 sortie spot
     siren_c_i = sirenC; // 3 sortie siren con
   }
-  if (sosSay == 72)                 // spot,sirenC
+  if (sosSay == 72) // spot,sirenC
   {
     flache = spot;      // 6 sortie spot
     siren_c_i = sirenC; // 3 sortie siren con
   }
-  if (sosSay == 81)                 // sirenC
+  if (sosSay == 81) // sirenC
   {
     flache = false;     // "<&>"
     siren_c_i = sirenC; // 3 sortie siren con
   }
-  if (sosSay == 82)                 // sirenI
+  if (sosSay == 82) // sirenI
   {
     flache = false;     // "<&>"
     siren_c_i = sirenI; // 9 sortie siren iso
   }
-  if (sosSay == 91)                 // flacheBleu
+  if (sosSay == 91) // flacheBleu
   {
-    flache = flacheBleu;     // 12 sortie flacheBleu
-    siren_c_i = false; // "<&>"
+    flache = flacheBleu; // 12 sortie flacheBleu
+    siren_c_i = false;   // "<&>"
   }
-  if (sosSay == 92)                 // flacheRouge
+  if (sosSay == 92) // flacheRouge
   {
-    flache = flacheRouge;     // 11 sortie flacheRouge
-    siren_c_i = false; // "<&>"
+    flache = flacheRouge; // 11 sortie flacheRouge
+    siren_c_i = false;    // "<&>"
   }
-
-
 }
 void GEN_mode()
 {
@@ -657,41 +655,41 @@ void GEN_TST()
     case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(3,3);
+        def_3t(3, 3);
       }
       else
       {
-        def_1t(3,3);
+        def_1t(3, 3);
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        def_3t(61,1);
+        def_3t(61, 1);
       }
       else
       {
-        def_1t(61,1);
+        def_1t(61, 1);
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        def_3t(4,4);
+        def_3t(4, 4);
       }
       else
       {
-        def_1t(4,4);
+        def_1t(4, 4);
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        def_3t(72,2);
+        def_3t(72, 2);
       }
       else
       {
-        def_1t(72,2);
+        def_1t(72, 2);
       }
       break;
     case 4:
@@ -734,41 +732,41 @@ void GEN_TST()
     case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(2,2);
+        def_3t(2, 2);
       }
       else
       {
-        def_1t(2,2);
+        def_1t(2, 2);
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        def_3t(61,1);
+        def_3t(61, 1);
       }
       else
       {
-        def_1t(61,1);
+        def_1t(61, 1);
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        def_3t(4,4);
+        def_3t(4, 4);
       }
       else
       {
-        def_1t(4,4);
+        def_1t(4, 4);
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        def_3t(72,2);
+        def_3t(72, 2);
       }
       else
       {
-        def_1t(72,2);
+        def_1t(72, 2);
       }
       break;
     case 4:
@@ -810,41 +808,41 @@ void GEN_TST()
     case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(2,2);
+        def_3t(2, 2);
       }
       else
       {
-        def_1t(2,2);
+        def_1t(2, 2);
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        def_3t(61,1);
+        def_3t(61, 1);
       }
       else
       {
-        def_1t(61,1);
+        def_1t(61, 1);
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        def_3t(3,3);
+        def_3t(3, 3);
       }
       else
       {
-        def_1t(3,3);
+        def_1t(3, 3);
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        def_3t(62,2);
+        def_3t(62, 2);
       }
       else
       {
-        def_1t(62,2);
+        def_1t(62, 2);
       }
       break;
     case 4:
@@ -887,61 +885,61 @@ void GEN_TST()
     case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(2,2);
+        def_3t(2, 2);
       }
       else
       {
-        def_1t(2,2);
+        def_1t(2, 2);
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        def_3t(61,1);
+        def_3t(61, 1);
       }
       else
       {
-        def_1t(61,1);
+        def_1t(61, 1);
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        def_3t(3,3);
+        def_3t(3, 3);
       }
       else
       {
-        def_1t(3,3);
+        def_1t(3, 3);
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        def_3t(61,1);
+        def_3t(61, 1);
       }
       else
       {
-        def_1t(61,1);
+        def_1t(61, 1);
       }
       break;
     case 4:
       if (welc_ctr_err == true)
       {
-        def_3t(4,4);
+        def_3t(4, 4);
       }
       else
       {
-        def_1t(4,4);
+        def_1t(4, 4);
       }
       break;
     case 5:
       if (welc_ctr_err == true)
       {
-        def_3t(72,2);
+        def_3t(72, 2);
       }
       else
       {
-        def_1t(72,2);
+        def_1t(72, 2);
       }
       break;
     case 6:
@@ -984,41 +982,41 @@ void GEN_TST()
     case 0:
       if (welc_ctr_err == true)
       {
-        def_3t(5,5);
+        def_3t(5, 5);
       }
       else
       {
-        def_1t(5,5);
+        def_1t(5, 5);
       }
       break;
     case 1:
       if (welc_ctr_err == true)
       {
-        def_3t(71,1);
+        def_3t(71, 1);
       }
       else
       {
-        def_1t(71,1);
+        def_1t(71, 1);
       }
       break;
     case 2:
       if (welc_ctr_err == true)
       {
-        def_3t(5,5);
+        def_3t(5, 5);
       }
       else
       {
-        def_1t(5,5);
+        def_1t(5, 5);
       }
       break;
     case 3:
       if (welc_ctr_err == true)
       {
-        def_3t(72,2);
+        def_3t(72, 2);
       }
       else
       {
-        def_1t(72,2);
+        def_1t(72, 2);
       }
       break;
     case 4:
@@ -1109,8 +1107,8 @@ void GEN_TST()
       }*/
     }
     //                  TEMPO 5 minutes
-   unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
-   
+    unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
+
     if (rlt_cc0_lop > minut * 5)
     {
       ccphnete0 = 3;
@@ -1163,9 +1161,9 @@ void GEN_ALM()
     long rlt_3m = millis() - debut_3m;
     if (rlt_3m > minut * 3)
     {
-      def_3t(60,2);
-      def_3t(4,2);
-      def_3t(2,2);
+      def_3t(60, 2);
+      def_3t(4, 2);
+      def_3t(2, 2);
       if (ct3t_posi_st[7] == 2)
       {
         ct3t_posi_st[8]++; // compteur
@@ -1181,7 +1179,7 @@ void GEN_ALM()
     long rlt_1m = millis() - debut_1m;
     if (rlt_1m > minut)
     {
-      def_3t(60,2);
+      def_3t(60, 2);
       if (ct3t_posi_st[7] == 3)
       {
         ct3t_posi_st[8]++; // compteur
@@ -1192,7 +1190,7 @@ void GEN_ALM()
           ct3t_posi_st[i] = false;
         }
       }
-      def_1t(4,4);
+      def_1t(4, 4);
       if (ct1t_posi_st[7] == 2)
       {
         ct1t_posi_st[8]++; // compteur
@@ -1336,7 +1334,7 @@ void fane(int sosSay)
     digitalWrite(fan, false);
     Serial.println("ventilateur off");
   }
-  if ((battLow == false && sosSay == 1)|| sosSay==51)
+  if ((battLow == false && sosSay == 1) || sosSay == 51)
   { // auto fane()
     if (fanee >= seuil_term)
     {
@@ -1351,72 +1349,70 @@ void fane(int sosSay)
   }
   if (battLow == true && sosSay == 1)
   {
-  unsigned long rlt_fan_bch = millis() - debut_fan_bch;
-  unsigned long rlt1_fan_bch = millis() - debut_fan_bch;
-  int fan_bch_cyl=0;
+    unsigned long rlt_fan_bch = millis() - debut_fan_bch;
+    unsigned long rlt1_fan_bch = millis() - debut_fan_bch;
+    int fan_bch_cyl = 0;
     if (fan_bch_cyl == 0 && rlt_fan_bch > sec * 10)
     {
-      def_3t(50,5);// active FAN
+      def_3t(50, 5); // active FAN
       if (ct3t_posi_st[8] > 0)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_fan_bch = millis();
-        fan_bch_cyl=1;
+        fan_bch_cyl = 1;
         for (int i = 0; i < 8; i++)
         {
           ct3t_posi_st[i] = false;
         }
       }
     }
-        if (fan_bch_cyl==1 && rlt_fan_bch > sec * 10)
+    if (fan_bch_cyl == 1 && rlt_fan_bch > sec * 10)
     {
-      def_3t(50,4);// active FAN
+      def_3t(50, 4); // active FAN
       if (ct3t_posi_st[8] > 0)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_fan_bch = millis();
-        fan_bch_cyl=2;
+        fan_bch_cyl = 2;
         for (int i = 0; i < 8; i++)
         {
           ct3t_posi_st[i] = false;
         }
       }
     }
-        if (fan_bch_cyl==2 && rlt_fan_bch > sec * 10)
+    if (fan_bch_cyl == 2 && rlt_fan_bch > sec * 10)
     {
-      def_3t(50,3);// active FAN
+      def_3t(50, 3); // active FAN
       if (ct3t_posi_st[8] > 0)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_fan_bch = millis();
-        fan_bch_cyl=3;
+        fan_bch_cyl = 3;
         for (int i = 0; i < 8; i++)
         {
           ct3t_posi_st[i] = false;
         }
       }
     }
-        if (fan_bch_cyl==3 && rlt_fan_bch > sec * 10)
+    if (fan_bch_cyl == 3 && rlt_fan_bch > sec * 10)
     {
-      def_3t(50,2);// active FAN
+      def_3t(50, 2); // active FAN
       if (ct3t_posi_st[8] > 0)
       {
-        //ct3t_posi_st[8]++; // compteur
+        // ct3t_posi_st[8]++; // compteur
         ct3t_posi_st[8] = 0;
         debut_fan_bch = millis();
-        fan_bch_cyl=0;
+        fan_bch_cyl = 0;
         for (int i = 0; i < 8; i++)
         {
           ct3t_posi_st[i] = false;
         }
       }
     }
-
   }
-
 }
 int phaseF()
 {
@@ -1702,9 +1698,9 @@ int count_1t()
     ct1t_posi_st[6] = true;
   }
 }
-int def_1t(int sosSay,int cl)
+int def_1t(int sosSay, int cl)
 {
-sosSay_slc(sosSay);
+  sosSay_slc(sosSay);
   // cycle count_1t
   count_1t();
   for (int i = 0; i < 6; i++)
@@ -1874,9 +1870,9 @@ int count_2t()
     ct2t_posi_st[6] = true;
   }
 }
-int def_2t(int sosSay,int cl)
+int def_2t(int sosSay, int cl)
 {
-sosSay_slc(sosSay);
+  sosSay_slc(sosSay);
   // cycle count_2t
   count_2t();
   for (int i = 0; i < 6; i++)
@@ -2046,9 +2042,9 @@ int count_3t()
     ct3t_posi_st[6] = true;
   }
 }
-int def_3t(int sosSay,int cl)
+int def_3t(int sosSay, int cl)
 {
-sosSay_slc(sosSay);
+  sosSay_slc(sosSay);
 
   // cycle count_3t
   count_3t();
@@ -2123,24 +2119,24 @@ void cyl_def_source()
   switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
   {
   case 0:
-    def_source(91,3);
+    def_source(91, 3);
     break;
   case 1:
-    def_source(81,3);
+    def_source(81, 3);
     break;
   case 2:
-    def_source(92,3);
+    def_source(92, 3);
     break;
   case 3:
-    def_source(82,3);
+    def_source(82, 3);
     break;
   case 4:
-    def_source(60,3);
+    def_source(60, 3);
     break;
   case 5:
-    def_source(2,3);
-    def_source(4,3);
-        def_source(2,3);
+    def_source(2, 3);
+    def_source(4, 3);
+    def_source(2, 3);
 
     break;
   case 6:
@@ -2153,9 +2149,9 @@ void cyl_def_source()
     break;
   }
 }
-int def_source(int sosSay,int cl)
+int def_source(int sosSay, int cl)
 {
-sosSay_slc(sosSay);
+  sosSay_slc(sosSay);
   // cycle count_3t
   count_3t();
   for (int i = 0; i < 6; i++)
