@@ -29,6 +29,7 @@ int sosSay = 0;           //
 int CcPhNeTe = 0;         // CcPhNeTe
 int CcPhNeTe_prew = 0;
 int cmpB = 0;
+
 bool battLow = false; // battLow
 int batt = 0;         // batt
 int eclr = 0;
@@ -77,11 +78,15 @@ bool ct1s_sta = false;
 bool ct1s_sta1 = false;
 
 bool maz_int = false;
+bool mis_veil= false;
+
+
 int ccphnete_0_st = 0;
 int ccphnete0 = 0;
 int veille_def_st = 0;
 int veille_def = 0;
 
+int switch_def_src = 0;
 unsigned long ct1t_millis = millis();
 bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
 int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
@@ -345,7 +350,7 @@ void setup()
 }
 void loop()
 { //                               LOOP
-  if (GEN_ste == true)
+  if (GEN_ste == true)// source en cours
   {
     GEN_ALM();
   }
@@ -1047,64 +1052,11 @@ void GEN_TST()
     if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
     {
       ccphnete0 = 1;
-      // pause cl x2
-
-      //            tt 5s     cl 60   &   81
-      /*if (rlt_cc0_lop > sec * 5)
-      {
-        if (welc_ctr_err == true)
-        {
-          def_3t(60,2);
-          def_3t(81,2);
-
-          if (ct3t_posi_st[7] == 2)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct3t_posi_st[i] = false;
-            }
-          }
-        }
-        else
-        {
-          def_1t(60,2);
-          if (ct1t_posi_st[7] == 2)
-          {
-            ct1t_posi_st[8]++; // compteur
-            ct1t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct1t_posi_st[i] = false;
-            }
-          }
-        }
-      }*/
     }
     //                  BOSCH LOW
     if (CcPhNeTe == 0 && battLow == true)
     {
       ccphnete0 = 2;
-      // pause cl x2
-      /*if (rlt_cc0_lop > sec * 10)
-      {
-          def_source(2);
-          def_source(4);
-          def_source(60);
-          if (ct3t_posi_st[7] == 2)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
-            debut_cc0_lop = millis();
-            for (int i = 0; i < 8; i++)
-            {
-              ct3t_posi_st[i] = false;
-            }
-          }
-      }*/
     }
     //                  TEMPO 5 minutes
     unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
@@ -1112,35 +1064,6 @@ void GEN_TST()
     if (rlt_cc0_lop > minut * 5)
     {
       ccphnete0 = 3;
-
-      /*if (welc_ctr_err == true)
-      {
-        def_3t(62,2);
-        if (ct3t_posi_st[7] == 2)
-        {
-          ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[7] = 0;
-          debut_cc0_lop = millis();
-          for (int i = 0; i < 8; i++)
-          {
-            ct3t_posi_st[i] = false;
-          }
-        }
-      }
-      else
-      {
-        def_1t(62,2);
-        if (ct1t_posi_st[7] == 2)
-        {
-          ct1t_posi_st[8]++; // compteur
-          ct1t_posi_st[7] = 0;
-          debut_cc0_lop = millis();
-          for (int i = 0; i < 8; i++)
-          {
-            ct1t_posi_st[i] = false;
-          }
-        }
-      }*/
     }
     compteB = 0; // CcPhNeTe == 0
     cp_cl = 1;
@@ -1242,7 +1165,8 @@ void demare()
   }
   if ((Manu_auto == false) && (tempo_State_On == false))
   {
-    veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
+    mis_veil=true;
+    //veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
   }
 
   // **********************DEBUT**********************
@@ -1269,12 +1193,14 @@ void demare()
   }
   if (batt <= 1)
   {
-    battOffFonc();
+    mis_veil=true;
+    // battOffFonc();
   }
   alim_State = controlAlimFonc();
   if (alim_State == 20)
   {
-    alimOffFonc();
+    mis_veil=true;
+    // alimOffFonc();
   }
 }
 void maz_int_f()
@@ -2111,30 +2037,92 @@ int def_3t(int sosSay, int cl)
   int CcPhNeTe_switch = ct3t_posi_st[8];
   return (CcPhNeTe_switch);
 }
-void cyl_def_source()
+void cyl_def_source(int selc, int sosSay, int typ)
 {
-  int switch_def_src = ct3t_posi_st[8];
+  //    chiffre type
+int selc_aut[6]{91,81,92,82,60,50};// selc 1
+int selc_bat[6]{91,81,92,82,60,50};// selc 2
+int selc_230[6]{91,81,92,82,60,50};// selc 3
+  //    chiffre
+int chf_cyl[6];
+if(selc==1)// tempo manu auto   off
+{
+  for(int i = 0; i < 7; i++)
+  {
+    chf_cyl[i]=selc_aut[i];
+  }
+}
+if(selc==2)// bosch             off
+{
+  for(int i = 0; i < 7; i++)
+  {
+    chf_cyl[i]=selc_bat[i];
+  }
+}
+if(selc==3)// 230v              off
+{
+  for(int i = 0; i < 7; i++)
+  {
+    chf_cyl[i]=selc_230[i];
+  }
+}
+if(typ==1)// def_1t
+{
+  switch_def_src = ct1t_posi_st[8];
+}
+if(typ==2)// def_2t
+{
+  switch_def_src = ct2t_posi_st[8];
+}
+if(typ==3)// def_3t
+{
+  switch_def_src = ct3t_posi_st[8];
+}
+if(typ==4)// def_source
+{
+  switch_def_src = ct3t_posi_st[8];
+}
+
+
+
+
+  // int switch_def_src = ct3t_posi_st[8];
   switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
   {
   case 0:
-    def_source(91, 3);
-    break;
+    if(typ==1)
+{
+def_1t(chf_cyl[0], sosSay);// flache_bleu
+}
+    if(typ==2)
+{
+def_2t(chf_cyl[0], sosSay);// flache_bleu
+}
+     if(typ==3)
+{
+def_3t(chf_cyl[0], sosSay);// flache_bleu
+}
+    if(typ==4)
+{
+def_source(chf_cyl[0], sosSay);// flache_bleu
+}
+   break;
   case 1:
-    def_source(81, 3);
+    def_source(chf_cyl[1], sosSay);// siren_c
     break;
   case 2:
-    def_source(92, 3);
+    def_source(chf_cyl[2], sosSay);// flache_rouge
     break;
   case 3:
-    def_source(82, 3);
+    def_source(chf_cyl[3], sosSay);// siren_i
     break;
   case 4:
-    def_source(60, 3);
+    def_source(chf_cyl[4], sosSay);// spot
     break;
   case 5:
-    def_source(2, 3);
-    def_source(4, 3);
-    def_source(2, 3);
+    def_source(chf_cyl[5], sosSay);
+    def_source(2, 2);
+    def_source(4, 2);
 
     break;
   case 6:
@@ -2817,8 +2805,6 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
     digitalWrite(sirenI, false);
     digitalWrite(flacheRouge, false);
     sosSay = 0; // code arret ecl & fane veilleF()
-    sosTmp = 0;
-    spot_cl(sosSay, sosTmp); // arret eclairage veille_F()
     fane(sosSay);            // arret fan  veille_F()
     while (BPmarcheState == false)
     {
@@ -2989,4 +2975,34 @@ void battOffFonc()
     veilleF(alim_State, BPmarcheState, batt);
   }
   debut = millis();
+}
+
+
+void veil_mis(){
+  BPmarcheState = digitalRead(BPmarche);
+  batt = getBattery(batt, battLow);
+  alim_State = controlAlimFonc();
+
+      
+  while(BPmarcheState== true || batt <= 1 || alim_State == 20)
+  {
+    Serial.println("veil_mis  appuille BP");
+if(BPmarcheState==true)
+{
+    cyl_def_source(1,1,1);
+    Serial.println("veil_mis  tempo off");
+}
+if(batt<=1)
+{
+    Serial.println("veil_mis  bosch off");
+    cyl_def_source(2,2,2)
+}
+if(alim_State==20)
+{
+    Serial.println("veil_mis  230v off");
+    cyl_def_source(3,3,3)
+}
+
+  }
+  
 }

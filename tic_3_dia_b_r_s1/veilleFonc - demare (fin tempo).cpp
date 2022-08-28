@@ -23,3 +23,13 @@ GEN_mode      –>  100m      debut_gen_inp
 GEN           –>  minut*15  en cours…
 GEN           –>  minut*3   def_3t
 GEN           –>  minut     def_3t & def_1t
+
+
+sosSay  sosSay_slc    //selection flache siren
+        ecl_auto      // 0 art 1 a
+        fane          // 0 art 1 s-a 51 a
+        spot_cl       // 0 art 10 a
+        def_1t        // sosSay_slc
+        def_2t        // sosSay_slc
+        def_3t        // sosSay_slc
+        def_source    // sosSay_slc
