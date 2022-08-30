@@ -1,158 +1,178 @@
-const int testPh = A0;     // entree analog phase
-const int testN = A1;      // entree analog neutre
-const int testT = A2;      // entree analog terre
-const int BATTERYPIN = A3; // pin de la batterie
-const int photo = A4;      // cellule photo
-const int temrat = A5;     // cellule temperature
-const int BPmarche = 2;    // entree bp_marche
-const int alimOk = 4;      // entree control 230v OK
-const int welc_ctr_in = 2; // 8;  // entree control diagnostique
+//–––––––––––––––CONFIG INP_OUT
+  const int testPh = A0;     // entree analog phase
+  const int testN = A1;      // entree analog neutre
+  const int testT = A2;      // entree analog terre
+  const int BATTERYPIN = A3; // pin de la batterie
+  const int photo = A4;      // cellule photo
+  const int temrat = A5;     // cellule temperature
+  const int BPmarche = 2;    // entree bp_marche
+  const int alimOk = 4;      // entree control 230v OK
+  const int welc_ctr_in = 2; // 8;  // entree control diagnostique
 
-int flacheRouge = 11; // sortie flacheRouge
-int flacheBleu = 12;  // sortie flacheBleu
-int sirenC = 3;       // sortie siren con (continute)
-int sirenI = 9;       // sortie siren iso
-int spot = 6;         // eclairage
-int alim = 10;        // sortie_Alim
-int fan = 5;          // ventilateur
-int bosch = 13;       // sortie batterie
+  int flacheRouge = 11; // sortie flacheRouge
+  int flacheBleu = 12;  // sortie flacheBleu
+  int sirenC = 3;       // sortie siren con (continute)
+  int sirenI = 9;       // sortie siren iso
+  int spot = 6;         // eclairage
+  int alim = 10;        // sortie_Alim
+  int fan = 5;          // ventilateur
+  int bosch = 13;       // sortie batterie
 
-int phase = 0;            // state phase
-int neutre = 0;           // state neutre
-int terre = 0;            // state terre
-int seuil_pot = 10;       // seuil_pot detection
-int seuil_lux = 30;       // seuil_lux
-int seuil_term = 30;      // seuil_term
-int sosNbr = 1;           // code on_off_cl
-unsigned long sosTmp = 1; // tempt cliososNbr40 x1000
-int sosSay = 0;           //
-int CcPhNeTe = 0;         // CcPhNeTe
-int CcPhNeTe_prew = 0;
-int cmpB = 0;
+  int phase = 0;            // state phase
+  int neutre = 0;           // state neutre
+  int terre = 0;            // state terre
+  int seuil_pot = 10;       // seuil_pot detection
+  int seuil_lux = 30;       // seuil_lux
+  int seuil_term = 30;      // seuil_term
+//–––––––––––––––GEN_TST
+  int sosSay = 0;           //
+  int CcPhNeTe = 0;         // CcPhNeTe
+  int CcPhNeTe_prew = 0;
 
-bool battLow = false; // battLow
-int batt = 0;         // batt
-int eclr = 0;
-int fanee = 0;
-const float TensionMin = 10.5; // tension min
-const float TensionMax = 20.0; // tension max
-bool BPmarcheState = false;    // state bp_marche
-bool Manu_auto = false;        // state auto_manu
-bool spotState = false;
-bool flacheRougeState = false;     // state flache_rouge
-bool flacheBleuState = false;      // state flache_rouge
-bool sirenCState = false;          // state sirenC
-bool sirenIState = false;          // state sirenI
-int alim_State = 0;                // state alim_State
-bool tempo_State_On = false;       // cycle on
-unsigned long tempo = (2000 * 10); // temp duree cycle
-unsigned long debut = millis();    // temp debut duree cycle
-unsigned long interval = 1000;     // interval cligniot
-unsigned long inter = 1;
-unsigned long chro = 0;                 // temp ccphnete
-unsigned long chroi = 0;                // temp bat low
-unsigned long curmill = millis();       // temp ccphnt
-unsigned long tempi = 2000;             // temp ccphnt
-unsigned long temp1 = 0;                // temp memo depannage terrePhaseNeutre
-unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
-unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
-unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
-int ct_state = 0;
+  bool battLow = false; // battLow
+  int batt = 0;         // batt
+  int eclr = 0;
+  int fanee = 0;
+  const float TensionMin = 10.5; // tension min
+  const float TensionMax = 20.0; // tension max
+  bool BPmarcheState = false;    // state bp_marche
+  bool Manu_auto = false;        // state auto_manu
+  bool spotState = false;
+  bool flacheRougeState = false;     // state flache_rouge
+  bool flacheBleuState = false;      // state flache_rouge
+  bool sirenCState = false;          // state sirenC
+  bool sirenIState = false;          // state sirenI
+  int alim_State = 0;                // state alim_State
+  bool tempo_State_On = false;       // cycle on
+  unsigned long tempo = (sec * 20); // temp duree cycle
+  unsigned long debut = millis();   // temp debut duree cycle
+  unsigned long interval = 1000;    // interval cligniot
+  unsigned long inter = 1;
+  unsigned long chro = 0;                 // temp ccphnete
+  unsigned long chroi = 0;                // temp bat low
+  unsigned long curmill = millis();       // temp ccphnt
+  unsigned long tempi = 2000;             // temp ccphnt
+  unsigned long temp1 = 0;                // temp memo depannage terrePhaseNeutre
+  unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
+  unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
+  unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
+  int ct_state = 0;
 
-//                GEN
-long minut = 60000;
-long sec = 1000;
-long gen_debut = 0;
-long gen_tmp_230 = 15 * minut;
-bool GEN_ste = false;
-long debut_3m = 0;
-long debut_1m = 0;
-long debut_gen_inp = 0;
-long debut_gen_cyl = 0;
-long debut_cc0_lop = 0;
-long debut_gen_lop = 0;
-long debut_fan_bch = 0;
+//–––––––––––––––GEN
+  long minut = 60000;
+  long sec = 1000;
+  long gen_debut = 0;
+  long gen_tmp_230 = 15 * minut;
+  bool GEN_ste = false;
+  long debut_3m = 0;
+  long debut_1m = 0;
+  long debut_gen_inp = 0;
+  long debut_gen_cyl = 0;
+  long debut_cc0_lop = 0;
+  long debut_gen_lop = 0;
+  long debut_fan_bch = 0;
+  int etalon[4] = {0, 0, 0, 0};
 
-int ct1s_state = 0;
-bool ct1s_sta = false;
-bool ct1s_sta1 = false;
 
-bool maz_int = false;
-bool mis_veil = false;
+//–––––––––––––––INIT
+  bool maz_int = false;
+  bool mis_veil = false;
 
-int ccphnete_0_st = 0;
-int ccphnete0 = 0;
-int veille_def_st = 0;
-int veille_def = 0;
+  int ccphnete_0_st = 0;
+  int ccphnete0 = 0;
+  int veille_def_st = 0;
+  int veille_def = 0;
 
-int switch_def_src = 0;
-unsigned long ct1t_millis = millis();
-bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
-int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-int ct1t_switch;
-unsigned long ct2t_millis = millis();
-bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
-int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-int ct2t_switch;
-unsigned long ct3t_millis = millis();
-bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
-int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-int ct3t_switch;
+//–––––––––––––––TB COUNT
+  int switch_def_src = 0;
+  unsigned long ct1t_millis = millis();
+  bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
+  int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+  int ct1t_switch;
+  unsigned long ct2t_millis = millis();
+  bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
+  int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+  int ct2t_switch;
+  unsigned long ct3t_millis = millis();
+  bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
+  int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+  int ct3t_switch;
 
-int ct05s_state = 0;
-bool ct05s_sta = false;
-bool ct05s_sta1 = false;
+//–––––––––––––––chiffre type
+  int selc_aut[6]{91, 81, 92, 82, 60, 50};  //    selc 1
+  int selc_bat[6]{91, 81, 92, 82, 60, 50};  //    selc 2
+  int selc_230[6]{91, 81, 92, 82, 60, 50};  //    selc 3
+  int selc_ne_te[6]{3, 61, 4, 71, 0, 0};    //    selc 4
+  int selc_ph_te[6]{2, 61, 4, 71, 0, 0};    //    selc 5
+  int selc_ph_ne[6]{2, 61, 3, 62, 0, 0};    //    selc 6
+  int selc_cc_tst[6]{2, 60, 3, 60, 4, 50};  //    selc 7
+  int selc_cc_cc[6]{5, 71, 5, 72, 0, 50};   //    selc 8
+  //    chiffre
+  int chf_cyl[6];
+  int flache_b_r_s = 0;
+  int siren_c_i = 0;
 
-bool welc_ctr_err = false;
-String rouge = "flache	ROUGE"; // welc_ID_index  0
-String bleu = "flache	BLEU";    // welc_ID_index  1
-String con = "siren	CONT";      // welc_ID_index  2
-String iso = "siren	ISO";       // welc_ID_index  3
-String spt = "ecl	SPOT";        // welc_ID_index  4
-String alm = "alim	230v";      // welc_ID_index  5
-String fn = "vent	FAN";         // welc_ID_index  6
-String bch = "bat	BOSCH";       // welc_ID_index  7
 
-bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
-String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
+//–––––––––––––––WELC
+  bool welc_ctr_err = false;
+  String rouge = "flache	ROUGE";       // welc_ID_index  0
+  String bleu = "flache	BLEU";          // welc_ID_index  1
+  String con = "siren	CONT";            // welc_ID_index  2
+  String iso = "siren	ISO";             // welc_ID_index  3
+  String spt = "ecl	SPOT";              // welc_ID_index  4
+  String alm = "alim	230v";            // welc_ID_index  5
+  String fn = "vent	FAN";               // welc_ID_index  6
+  String bch = "bat	BOSCH";             // welc_ID_index  7
 
-int etalon[4] = {0, 0, 0, 0};
-int flache_b_r_s = 0;
-int siren_c_i = 0;
+  bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
+  String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
+//–––––––––––––––COUNT 1s
+  int ct1s_state = 0;
+  bool ct1s_sta = false;
+  bool ct1s_sta1 = false;
 
-unsigned long cpt_millis = millis();
-unsigned long cpt1s_millis = millis();
+  int ct05s_state = 0;
+  bool ct05s_sta = false;
+  bool ct05s_sta1 = false;
 
-unsigned long cpt05s_millis = millis();
-bool f_b_cl_state = false;
-unsigned long f_b_cl_Tmp = 0;
-unsigned long f_b_cl_Say = 0;
-bool f_r_cl_state = false;
-unsigned long f_r_cl_Tmp = 0;
-unsigned long f_r_cl_Say = 0;
-bool spot_cl_state = false;
-unsigned long spot_cl_Tmp = 0;
-unsigned long spot_cl_Say = 0;
-bool s_c_cl_state = false;
-unsigned long s_c_cl_Tmp = 0;
-bool s_i_cl_state = false;
-unsigned long s_i_cl_Tmp = 0;
-int cp_cl = 1;            // int declaration
-volatile int compteB = 0; // init declaration
-int compteR = 0;
-int comptesC = 1;
-int comptesI = 1;
-int compte30B = 0;
-int compte30R = 0;
-int comptespot = 1;
-int compte30spot = 0;
-int compte30sI = 1;
-int compte30sC = 1;
-unsigned long millisSc_BR_CLon = 0;
-unsigned long millisSi_BR_CLon = 0;
-unsigned long millisF_B_CL_5 = 0;
-void setup()
-{ //                              SETUP
+//–––––––––––––––
+  //int sosNbr = 0;           // code on_off_cl
+  unsigned long sosTmp = 1; // tempt cliosos_Nbr40 x1000
+
+  unsigned long cpt_millis = millis();
+  unsigned long cpt1s_millis = millis();
+
+  unsigned long cpt05s_millis = millis();
+  bool f_b_cl_state = false;
+  unsigned long f_b_cl_Tmp = 0;
+  unsigned long f_b_cl_Say = 0;
+  bool f_r_cl_state = false;
+  unsigned long f_r_cl_Tmp = 0;
+  unsigned long f_r_cl_Say = 0;
+  bool spot_cl_state = false;
+  unsigned long spot_cl_Tmp = 0;
+  unsigned long spot_cl_Say = 0;
+  bool s_c_cl_state = false;
+  unsigned long s_c_cl_Tmp = 0;
+  bool s_i_cl_state = false;
+  unsigned long s_i_cl_Tmp = 0;
+  int cp_cl = 1;            // int declaration
+  volatile int compteB = 0; // init declaration
+  int compteR = 0;
+  int comptesC = 1;
+  int comptesI = 1;
+  int compte30B = 0;
+  int compte30R = 0;
+  int comptespot = 1;
+  int compte30spot = 0;
+  int compte30sI = 1;
+  int compte30sC = 1;
+  unsigned long millisSc_BR_CLon = 0;
+  unsigned long millisSi_BR_CLon = 0;
+  unsigned long millisF_B_CL_5 = 0;
+//–––––––––––––––––––––––––––––––SETUP
+ void setup()
+{
   Serial.begin(115200);
   Serial.println("      A U T O     D I A G N O S T I C"); //
   Serial.println("     ");                                 //
@@ -347,46 +367,111 @@ void setup()
   }
   debut = millis(); // temp debut duree cycle
 }
-void loop()
-{                      //                               LOOP
+//–––––––––––––––––––––––––––––––LOOP
+ void loop()
+{
   if (GEN_ste == true) // source en cours
   {
     GEN_ALM();
   }
-  demare();
+  if(mis_veil==true )
+  {
+    veil_mis();
+    mis_veil==false;
+  }
+  
+  manu_auto_tempo();
+  // demare();
   CcPhNeTe = test();
 
-  //  **********************RESET********************************
+  //–––––––––––––––––––––––––––––––RESET
 
-  if (veille_def_st != veille_def)
-  {
-    veille_def_st = veille_def;
-    maz_int = false;
-  }
-  if (CcPhNeTe_prew != CcPhNeTe)
-  {
-    CcPhNeTe_prew = CcPhNeTe;
-    maz_int = false;
-  }
-  if (ccphnete_0_st != ccphnete0)
-  {
-    ccphnete_0_st = ccphnete0;
-    maz_int = false;
-  }
-  if (CcPhNeTe > 0)
-  {
-    debut = millis();
-  }
-  unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
-  if (ccphnete0 == 1) // sys ras
-  {
-    if (rlt_cc0_lop > sec * 5)
+    if (veille_def_st != veille_def)
+    {
+      veille_def_st = veille_def;
+      maz_int = false;
+    }
+    if (CcPhNeTe_prew != CcPhNeTe)
+    {
+      CcPhNeTe_prew = CcPhNeTe;
+      maz_int = false;
+    }
+    if (ccphnete_0_st != ccphnete0)
+    {
+      ccphnete_0_st = ccphnete0;
+      maz_int = false;
+    }
+    if (CcPhNeTe > 0)
+    {
+      debut = millis();
+    }
+  //–––––––––––––––––––––––––––––––SYS OK  
+    unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
+    if (ccphnete0 == 1)
+    {
+      if (rlt_cc0_lop > sec * 5)
+      {
+        if (welc_ctr_err == true)
+        {
+          def_3t(60, 2);
+          def_3t(81, 2);
+
+          if (ct3t_posi_st[8] == 1)
+          {
+            // ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[8] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+          }
+        }
+        else
+        {
+          def_1t(60, 2);
+          if (ct1t_posi_st[7] == 2)
+          {
+            ct1t_posi_st[8]++; // compteur
+            ct1t_posi_st[7] = 0;
+            debut_cc0_lop = millis();
+            for (int i = 0; i < 8; i++)
+            {
+              ct1t_posi_st[i] = false;
+            }
+          }
+        }
+      }
+      unsigned long rlt_gen_lop = millis() - debut_gen_lop;
+      if (rlt_gen_lop > minut) // GEN_mode
+      {
+        GEN_mode();
+      }
+    }
+    if (ccphnete0 == 2)
+    {
+      if (rlt_cc0_lop > sec * 10)
+      {
+        def_source(2, 2);
+        def_source(4, 2);
+        def_source(60, 2);
+        if (ct3t_posi_st[8] == 1)
+        {
+          // ct3t_posi_st[8]++; // compteur
+          ct3t_posi_st[8] = 0;
+          debut_cc0_lop = millis();
+          for (int i = 0; i < 8; i++)
+          {
+            ct3t_posi_st[i] = false;
+          }
+        }
+      }
+    }
+    if (ccphnete0 == 3)
     {
       if (welc_ctr_err == true)
       {
-        def_3t(60, 2);
-        def_3t(81, 2);
-
+        def_3t(62, 2);
         if (ct3t_posi_st[8] == 1)
         {
           // ct3t_posi_st[8]++; // compteur
@@ -400,11 +485,11 @@ void loop()
       }
       else
       {
-        def_1t(60, 2);
-        if (ct1t_posi_st[7] == 2)
+        def_1t(62, 2);
+        if (ct1t_posi_st[8] == 1)
         {
-          ct1t_posi_st[8]++; // compteur
-          ct1t_posi_st[7] = 0;
+          // ct1t_posi_st[8]++; // compteur
+          ct1t_posi_st[8] = 0;
           debut_cc0_lop = millis();
           for (int i = 0; i < 8; i++)
           {
@@ -413,106 +498,69 @@ void loop()
         }
       }
     }
-    unsigned long rlt_gen_lop = millis() - debut_gen_lop;
-    if (rlt_gen_lop > minut) // GEN_mode
-    {
-      GEN_mode();
-    }
-  }
-  if (ccphnete0 == 2)
-  {
-    if (rlt_cc0_lop > sec * 10)
-    {
-      def_source(2, 2);
-      def_source(4, 2);
-      def_source(60, 2);
-      if (ct3t_posi_st[8] == 1)
-      {
-        // ct3t_posi_st[8]++; // compteur
-        ct3t_posi_st[8] = 0;
-        debut_cc0_lop = millis();
-        for (int i = 0; i < 8; i++)
-        {
-          ct3t_posi_st[i] = false;
-        }
-      }
-    }
-  }
-  if (ccphnete0 == 3)
-  {
-    if (welc_ctr_err == true)
-    {
-      def_3t(62, 2);
-      if (ct3t_posi_st[8] == 1)
-      {
-        // ct3t_posi_st[8]++; // compteur
-        ct3t_posi_st[8] = 0;
-        debut_cc0_lop = millis();
-        for (int i = 0; i < 8; i++)
-        {
-          ct3t_posi_st[i] = false;
-        }
-      }
-    }
-    else
-    {
-      def_1t(62, 2);
-      if (ct1t_posi_st[8] == 1)
-      {
-        // ct1t_posi_st[8]++; // compteur
-        ct1t_posi_st[8] = 0;
-        debut_cc0_lop = millis();
-        for (int i = 0; i < 8; i++)
-        {
-          ct1t_posi_st[i] = false;
-        }
-      }
-    }
-  }
 
   maz_int_f();
 
-  //  **********************TEST********************************
-  for (int i = 0; i < 9; i++)
-  {
-    Serial.print(ct1t_posi_st[i]);
-  }
-  Serial.println(" ");
+  //–––––––––––––––––––––––––––––––TEST
+    for (int i = 0; i < 9; i++)
+    {
+      Serial.print(ct1t_posi_st[i]);
+    }
+    Serial.println(" ");
+    for (int i = 0; i < 9; i++)
+    {
 
-  for (int i = 0; i < 9; i++)
-  {
-
-    Serial.print(ct2t_posi_st[i]);
-  }
-  Serial.println(" ");
-  for (int i = 0; i < 9; i++)
-  {
-    Serial.print(ct3t_posi_st[i]);
-  }
-  Serial.println(" ");
-  //  **********************TEST********************************
+      Serial.print(ct2t_posi_st[i]);
+    }
+    Serial.println(" ");
+    for (int i = 0; i < 9; i++)
+    {
+      Serial.print(ct3t_posi_st[i]);
+    }
+    Serial.println(" ");
+    //–––––––––––––––––––––––––––––––TEST
   GEN_TST();
-  //  **********************TEST**********************
+  //–––––––––––––––––––––––––––––––TEST
 }
-//                                   FIN LOOP
-//                                   FONCTION
+//–––––––––––––––––––––––––––––––FIN LOOP
+  //–––––––––––––––––––––––––––––––FONCTION
+/*––––––––––––––––SOSSAY––––––––––––––––––––––––––––––*/
+  /*––––––––––––––––––SOSSAY	SLC                     */
+    /*			1   tempo off						 		              */
+    /*			2   bosch off								              */
+    /*			3   230v  off 	                          */
+    /*			4   ne_te   						 		              */
+    /*			5   ph_te     							              */
+    /*			6   ph_ne      	                          */
+    /*			7   cc_tst     							              */
+    /*			6   cc_cc      	                          */
+    /*                                                */
+  /*––––––––––––––––––SOSSAY	TYPE                    */
+    /*			1   def_1t        ct1t								    */
+    /*			2   def_2t        ct2t								    */
+    /*			3   def_3t        ct3t               	    */
+    /*			4   def_source    ct3t               	    */
+    /*                                                */
+  /*––––––––––––––––——SOSSAY										      */
+    /*			0   arret      		fan   		spot_cl			  */
+    /*			1   active		    fan	si battLow –> 51 52 */
+    /*			2-3 flacheBleu		sirenC								  */
+    /*			4-5 flacheRouge		sirenI								  */
+    /*			51	fan 					tot_auto		 	  */
+    /*			52	fan 					semi_auto							  */
+    /*			60	spot																  */
+    /*			61	spot					sirenI				          */
+    /*			62	spot					sirenI				          */
+    /*			71	spot					sirenC				          */
+    /*			72	spot					sirenC				          */
+    /*			81	sirenC															  */
+    /*			82	sirenI															  */
+    /*			91	flacheBleu													  */
+    /*			92	flacheRouge													  */
+    /*                                                */
+ /*––––––––––––––––SOSSAY–––––––––––––––––––––––––––––*/
 
-/*								SOSSAY												*/
-/*			2-3 flacheBleu		sirenC								*/
-/*			4-5 flacheRouge		sirenI								*/
-/*			50	fan 					semi_auto		battLow 	*/
-/*			51	fan 					tot_auto							*/
-/*			60	spot																*/
-/*			61	spot					sirenI				*/
-/*			62	spot					sirenI				*/
-/*			71	spot					sirenC				*/
-/*			72	spot					sirenC				*/
-/*			81	sirenC															*/
-/*			82	sirenI															*/
-/*			91	flacheBleu													*/
-/*			92	flacheRouge													*/
-/*								SOSSAY												*/
-void sosSay_slc(int sosSay)
+void sosSay_slc(int selc, int sosSay, int typ)
 {
   if (sosSay == 2 || sosSay == 3) // flacheBleu,sirenC
   {
@@ -574,6 +622,48 @@ void sosSay_slc(int sosSay)
     flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
     siren_c_i = false;          // "<&>"
   }
+    if (selc == 1) // tempo manu auto   off
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      chf_cyl[i] = selc_aut[i];
+    }
+  }
+  if (selc == 2) // bosch             off
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      chf_cyl[i] = selc_bat[i];
+    }
+  }
+  if (selc == 3) // 230v              off
+  {
+    for (int i = 0; i < 7; i++)
+    {
+      chf_cyl[i] = selc_230[i];
+    }
+  }
+  if (typ == 1) // def_1t
+  {
+    switch_def_src = ct1t_posi_st[8];
+  }
+  if (typ == 2) // def_2t
+  {
+    switch_def_src = ct2t_posi_st[8];
+  }
+  if (typ == 3) // def_3t
+  {
+    switch_def_src = ct3t_posi_st[8];
+  }
+  if (typ == 4) // def_source
+  {
+    switch_def_src = ct3t_posi_st[8];
+  }
+
+}
+void sosSay_def_typ(int selc, int sosSay, int typ)
+{
+
 }
 void GEN_mode()
 {
@@ -624,11 +714,11 @@ void GEN_mode()
   }
   if (etalon[3] == 3)
   {
-    // break;
-  }
+    GEN_TST();
+  }  
   if (etalon[3] == 2)
   {
-    // break;
+    GEN_ALM();
   }
   if (etalon[3] == 1)
   {
@@ -646,6 +736,7 @@ void GEN_TST()
     Serial.print("Ne <-> Te ");
     Serial.println(CcPhNeTe);
     // sosNbr34();
+    cyl_def_source(4,);
     if (welc_ctr_err == true)
     {
       switch_def = ct3t_posi_st[8];
@@ -1130,9 +1221,7 @@ void GEN_ALM()
     GEN_ste = false;
   }
 }
-
-void demare()
-{
+void manu_auto_tempo(){
   //            MANU_AUTO_VEILLE
   // si BPmarcheState (off)  on
   BPmarcheState = digitalRead(BPmarche);
@@ -1164,43 +1253,16 @@ void demare()
   }
   if ((Manu_auto == false) && (tempo_State_On == false))
   {
+    veille_def = 1;
     mis_veil = true;
     // veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
   }
 
-  // **********************DEBUT**********************
 
-  batt = getBattery(batt, battLow);
-  const float voltt = (batt * (TensionMax - TensionMin));
-  const float volty = (voltt / 100);
-  const float volt = (volty + TensionMin);
-  if (batt <= 20)
-  {
-    Serial.print(volt);
-    Serial.print("v !");
-    battLow = true;
-    Serial.println(" !!! bat BOSCH LOW !!! ");
-  }
-  else
-  {
-    Serial.print("bat BOSCH : ");
-    Serial.print(batt);
-    Serial.print("%_");
-    Serial.print(volt);
-    Serial.println("v");
-    battLow = false;
-  }
-  if (batt <= 1)
-  {
-    mis_veil = true;
-    // battOffFonc();
-  }
-  alim_State = controlAlimFonc();
-  if (alim_State == 20)
-  {
-    mis_veil = true;
-    // alimOffFonc();
-  }
+}
+void demare()
+{
+
 }
 void maz_int_f()
 {
@@ -1272,7 +1334,7 @@ void fane(int sosSay)
       Serial.println("ventilateur off_auto");
     }
   }
-  if (battLow == true && sosSay == 1)
+  if (battLow == true && sosSay == 1 || sosSay == 52)
   {
     unsigned long rlt_fan_bch = millis() - debut_fan_bch;
     unsigned long rlt1_fan_bch = millis() - debut_fan_bch;
@@ -1408,7 +1470,6 @@ int test()
   }
   return (CcPhNeTe);
 }
-/**************FONCTION****spot_cl*/
 int spot_cl(int sosSay, unsigned long sosTmp)
 {
   unsigned long mil = millis() - spot_cl_Say;
@@ -1517,9 +1578,7 @@ int spot_cl(int sosSay, unsigned long sosTmp)
   }
   return compteB;
 }
-/**************FONCTION****spot_cl****final*/
-
-/*              COMPTEUR 1t_2t_3t               */
+/*–––––––––––––––––––––––––––––––COMPTEUR 1t_2t_3t */
 int count_1t()
 {
   unsigned long ct1t_resu = millis() - ct1t_millis;
@@ -1625,7 +1684,7 @@ int count_1t()
 }
 int def_1t(int sosSay, int cl)
 {
-  sosSay_slc(sosSay);
+  sosSay_slc(selc, sosSay, typ);
   // cycle count_1t
   count_1t();
   for (int i = 0; i < 6; i++)
@@ -1797,7 +1856,7 @@ int count_2t()
 }
 int def_2t(int sosSay, int cl)
 {
-  sosSay_slc(sosSay);
+  sosSay_slc(selc, sosSay, typ);
   // cycle count_2t
   count_2t();
   for (int i = 0; i < 6; i++)
@@ -1969,7 +2028,7 @@ int count_3t()
 }
 int def_3t(int sosSay, int cl)
 {
-  sosSay_slc(sosSay);
+  sosSay_slc(selc, sosSay, typ);
   count_3t();
   for (int i = 0; i < 6; i++)
   {
@@ -2038,102 +2097,156 @@ int def_3t(int sosSay, int cl)
 }
 void cyl_def_source(int selc, int sosSay, int typ)
 {
-  //    chiffre type
-  int selc_aut[6]{91, 81, 92, 82, 60, 50}; // selc 1
-  int selc_bat[6]{91, 81, 92, 82, 60, 50}; // selc 2
-  int selc_230[6]{91, 81, 92, 82, 60, 50}; // selc 3
-                                           //    chiffre
-  int chf_cyl[6];
-  if (selc == 1) // tempo manu auto   off
-  {
-    for (int i = 0; i < 7; i++)
-    {
-      chf_cyl[i] = selc_aut[i];
-    }
-  }
-  if (selc == 2) // bosch             off
-  {
-    for (int i = 0; i < 7; i++)
-    {
-      chf_cyl[i] = selc_bat[i];
-    }
-  }
-  if (selc == 3) // 230v              off
-  {
-    for (int i = 0; i < 7; i++)
-    {
-      chf_cyl[i] = selc_230[i];
-    }
-  }
-  if (typ == 1) // def_1t
-  {
-    switch_def_src = ct1t_posi_st[8];
-  }
-  if (typ == 2) // def_2t
-  {
-    switch_def_src = ct2t_posi_st[8];
-  }
-  if (typ == 3) // def_3t
-  {
-    switch_def_src = ct3t_posi_st[8];
-  }
-  if (typ == 4) // def_source
-  {
-    switch_def_src = ct3t_posi_st[8];
-  }
-
-  // int switch_def_src = ct3t_posi_st[8];
+  sosSay_slc(selc, sosSay, typ);
   switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
   {
   case 0:
     if (typ == 1)
     {
-      def_1t(chf_cyl[0], sosSay); // flache_bleu
+      def_1t(chf_cyl[0], sosSay);
     }
     if (typ == 2)
     {
-      def_2t(chf_cyl[0], sosSay); // flache_bleu
+      def_2t(chf_cyl[0], sosSay);
     }
     if (typ == 3)
     {
-      def_3t(chf_cyl[0], sosSay); // flache_bleu
+      def_3t(chf_cyl[0], sosSay);
     }
     if (typ == 4)
     {
-      def_source(chf_cyl[0], sosSay); // flache_bleu
+      def_source(chf_cyl[0], sosSay);
     }
     break;
   case 1:
-    def_source(chf_cyl[1], sosSay); // siren_c
+    if (typ == 1)
+    {
+      def_1t(chf_cyl[0], sosSay);
+    }
+    if (typ == 2)
+    {
+      def_2t(chf_cyl[0], sosSay);
+    }
+    if (typ == 3)
+    {
+      def_3t(chf_cyl[0], sosSay);
+    }
+    if (typ == 4)
+    {
+      def_source(chf_cyl[0], sosSay);
+    }
     break;
   case 2:
-    def_source(chf_cyl[2], sosSay); // flache_rouge
+    if (typ == 1)
+    {
+      def_1t(chf_cyl[2], sosSay);
+    }
+    if (typ == 2)
+    {
+      def_2t(chf_cyl[2], sosSay);
+    }
+    if (typ == 3)
+    {
+      def_3t(chf_cyl[2], sosSay);
+    }
+    if (typ == 4)
+    {
+      def_source(chf_cyl[2], sosSay);
+    }
     break;
   case 3:
-    def_source(chf_cyl[3], sosSay); // siren_i
+    if (typ == 1)
+    {
+      def_1t(chf_cyl[3], sosSay);
+    }
+    if (typ == 2)
+    {
+      def_2t(chf_cyl[3], sosSay);
+    }
+    if (typ == 3)
+    {
+      def_3t(chf_cyl[3], sosSay);
+    }
+    if (typ == 4)
+    {
+      def_source(chf_cyl[3], sosSay);
+    }
     break;
   case 4:
-    def_source(chf_cyl[4], sosSay); // spot
+    if (typ == 1)
+    {
+      def_1t(chf_cyl[4], sosSay);
+    }
+    if (typ == 2)
+    {
+      def_2t(chf_cyl[4], sosSay);
+    }
+    if (typ == 3)
+    {
+      def_3t(chf_cyl[4], sosSay);
+    }
+    if (typ == 4)
+    {
+      def_source(chf_cyl[4], sosSay);
+    }
     break;
   case 5:
-    def_source(chf_cyl[5], sosSay);
+    if (typ == 1)
+    {
+      def_1t(chf_cyl[5], sosSay);
+    }
+    if (typ == 2)
+    {
+      def_2t(chf_cyl[5], sosSay);
+    }
+    if (typ == 3)
+    {
+      def_3t(chf_cyl[5], sosSay);
+    }
+    if (typ == 4)
+    {
+      def_source(chf_cyl[5], sosSay);
+    }
     def_source(2, 2);
     def_source(4, 2);
 
     break;
   case 6:
-    for (int i = 0; i < 9; i++)
+      if (typ == 1)
+    {
+      for (int i = 0; i < 9; i++)
     {
       ct1t_posi_st[i] = false;
+    }
+    }
+    if (typ == 2)
+    {
+    for (int i = 0; i < 9; i++)
+    {
       ct2t_posi_st[i] = false;
+    }
+    }
+    if (typ == 3)
+    {
+    for (int i = 0; i < 9; i++)
+    {
       ct3t_posi_st[i] = false;
     }
+    }
+    if (typ == 4)
+    {
+    for (int i = 0; i < 9; i++)
+    {
+      ct3t_posi_st[i] = false;
+    }
+    }
+
     break;
   }
 }
 int def_source(int sosSay, int cl)
 {
-  sosSay_slc(sosSay);
+  sosSay_slc(selc, sosSay, typ);  
   count_3t();
   for (int i = 0; i < 6; i++)
   {
@@ -2200,7 +2313,7 @@ int def_source(int sosSay, int cl)
   return (CcPhNeTe_switch);
 }
 
-/*              AUTO COFIG                     */
+/*––––––––––––––––––––––––––––––– AUTO COFIG */
 int welc_1s(int ct1s_state)
 {
   int ct1s_ste = ct1s_state;
@@ -2726,6 +2839,10 @@ int getBattery(int batt, bool battLow)
   float res = val / moy;
   float pct = res * 100; // mettre en pourcentage
   int pctr = pct;
+  const float voltt = (pctr * (TensionMax - TensionMin));
+  const float volty = (voltt / 100);
+  const float volt = (volty + TensionMin);
+
   if (pctr > 100)
   {
     pctr = 100;
@@ -2734,16 +2851,19 @@ int getBattery(int batt, bool battLow)
   {
     pctr = 0;
   }
-  if (pctr > 0)
+  if (pctr > 1 && pctr <= 20) // max is 20%
   {
-    if (pctr > 1 && pctr <= 20) // max is 20%
-    {
-      batt = 20;
-      battLow = true;
+    
+    Serial.print(volt);
+    Serial.print("v !");
+    battLow = true;
+    Serial.println(" !!! bat BOSCH LOW !!! ");
+    battLow = true;
+    /*
       unsigned long curmil = millis();
-      if (curmil - chroi >= 2000)
+      if (curmil - chroi >= sec*2)
       {
-        veille_def = 1;
+        
         chroi = curmil;
         Serial.print("BOSCH 18V LOW ");
         Serial.print(pctr);
@@ -2755,19 +2875,44 @@ int getBattery(int batt, bool battLow)
         Serial.print(volt);
         Serial.println("V");
       }
-    }
+      */
+  }
+  else 
+  {
+    Serial.print("bat BOSCH : ");
+    Serial.print(batt);
+    Serial.print("%_");
+    Serial.print(volt);
+    Serial.println("v");
+    battLow = false;
+  }
+  if (pctr <= 1)
+  {
+    veille_def = 2;
+    mis_veil = true;
   }
   return (pctr);
 }
 int controlAlimFonc()
 {
+  alim_State = 10;
   digitalWrite(alim, true);            // 230v sous tention
   int alimState = digitalRead(alimOk); // control 230v sous tention
   if (alimState == false)
   {                                    // si entree actif
     Serial.println("TENTION 230V 0n"); // affiche 230v On
-    sosNbr = 1;                        // code active fane  controlAlimFonc()
-    fane(sosNbr);                      // active ventilateur controlAlimFonc()
+    if(battLow==false)
+    {
+    sosSay = 1;                        // code active fane  controlAlimFonc()
+    fane(sosSay);                      // active ventilateur controlAlimFonc()
+    }
+    else
+    {
+      sosSay = 52;                        // code active fane  controlAlimFonc()
+      fane(sosSay);                      // active ventilateur controlAlimFonc()
+
+    }
+    
     if (alim_State == 20)
     { // state alim 230v on off
       alim_State = 30;
@@ -2780,12 +2925,14 @@ int controlAlimFonc()
   }
   else
   {
-    veille_def = 2;
-    Serial.println("DEFAUT 230V 0ff"); // affiche 230v Off
-    sosNbr = 0;                        // code arret fane controlAlimFonc()  off
-    fane(sosNbr);                      // arret ventilateur controlAlimFonc()
+    mis_veil = true;
+    veille_def = 3;
     alim_State = 20;
+    Serial.println("DEFAUT 230V 0ff"); // affiche 230v Off
+    sosSay = 0;                        // code arret fane controlAlimFonc()  off
+    fane(sosSay);                      // arret ventilateur controlAlimFonc()
     digitalWrite(alim, false); // arret 230v
+
     return (alim_State);
   }
 }
@@ -2800,7 +2947,7 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
     digitalWrite(sirenC, false);
     digitalWrite(sirenI, false);
     digitalWrite(flacheRouge, false);
-    sosSay = 0;   // code arret ecl & fane veilleF()
+    sosSay = 0;   // code arret ecl & fane veille_F()
     fane(sosSay); // arret fan  veille_F()
     while (BPmarcheState == false)
     {
@@ -2808,7 +2955,6 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
       tempx = (millis() - temp1);
       if (tempx >= 5000)
       {
-        veille_def = 3;
         Serial.println("defaut alim appuille BP");
         temp1 = millis();
         sosSay = 3;
@@ -2818,7 +2964,6 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
     }
     while (alim_State == 20)
     {
-      veille_def = 4;
       alim_State = controlAlimFonc();
       tempx = (millis() - temp1);
       if (tempx >= 5000)
@@ -2833,7 +2978,6 @@ void veilleF(int alim_State, bool BPmarcheState, int batt)
   }
   while (batt <= 5)
   {
-    veille_def = 5;
     batt = getBattery(batt, battLow);
     tempx = (millis() - temp1);
     if (tempx >= 5000)
@@ -2864,7 +3008,6 @@ void veilleFonc(bool tempo_State_On, bool BPmarcheState, bool battLow, int batt)
     fane(sosSay);            //  arret fane veilleFon_c()
     while (BPmarcheState == true)
     {
-      veille_def = 6;
       BPmarcheState = digitalRead(BPmarche);
       tempx = (millis() - temp1);
       if (tempx >= 3000)
@@ -2898,7 +3041,7 @@ void veilleFonc(bool tempo_State_On, bool BPmarcheState, bool battLow, int batt)
     digitalWrite(fan, false);
     while (BPmarcheState == true)
     {
-      veille_def = 6;
+      
       BPmarcheState = digitalRead(BPmarche);
       tempx = (millis() - temp1);
       if (tempx >= 2000)
@@ -2916,7 +3059,6 @@ void alimOffFonc()/*  */
   int alimState = digitalRead(alimOk);
   while (alimState == true)
   {
-    veille_def = 7;
     digitalWrite(alim, true);        // 230v sous tention
     alimState = digitalRead(alimOk); // control 230v sous tention
     if (alimState == true)
@@ -2949,7 +3091,6 @@ void battOffFonc()
   fane(sosSay);            // arret fanebattOffFonc()
   while (batState == false)
   {
-    veille_def = 8;
     if (batState == false)
     { // si entree actif
       batState = getBattery(batt, battLow);
@@ -2972,7 +3113,7 @@ void battOffFonc()
   }
   debut = millis();
 }
-
+ 
 void veil_mis()
 {
   BPmarcheState = digitalRead(BPmarche);
@@ -2984,18 +3125,19 @@ void veil_mis()
     Serial.println("veil_mis  appuille BP");
     if (BPmarcheState == true)
     {
-      cyl_def_source(1, 1, 1);
       Serial.println("veil_mis  tempo off");
+      cyl_def_source(1, 1, 1);
     }
     if (batt <= 1)
     {
       Serial.println("veil_mis  bosch off");
-      cyl_def_source(2, 2, 2)
+      cyl_def_source(2, 2, 2);
     }
     if (alim_State == 20)
     {
       Serial.println("veil_mis  230v off");
-      cyl_def_source(3, 3, 3)
+      cyl_def_source(3, 3, 3);
+
     }
   }
 }
