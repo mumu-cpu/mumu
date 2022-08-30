@@ -1,180 +1,181 @@
-//–––––––––––––––CONFIG INP_OUT
-  const int testPh = A0;     // entree analog phase
-  const int testN = A1;      // entree analog neutre
-  const int testT = A2;      // entree analog terre
-  const int BATTERYPIN = A3; // pin de la batterie
-  const int photo = A4;      // cellule photo
-  const int temrat = A5;     // cellule temperature
-  const int BPmarche = 2;    // entree bp_marche
-  const int alimOk = 4;      // entree control 230v OK
-  const int welc_ctr_in = 2; // 8;  // entree control diagnostique
+//––––––––––––––––––––––––DECLARE INIT
+  //–––––––––––––––CONFIG INP_OUT
+    const int testPh = A0;     // entree analog phase
+    const int testN = A1;      // entree analog neutre
+    const int testT = A2;      // entree analog terre
+    const int BATTERYPIN = A3; // pin de la batterie
+    const int photo = A4;      // cellule photo
+    const int temrat = A5;     // cellule temperature
+    const int BPmarche = 2;    // entree bp_marche
+    const int alimOk = 4;      // entree control 230v OK
+    const int welc_ctr_in = 2; // 8;  // entree control diagnostique
 
-  int flacheRouge = 11; // sortie flacheRouge
-  int flacheBleu = 12;  // sortie flacheBleu
-  int sirenC = 3;       // sortie siren con (continute)
-  int sirenI = 9;       // sortie siren iso
-  int spot = 6;         // eclairage
-  int alim = 10;        // sortie_Alim
-  int fan = 5;          // ventilateur
-  int bosch = 13;       // sortie batterie
+    int flacheRouge = 11; // sortie flacheRouge
+    int flacheBleu = 12;  // sortie flacheBleu
+    int sirenC = 3;       // sortie siren con (continute)
+    int sirenI = 9;       // sortie siren iso
+    int spot = 6;         // eclairage
+    int alim = 10;        // sortie_Alim
+    int fan = 5;          // ventilateur
+    int bosch = 13;       // sortie batterie
 
-  int phase = 0;            // state phase
-  int neutre = 0;           // state neutre
-  int terre = 0;            // state terre
-  int seuil_pot = 10;       // seuil_pot detection
-  int seuil_lux = 30;       // seuil_lux
-  int seuil_term = 30;      // seuil_term
-//–––––––––––––––GEN_TST
-  int sosSay = 0;           //
-  int CcPhNeTe = 0;         // CcPhNeTe
-  int CcPhNeTe_prew = 0;
+    int phase = 0;            // state phase
+    int neutre = 0;           // state neutre
+    int terre = 0;            // state terre
+    int seuil_pot = 10;       // seuil_pot detection
+    int seuil_lux = 30;       // seuil_lux
+    int seuil_term = 30;      // seuil_term
+  //–––––––––––––––GEN_TST
+    int sosSay = 0;           //
+    int CcPhNeTe = 0;         // CcPhNeTe
+    int CcPhNeTe_prew = 0;
 
-  bool battLow = false; // battLow
-  int batt = 0;         // batt
-  int eclr = 0;
-  int fanee = 0;
-  const float TensionMin = 10.5; // tension min
-  const float TensionMax = 20.0; // tension max
-  bool BPmarcheState = false;    // state bp_marche
-  bool Manu_auto = false;        // state auto_manu
-  bool spotState = false;
-  bool flacheRougeState = false;     // state flache_rouge
-  bool flacheBleuState = false;      // state flache_rouge
-  bool sirenCState = false;          // state sirenC
-  bool sirenIState = false;          // state sirenI
-  int alim_State = 0;                // state alim_State
-  bool tempo_State_On = false;       // cycle on
-  unsigned long tempo = (sec * 20); // temp duree cycle
-  unsigned long debut = millis();   // temp debut duree cycle
-  unsigned long interval = 1000;    // interval cligniot
-  unsigned long inter = 1;
-  unsigned long chro = 0;                 // temp ccphnete
-  unsigned long chroi = 0;                // temp bat low
-  unsigned long curmill = millis();       // temp ccphnt
-  unsigned long tempi = 2000;             // temp ccphnt
-  unsigned long temp1 = 0;                // temp memo depannage terrePhaseNeutre
-  unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
-  unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
-  unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
-  int ct_state = 0;
+    bool battLow = false; // battLow
+    int batt = 0;         // batt
+    int eclr = 0;
+    int fanee = 0;
+    const float TensionMin = 10.5; // tension min
+    const float TensionMax = 20.0; // tension max
+    bool BPmarcheState = false;    // state bp_marche
+    bool Manu_auto = false;        // state auto_manu
+    bool spotState = false;
+    bool flacheRougeState = false;     // state flache_rouge
+    bool flacheBleuState = false;      // state flache_rouge
+    bool sirenCState = false;          // state sirenC
+    bool sirenIState = false;          // state sirenI
+    int alim_State = 0;                // state alim_State
+    bool tempo_State_On = false;       // cycle on
+    unsigned long tempo = (sec * 20); // temp duree cycle
+    unsigned long debut = millis();   // temp debut duree cycle
+    unsigned long interval = 1000;    // interval cligniot
+    unsigned long inter = 1;
+    unsigned long chro = 0;                 // temp ccphnete
+    unsigned long chroi = 0;                // temp bat low
+    unsigned long curmill = millis();       // temp ccphnt
+    unsigned long tempi = 2000;             // temp ccphnt
+    unsigned long temp1 = 0;                // temp memo depannage terrePhaseNeutre
+    unsigned long temp2 = 0;                // temp memo depannage terrePhaseNeutre
+    unsigned long tempx = 1000;             // temp duree delay affiche defaut alim
+    unsigned long currentMillis = millis(); // stocke la valeur courante de la fonction millis()
+    int ct_state = 0;
 
-//–––––––––––––––GEN
-  long minut = 60000;
-  long sec = 1000;
-  long gen_debut = 0;
-  long gen_tmp_230 = 15 * minut;
-  bool GEN_ste = false;
-  long debut_3m = 0;
-  long debut_1m = 0;
-  long debut_gen_inp = 0;
-  long debut_gen_cyl = 0;
-  long debut_cc0_lop = 0;
-  long debut_gen_lop = 0;
-  long debut_fan_bch = 0;
-  int etalon[4] = {0, 0, 0, 0};
-
-
-//–––––––––––––––INIT
-  bool maz_int = false;
-  bool mis_veil = false;
-
-  int ccphnete_0_st = 0;
-  int ccphnete0 = 0;
-  int veille_def_st = 0;
-  int veille_def = 0;
-
-//–––––––––––––––TB COUNT
-  int switch_def_src = 0;
-  unsigned long ct1t_millis = millis();
-  bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
-  int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-  int ct1t_switch;
-  unsigned long ct2t_millis = millis();
-  bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
-  int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-  int ct2t_switch;
-  unsigned long ct3t_millis = millis();
-  bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
-  int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
-  int ct3t_switch;
-
-//–––––––––––––––chiffre type
-  int selc_aut[6]{91, 81, 92, 82, 60, 50};  //    selc 1
-  int selc_bat[6]{91, 81, 92, 82, 60, 50};  //    selc 2
-  int selc_230[6]{91, 81, 92, 82, 60, 50};  //    selc 3
-  int selc_ne_te[6]{3, 61, 4, 71, 0, 0};    //    selc 4
-  int selc_ph_te[6]{2, 61, 4, 71, 0, 0};    //    selc 5
-  int selc_ph_ne[6]{2, 61, 3, 62, 0, 0};    //    selc 6
-  int selc_cc_tst[6]{2, 60, 3, 60, 4, 50};  //    selc 7
-  int selc_cc_cc[6]{5, 71, 5, 72, 0, 50};   //    selc 8
-  //    chiffre
-  int chf_cyl[6];
-  int flache_b_r_s = 0;
-  int siren_c_i = 0;
+  //–––––––––––––––GEN
+    long minut = 60000;
+    long sec = 1000;
+    long gen_debut = 0;
+    long gen_tmp_230 = 15 * minut;
+    bool GEN_ste = false;
+    long debut_3m = 0;
+    long debut_1m = 0;
+    long debut_gen_inp = 0;
+    long debut_gen_cyl = 0;
+    long debut_cc0_lop = 0;
+    long debut_gen_lop = 0;
+    long debut_fan_bch = 0;
+    int etalon[4] = {0, 0, 0, 0};
 
 
-//–––––––––––––––WELC
-  bool welc_ctr_err = false;
-  String rouge = "flache	ROUGE";       // welc_ID_index  0
-  String bleu = "flache	BLEU";          // welc_ID_index  1
-  String con = "siren	CONT";            // welc_ID_index  2
-  String iso = "siren	ISO";             // welc_ID_index  3
-  String spt = "ecl	SPOT";              // welc_ID_index  4
-  String alm = "alim	230v";            // welc_ID_index  5
-  String fn = "vent	FAN";               // welc_ID_index  6
-  String bch = "bat	BOSCH";             // welc_ID_index  7
+  //–––––––––––––––INIT
+    bool maz_int = false;
+    bool mis_veil = false;
 
-  bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
-  String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
-//–––––––––––––––COUNT 1s
-  int ct1s_state = 0;
-  bool ct1s_sta = false;
-  bool ct1s_sta1 = false;
+    int ccphnete_0_st = 0;
+    int ccphnete0 = 0;
+    int veille_def_st = 0;
+    int veille_def = 0;
 
-  int ct05s_state = 0;
-  bool ct05s_sta = false;
-  bool ct05s_sta1 = false;
+  //–––––––––––––––TB COUNT
+    int switch_def_src = 0;
+    unsigned long ct1t_millis = millis();
+    bool ct1t_cycl_st[6] = {false, false, false, false, false, false};
+    int ct1t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+    int ct1t_switch;
+    unsigned long ct2t_millis = millis();
+    bool ct2t_cycl_st[6] = {false, false, false, false, false, false};
+    int ct2t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+    int ct2t_switch;
+    unsigned long ct3t_millis = millis();
+    bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
+    int ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
+    int ct3t_switch;
 
-//–––––––––––––––
-  //int sosNbr = 0;           // code on_off_cl
-  unsigned long sosTmp = 1; // tempt cliosos_Nbr40 x1000
+  //–––––––––––––––chiffre type
+    int selc_aut[6]{91, 81, 92, 82, 60, 50};  //    selc 1
+    int selc_bat[6]{91, 81, 92, 82, 60, 50};  //    selc 2
+    int selc_230[6]{91, 81, 92, 82, 60, 50};  //    selc 3
+    int selc_ne_te[6]{3, 61, 4, 71, 0, 0};    //    selc 4
+    int selc_ph_te[6]{2, 61, 4, 71, 0, 0};    //    selc 5
+    int selc_ph_ne[6]{2, 61, 3, 62, 0, 0};    //    selc 6
+    int selc_cc_tst[6]{2, 611, 3, 612, 4, 50};  //    selc 7
+    int selc_cc_cc[6]{5, 71, 5, 72, 0, 50};   //    selc 8
+    //    chiffre
+    int chf_cyl[6];
+    int flache_b_r_s = 0;
+    int siren_c_i = 0;
 
-  unsigned long cpt_millis = millis();
-  unsigned long cpt1s_millis = millis();
 
-  unsigned long cpt05s_millis = millis();
-  bool f_b_cl_state = false;
-  unsigned long f_b_cl_Tmp = 0;
-  unsigned long f_b_cl_Say = 0;
-  bool f_r_cl_state = false;
-  unsigned long f_r_cl_Tmp = 0;
-  unsigned long f_r_cl_Say = 0;
-  bool spot_cl_state = false;
-  unsigned long spot_cl_Tmp = 0;
-  unsigned long spot_cl_Say = 0;
-  bool s_c_cl_state = false;
-  unsigned long s_c_cl_Tmp = 0;
-  bool s_i_cl_state = false;
-  unsigned long s_i_cl_Tmp = 0;
-  int cp_cl = 1;            // int declaration
-  volatile int compteB = 0; // init declaration
-  int compteR = 0;
-  int comptesC = 1;
-  int comptesI = 1;
-  int compte30B = 0;
-  int compte30R = 0;
-  int comptespot = 1;
-  int compte30spot = 0;
-  int compte30sI = 1;
-  int compte30sC = 1;
-  unsigned long millisSc_BR_CLon = 0;
-  unsigned long millisSi_BR_CLon = 0;
-  unsigned long millisF_B_CL_5 = 0;
+  //–––––––––––––––WELC
+    bool welc_ctr_err = false;
+    String rouge = "flache	ROUGE";       // welc_ID_index  0
+    String bleu = "flache	BLEU";          // welc_ID_index  1
+    String con = "siren	CONT";            // welc_ID_index  2
+    String iso = "siren	ISO";             // welc_ID_index  3
+    String spt = "ecl	SPOT";              // welc_ID_index  4
+    String alm = "alim	230v";            // welc_ID_index  5
+    String fn = "vent	FAN";               // welc_ID_index  6
+    String bch = "bat	BOSCH";             // welc_ID_index  7
+
+    bool welc_ctr_tb_st[8] = {false, false, false, false, false, false, false, false};
+    String welc_ctr_tb_id[8] = {rouge, bleu, con, iso, spt, alm, fn, bch};
+  //–––––––––––––––COUNT 1s
+    int ct1s_state = 0;
+    bool ct1s_sta = false;
+    bool ct1s_sta1 = false;
+
+    int ct05s_state = 0;
+    bool ct05s_sta = false;
+    bool ct05s_sta1 = false;
+
+  //–––––––––––––––
+    //int sosNbr = 0;           // code on_off_cl
+    unsigned long sosTmp = 1; // tempt cliosos_Nbr40 x1000
+
+    unsigned long cpt_millis = millis();
+    unsigned long cpt1s_millis = millis();
+
+    unsigned long cpt05s_millis = millis();
+    bool f_b_cl_state = false;
+    unsigned long f_b_cl_Tmp = 0;
+    unsigned long f_b_cl_Say = 0;
+    bool f_r_cl_state = false;
+    unsigned long f_r_cl_Tmp = 0;
+    unsigned long f_r_cl_Say = 0;
+    bool spot_cl_state = false;
+    unsigned long spot_cl_Tmp = 0;
+    unsigned long spot_cl_Say = 0;
+    bool s_c_cl_state = false;
+    unsigned long s_c_cl_Tmp = 0;
+    bool s_i_cl_state = false;
+    unsigned long s_i_cl_Tmp = 0;
+    int cp_cl = 1;            // int declaration
+    volatile int compteB = 0; // init declaration
+    int compteR = 0;
+    int comptesC = 1;
+    int comptesI = 1;
+    int compte30B = 0;
+    int compte30R = 0;
+    int comptespot = 1;
+    int compte30spot = 0;
+    int compte30sI = 1;
+    int compte30sC = 1;
+    unsigned long millisSc_BR_CLon = 0;
+    unsigned long millisSi_BR_CLon = 0;
+    unsigned long millisF_B_CL_5 = 0;
 //––––––––––––––––––––––––SETUP
   void setup()
   {
     Serial.begin(115200);
-    Serial.println("      A U T O     D I A G N O S T I C"); //
+    Serial.println("–––– A U T O –––– D I A G N O S T I C ––––"); //
     Serial.println("     ");                                 //
     pinMode(flacheRouge, OUTPUT);
     pinMode(flacheBleu, OUTPUT);
@@ -207,7 +208,7 @@
 
     if (welc_ctr_tb_st[0] == false && welc_ctr_tb_st[1] == false && welc_ctr_tb_st[2] == false && welc_ctr_tb_st[3] == false && welc_ctr_tb_st[4] == false && welc_ctr_tb_st[5] == false && welc_ctr_tb_st[6] == false && welc_ctr_tb_st[7] == false)
     {
-      Serial.println("    S Y S T E M    O K");
+      Serial.println("–––– S Y S T E M –––– O K ––––");
       welc_ctr_err = false;
       // welc listing ID 0k
       for (int i = 0; i < 8; i++)
@@ -222,7 +223,7 @@
     else
     {
       Serial.println("	");                                         //
-      Serial.println("    S Y S T E M    A U T O     C O N F I G"); //
+      Serial.println("–––– S Y S T E M –––– A U T O –––– C O N F I G ––––"); //
       welc_ctr_err = true;
     }
 
@@ -243,7 +244,7 @@
     if (welc_ctr_tb_st[1] == true) // && welc_ctr_tb_st[1] == false)
     {
       Serial.print(welc_ctr_tb_id[1]);
-      Serial.println("	DEFAUT	0.f.");
+      Serial.println("	DEFAUT	––––	0.f.");
       if (welc_ctr_tb_st[0] == false)
       {
         flacheBleu = flacheRouge;
@@ -254,7 +255,7 @@
     if (welc_ctr_tb_st[2] == true) // && welc_ctr_tb_st[1] == false)
     {
       Serial.print(welc_ctr_tb_id[2]);
-      Serial.println("	DEFAUT	0.f.");
+      Serial.println("	DEFAUT	––––	0.f.");
       if (welc_ctr_tb_st[3] == false)
       {
         sirenC = sirenI;
@@ -265,7 +266,7 @@
     if (welc_ctr_tb_st[3] == true) // && welc_ctr_tb_st[1] == false)
     {
       Serial.print(welc_ctr_tb_id[3]);
-      Serial.println("	DEFAUT	0.f.");
+      Serial.println("	DEFAUT	––––	0.f.");
       if (welc_ctr_tb_st[2] == false)
       {
         sirenI = sirenC;
@@ -331,13 +332,13 @@
     if (welc_ctr_tb_st[6] == true)
     {
       Serial.print(welc_ctr_tb_id[6]);
-      Serial.println("	DEFAUT	0.f.  ! HS");
+      Serial.println("	DEFAUT	––––	0.f.  ! HS");
       fan = 0;
     } // defaut fan --> hs
     if (welc_ctr_tb_st[4] == true)
     {
       Serial.print(welc_ctr_tb_id[4]);
-      Serial.println("	DEFAUT	0.f.  ! HS");
+      Serial.println("	DEFAUT	––––	0.f.  ! HS");
       spot = 0;
     } // defaut spot --> hs
     // flacheRouge -> flacheBleu -> spot -> con -> iso ==> DEFAUT
@@ -347,21 +348,21 @@
         welc_ctr_tb_st[3] == true &&
         welc_ctr_tb_st[4] == true)
     {
-      Serial.println("	DEFAUT GENERAL ! viSon");
+      Serial.println("	DEFAUT –––– GENERAL ! viSon");
       while (1)
         ;
     }
     // alim 230v ==> DEFAUT
     if (welc_ctr_tb_st[5] == true)
     {
-      Serial.println("	DEFAUT GENERAL ! 230v");
+      Serial.println("	DEFAUT –––– GENERAL ! 230v");
       while (1)
         ;
     }
     // bat BOSCH ==> DEFAUT
     if (welc_ctr_tb_st[7] == true)
     {
-      Serial.println("	DEFAUT GENERAL ! BOSCH");
+      Serial.println("	DEFAUT –––– GENERAL ! BOSCH");
       while (1)
         ;
     }
@@ -524,7 +525,7 @@
  }
 //––––––––––––––––––––––––FIN LOOP
 //––––––––––––––––––––––––FONCTION
-//–––––––––––––SLC––SOSSAY––––––––––––––––––––––––––––––
+//––––––––––––––––SLC–––––SOSSAY–––TYPE–––––––––––––––––––––
   //
   //––––––––––––––––––SOSSAY	SLC                     
     //			1   tempo off						 		              
@@ -549,6 +550,7 @@
     //			4-5 flacheRouge		sirenI								  
     //			51	fan 					tot_auto		 	  
     //			52	fan 					semi_auto							  
+    //			60	spot
     //			611	spot                      sosSay 1
     //			612	spot                      sosSay 2
     //			61	spot					sirenI			sosSay 1	          
@@ -560,8 +562,8 @@
     //			91	flacheBleu													  
     //			92	flacheRouge													  
     //                                                
- //––––––––––––––––SOSSAY–––––––––––––––––––––––––––––
-
+    //
+ //–––––––––––––SLC––SOSSAY–––TYPE–––––––––––––––––––––––––––
 //––––––––––––––––––––––––GEN_mode_tst_alim
   void GEN_mode()
   {
@@ -1119,95 +1121,230 @@
       GEN_ste = false;
     }
   }
-void manu_auto_tempo(){
-  //            MANU_AUTO_VEILLE
-  // si BPmarcheState (off)  on
-  BPmarcheState = digitalRead(BPmarche);
-  Manu_auto = !BPmarcheState;
-  // si tempo_State_On (off)  on
-  if ((millis() - debut) <= tempo && Manu_auto == false)
-  {
-    tempo_State_On = true;
-    long tempCycle = tempo - (millis() - debut);
-    Serial.print("temp cylce restant : ");
-    tempCycle = tempCycle / 1000;
-    Serial.print(tempCycle);
-    Serial.println(" s.");
-  }
-  else
-  {
-    tempo_State_On = false;
-  }
-  if (Manu_auto == true)
-  {
-    if (tempx >= 100 || tempx < 5)
+//–––––––––––––DIVERS–––––manu_maz_ecl_veil_spot
+  void manu_auto_tempo(){
+    //            MANU_AUTO_VEILLE
+    // si BPmarcheState (off)  on
+    BPmarcheState = digitalRead(BPmarche);
+    Manu_auto = !BPmarcheState;
+    // si tempo_State_On (off)  on
+    if ((millis() - debut) <= tempo && Manu_auto == false)
     {
-      Serial.println("Manu  on");
-      if (tempx >= 100)
-      {
-        temp1 = millis();
-      }
-    }
-  }
-  if ((Manu_auto == false) && (tempo_State_On == false))
-  {
-    veille_def = 1;
-    mis_veil = true;
-    // veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
-  }
-
-
-}
-void maz_int_f()
-{
-  // mise a zer0
-  if (maz_int == false)
-  {
-    maz_int = true;
-    digitalWrite(flacheRouge, false);
-    digitalWrite(flacheBleu, false);
-    digitalWrite(sirenC, false);
-    digitalWrite(sirenI, false);
-    digitalWrite(spot, false);
-    digitalWrite(alim, false);
-    digitalWrite(fan, false);
-    digitalWrite(bosch, false);
-    for (int i = 0; i < 9; i++)
-    {
-      ct1t_posi_st[i] = false;
-      ct2t_posi_st[i] = false;
-      ct3t_posi_st[i] = false;
-    }
-
-    ct1t_millis = millis();
-    ct2t_millis = millis();
-    ct3t_millis = millis();
-    // chro = millis();
-  }
-}
-void ecl_auto(int sosSay)
-{
-  eclr = analogRead(photo);
-  if (sosSay == 0)
-  { // arret ecl_Auto()
-    digitalWrite(spot, false);
-    Serial.println("eclairage off");
-  }
-  if (sosSay == 1)
-  { // active ecl_Auto()
-    if (eclr >= seuil_lux)
-    {
-      digitalWrite(spot, true);
-      Serial.println("eclairage on_auto");
+      tempo_State_On = true;
+      long tempCycle = tempo - (millis() - debut);
+      Serial.print("temp cylce restant : ");
+      tempCycle = tempCycle / 1000;
+      Serial.print(tempCycle);
+      Serial.println(" s.");
     }
     else
     {
+      tempo_State_On = false;
+    }
+    if (Manu_auto == true)
+    {
+      if (tempx >= 100 || tempx < 5)
+      {
+        Serial.println("Manu  on");
+        if (tempx >= 100)
+        {
+          temp1 = millis();
+        }
+      }
+    }
+    if ((Manu_auto == false) && (tempo_State_On == false))
+    {
+      veille_def = 1;
+      mis_veil = true;
+      // veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
+    }
+
+
+  }
+  void maz_int_f()
+  {
+    // mise a zer0
+    if (maz_int == false)
+    {
+      maz_int = true;
+      digitalWrite(flacheRouge, false);
+      digitalWrite(flacheBleu, false);
+      digitalWrite(sirenC, false);
+      digitalWrite(sirenI, false);
       digitalWrite(spot, false);
-      Serial.println("eclairage off_auto");
+      digitalWrite(alim, false);
+      digitalWrite(fan, false);
+      digitalWrite(bosch, false);
+      for (int i = 0; i < 9; i++)
+      {
+        ct1t_posi_st[i] = false;
+        ct2t_posi_st[i] = false;
+        ct3t_posi_st[i] = false;
+      }
+
+      ct1t_millis = millis();
+      ct2t_millis = millis();
+      ct3t_millis = millis();
+      // chro = millis();
     }
   }
-}
-//––––––––––––––––––––––––AUTO COFIG
+  void ecl_auto(int sosSay)
+  {
+    eclr = analogRead(photo);
+    if (sosSay == 0)
+    { // arret ecl_Auto()
+      digitalWrite(spot, false);
+      Serial.println("eclairage off");
+    }
+    if (sosSay == 1)
+    { // active ecl_Auto()
+      if (eclr >= seuil_lux)
+      {
+        digitalWrite(spot, true);
+        Serial.println("eclairage on_auto");
+      }
+      else
+      {
+        digitalWrite(spot, false);
+        Serial.println("eclairage off_auto");
+      }
+    }
+  }
+  void veil_mis()
+  {
+    BPmarcheState = digitalRead(BPmarche);
+    batt = getBattery(batt, battLow);
+    alim_State = controlAlimFonc();
+
+    while (BPmarcheState == true || batt <= 1 || alim_State == 20)
+    {
+      Serial.println("veil_mis  appuille BP");
+      if (BPmarcheState == true)
+      {
+        Serial.println("veil_mis  tempo off");
+        cyl_def_source(1, 1, 1);
+      }
+      if (batt <= 1)
+      {
+        Serial.println("veil_mis  bosch off");
+        cyl_def_source(2, 2, 2);
+      }
+      if (alim_State == 20)
+      {
+        Serial.println("veil_mis  230v off");
+        cyl_def_source(3, 3, 3);
+
+      }
+    }
+  }
+  int spot_cl(int sosSay, unsigned long sosTmp)
+  {
+    unsigned long mil = millis() - spot_cl_Say;
+    unsigned long tp = 1000 * sosTmp;
+    int say10 = sosSay;
+    sosTmp = sosSay;
+    if (say10 == 10)
+    {
+      sosSay = 2;
+    }
+    if (sosSay == 0)
+    { // || f_b_cl_state == false || f_r_cl_state == false) { // arret spot
+      sosTmp = 1;
+      digitalWrite(spot, false); // modifie l'état de la LED
+    }
+    if (mil < tp)
+    {
+      spot_cl_state = false;
+      if (compte30spot < sosSay)
+      {
+        if (spotState == LOW)
+        {
+          if ((millis() - spot_cl_Tmp) >= 200)
+          {
+            spotState = HIGH; // change the state of LED
+            spot_cl_Tmp = millis();
+            if (say10 == 0)
+            {
+              digitalWrite(spot, false); // modifie l'état de la LED
+              Serial.println("eclairage off");
+            }
+            else
+            {
+              if (say10 == 10)
+              {
+                digitalWrite(spot, false); // modifie l'état de la LED
+                Serial.println("eclairage off");
+              }
+              else
+              {
+                digitalWrite(spot, spotState); // remember Current millis() time
+              }
+            }
+          }
+        }
+        else
+        {
+          if ((millis() - spot_cl_Tmp) >= 600)
+          {
+            compte30spot = compte30spot + 1;
+            spotState = LOW; // change the state of LED
+            spot_cl_Tmp = millis();
+            if (say10 == 10)
+            {
+              eclr = analogRead(photo);
+              if (eclr >= seuil_lux)
+              {
+                digitalWrite(spot, true);
+                Serial.println("eclairage on_auto");
+              }
+              else
+              {
+                digitalWrite(spot, false); // modifie l'état de la LED
+                Serial.println("eclairage off_auto");
+              }
+            }
+            else
+            {
+              if (sosSay == 0)             // || f_b_cl_state == false || f_r_cl_state == false)
+              {                            // arret spot
+                digitalWrite(spot, false); // modifie l'état de la LED
+              }
+              else
+              {
+                digitalWrite(spot, spotState);
+              }
+            }
+          }
+        }
+        if (compte30spot == sosSay)
+        {
+          spot_cl_state = true;
+        }
+      }
+    }
+    else
+    {
+      spot_cl_Say = millis(); // mémorise la valeur de la fonction millis()
+      spot_cl_Tmp = millis();
+      // cp_cl = cp_cl + 1; // spot_cl
+      // comptespot = comptespot + 1;
+
+      if (f_b_cl_state == true || f_r_cl_state == true)
+      {
+      }
+      else
+      {
+      }
+      if (compte30spot == sosSay)
+      {
+        compte30spot = 0;
+        compteB = compteB + 1;
+        ct_state = 0;
+        cpt_millis = millis();
+      }
+    }
+    return compteB;
+  }
 //––––––––––––––––––––––––TEST CCPHNETE
   int phaseF()
   {
@@ -1278,115 +1415,7 @@ void ecl_auto(int sosSay)
     }
     return (CcPhNeTe);
   }
-int spot_cl(int sosSay, unsigned long sosTmp)
-{
-  unsigned long mil = millis() - spot_cl_Say;
-  unsigned long tp = 1000 * sosTmp;
-  int say10 = sosSay;
-  sosTmp = sosSay;
-  if (say10 == 10)
-  {
-    sosSay = 2;
-  }
-  if (sosSay == 0)
-  { // || f_b_cl_state == false || f_r_cl_state == false) { // arret spot
-    sosTmp = 1;
-    digitalWrite(spot, false); // modifie l'état de la LED
-  }
-  if (mil < tp)
-  {
-    spot_cl_state = false;
-    if (compte30spot < sosSay)
-    {
-      if (spotState == LOW)
-      {
-        if ((millis() - spot_cl_Tmp) >= 200)
-        {
-          spotState = HIGH; // change the state of LED
-          spot_cl_Tmp = millis();
-          if (say10 == 0)
-          {
-            digitalWrite(spot, false); // modifie l'état de la LED
-            Serial.println("eclairage off");
-          }
-          else
-          {
-            if (say10 == 10)
-            {
-              digitalWrite(spot, false); // modifie l'état de la LED
-              Serial.println("eclairage off");
-            }
-            else
-            {
-              digitalWrite(spot, spotState); // remember Current millis() time
-            }
-          }
-        }
-      }
-      else
-      {
-        if ((millis() - spot_cl_Tmp) >= 600)
-        {
-          compte30spot = compte30spot + 1;
-          spotState = LOW; // change the state of LED
-          spot_cl_Tmp = millis();
-          if (say10 == 10)
-          {
-            eclr = analogRead(photo);
-            if (eclr >= seuil_lux)
-            {
-              digitalWrite(spot, true);
-              Serial.println("eclairage on_auto");
-            }
-            else
-            {
-              digitalWrite(spot, false); // modifie l'état de la LED
-              Serial.println("eclairage off_auto");
-            }
-          }
-          else
-          {
-            if (sosSay == 0)             // || f_b_cl_state == false || f_r_cl_state == false)
-            {                            // arret spot
-              digitalWrite(spot, false); // modifie l'état de la LED
-            }
-            else
-            {
-              digitalWrite(spot, spotState);
-            }
-          }
-        }
-      }
-      if (compte30spot == sosSay)
-      {
-        spot_cl_state = true;
-      }
-    }
-  }
-  else
-  {
-    spot_cl_Say = millis(); // mémorise la valeur de la fonction millis()
-    spot_cl_Tmp = millis();
-    // cp_cl = cp_cl + 1; // spot_cl
-    // comptespot = comptespot + 1;
-
-    if (f_b_cl_state == true || f_r_cl_state == true)
-    {
-    }
-    else
-    {
-    }
-    if (compte30spot == sosSay)
-    {
-      compte30spot = 0;
-      compteB = compteB + 1;
-      ct_state = 0;
-      cpt_millis = millis();
-    }
-  }
-  return compteB;
-}
-//––––––––––DEF 1t_–––––––COMPTEUR 1t_2t_3t 
+//––––––DEF––÷––COUNT–––––1t_2t_3t 
   int count_1t()
   {
     unsigned long ct1t_resu = millis() - ct1t_millis;
@@ -1929,19 +1958,19 @@ int spot_cl(int sosSay, unsigned long sosTmp)
     case 1:
       if (typ == 1)
       {
-        def_1t(chf_cyl[0], sosSay);
+        def_1t(chf_cyl[1], sosSay);
       }
       if (typ == 2)
       {
-        def_2t(chf_cyl[0], sosSay);
+        def_2t(chf_cyl[1], sosSay);
       }
       if (typ == 3)
       {
-        def_3t(chf_cyl[0], sosSay);
+        def_3t(chf_cyl[1], sosSay);
       }
       if (typ == 4)
       {
-        def_source(chf_cyl[0], sosSay);
+        def_source(chf_cyl[1], sosSay);
       }
       break;
     case 2:
@@ -2142,6 +2171,18 @@ int spot_cl(int sosSay, unsigned long sosTmp)
       flache_b_r_s = spot; // 6 sortie spot
       siren_c_i = false;   // "<&>"
     }
+    if (sosSay == 611) // spot
+    {
+      sosSay = 1;
+      flache_b_r_s = spot; // 6 sortie spot
+      siren_c_i = false;   // "<&>"
+    }
+    if (sosSay == 612) // spot
+    {
+      sosSay = 2;
+      flache_b_r_s = spot; // 6 sortie spot
+      siren_c_i = false;   // "<&>"
+    }
     if (sosSay == 61) // spot,sirenI
     {
       flache_b_r_s = spot; // 6 sortie spot
@@ -2182,7 +2223,7 @@ int spot_cl(int sosSay, unsigned long sosTmp)
       flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
       siren_c_i = false;          // "<&>"
     }
-      if (selc == 1) // tempo manu auto   off
+    if (selc == 1) // tempo manu auto   off
     {
       for (int i = 0; i < 7; i++)
       {
@@ -2933,209 +2974,4 @@ int spot_cl(int sosSay, unsigned long sosTmp)
       }
     }
   }
-void veil_mis()
-{
-  BPmarcheState = digitalRead(BPmarche);
-  batt = getBattery(batt, battLow);
-  alim_State = controlAlimFonc();
-
-  while (BPmarcheState == true || batt <= 1 || alim_State == 20)
-  {
-    Serial.println("veil_mis  appuille BP");
-    if (BPmarcheState == true)
-    {
-      Serial.println("veil_mis  tempo off");
-      cyl_def_source(1, 1, 1);
-    }
-    if (batt <= 1)
-    {
-      Serial.println("veil_mis  bosch off");
-      cyl_def_source(2, 2, 2);
-    }
-    if (alim_State == 20)
-    {
-      Serial.println("veil_mis  230v off");
-      cyl_def_source(3, 3, 3);
-
-    }
-  }
-}
 //––––––––––––––––––––––––VEILLE
-  void veilleF(int alim_State, bool BPmarcheState, int batt)
-  {
-    if (alim_State == 20 || BPmarcheState == false)
-    {
-      Serial.print("defaut 230v ");
-      Serial.println("appuille BP");
-      digitalWrite(alim, false);
-      digitalWrite(flacheBleu, false);
-      digitalWrite(sirenC, false);
-      digitalWrite(sirenI, false);
-      digitalWrite(flacheRouge, false);
-      sosSay = 0;   // code arret ecl & fane veille_F()
-      fane(sosSay); // arret fan  veille_F()
-      while (BPmarcheState == false)
-      {
-        BPmarcheState = digitalRead(BPmarche);
-        tempx = (millis() - temp1);
-        if (tempx >= 5000)
-        {
-          Serial.println("defaut alim appuille BP");
-          temp1 = millis();
-          sosSay = 3;
-          sosTmp = 3;
-          spot_cl(sosSay, sosTmp);
-        }
-      }
-      while (alim_State == 20)
-      {
-        alim_State = controlAlimFonc();
-        tempx = (millis() - temp1);
-        if (tempx >= 5000)
-        {
-          Serial.println("defaut 230v appuille BP");
-          temp1 = millis();
-          sosSay = 3;
-          sosTmp = 3;
-          spot_cl(sosSay, sosTmp);
-        }
-      }
-    }
-    while (batt <= 5)
-    {
-      batt = getBattery(batt, battLow);
-      tempx = (millis() - temp1);
-      if (tempx >= 5000)
-      {
-        Serial.println("batt LOW appuille BP");
-        temp1 = millis();
-        sosSay = 3;              // battLow 5%
-        sosTmp = 3;              // battLow 5%
-        spot_cl(sosSay, sosTmp); // battLow 5%
-      }
-    }
-    debut = millis();
-  }
-  void veilleFonc(bool tempo_State_On, bool BPmarcheState, bool battLow, int batt)
-  {
-    batt = getBattery(batt, battLow);
-    if (tempo_State_On == false && BPmarcheState == true)
-    {
-      Serial.println("veille appuille BP");
-      digitalWrite(alim, false);
-      digitalWrite(flacheBleu, false);
-      digitalWrite(sirenC, false);
-      digitalWrite(sirenI, false);
-      digitalWrite(flacheRouge, false);
-      sosSay = 0; //  code arret ecl & fane  veilleFon_c()
-      sosTmp = 0;
-      spot_cl(sosSay, sosTmp); //  arret ecl veilleFon_c()
-      fane(sosSay);            //  arret fane veilleFon_c()
-      while (BPmarcheState == true)
-      {
-        BPmarcheState = digitalRead(BPmarche);
-        tempx = (millis() - temp1);
-        if (tempx >= 3000)
-        {
-          Serial.println("veille appuille BP");
-          temp1 = millis();
-          sosSay = 3;
-          sosTmp = 2;
-          spot_cl(sosSay, sosTmp);
-        }
-      }
-      debut = millis();
-    }
-    if (battLow == true)
-    {
-      Serial.print("DEFAUT  Batterie  ");
-      Serial.print(batt);
-      Serial.print("%_");
-      const float voltt = (batt * (TensionMax - TensionMin));
-      const float volty = (voltt / 100);
-      const float volt = (volty + TensionMin);
-      Serial.print(volt);
-      Serial.print("V");
-      Serial.println("Changer Batterie");
-      digitalWrite(alim, false);
-      digitalWrite(flacheBleu, false);
-      digitalWrite(sirenC, false);
-      digitalWrite(sirenI, false);
-      digitalWrite(flacheRouge, false);
-      digitalWrite(spot, false);
-      digitalWrite(fan, false);
-      while (BPmarcheState == true)
-      {
-        
-        BPmarcheState = digitalRead(BPmarche);
-        tempx = (millis() - temp1);
-        if (tempx >= 2000)
-        {
-          Serial.println("changer Batterie  appuille BP");
-          temp1 = millis();
-        }
-      }
-    }
-    debut = millis();
-  }
-  void alimOffFonc()
-  {
-    digitalWrite(alim, true);
-    int alimState = digitalRead(alimOk);
-    while (alimState == true)
-    {
-      digitalWrite(alim, true);        // 230v sous tention
-      alimState = digitalRead(alimOk); // control 230v sous tention
-      if (alimState == true)
-      { // si entree actif
-        digitalWrite(alim, false);
-        alim_State = 20;
-        sosSay = 1;
-        sosTmp = 1;
-        spot_cl(sosSay, sosTmp);
-      }
-      else
-      {
-        digitalWrite(alim, true);
-        alim_State = 30;
-      }
-    }
-    if (cp_cl > 1)
-    {
-      cp_cl = 1; // alimOffFonc
-      veilleF(alim_State, BPmarcheState, batt);
-    }
-    debut = millis();
-  }
-  void battOffFonc()
-  {
-    int batState = getBattery(batt, battLow);
-    sosSay = 0; // code arret ecl & fane battOffFonc()
-    sosTmp = 0;
-    spot_cl(sosSay, sosTmp); // arret ecl battOffFonc()
-    fane(sosSay);            // arret fanebattOffFonc()
-    while (batState == false)
-    {
-      if (batState == false)
-      { // si entree actif
-        batState = getBattery(batt, battLow);
-        digitalWrite(alim, false);
-        sosSay = 1;
-        spot_cl(sosSay, sosTmp);
-      }
-      else
-      {
-        digitalWrite(alim, true);
-        sosSay = 1;   //  code actif fane  battOffFonc()
-        fane(sosSay); //  actif fane  battOffFonc()
-        alim_State = 30;
-      }
-    }
-    if (cp_cl > 3)
-    {
-      cp_cl = 1; // battOffFonc
-      veilleF(alim_State, BPmarcheState, batt);
-    }
-    debut = millis();
-  }
- 
