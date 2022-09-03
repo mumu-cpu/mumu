@@ -26,7 +26,9 @@
     int seuil_lux = 30;       // seuil_lux
     int seuil_term = 30;      // seuil_term
   //–––––––––––––––GEN_TST
-    int sosSay = 0;           //
+    long sec = 1000;
+    long minut = 60 * sec;
+
     int CcPhNeTe = 0;         // CcPhNeTe
     int CcPhNeTe_prew = 0;
 
@@ -60,8 +62,6 @@
     int ct_state = 0;
 
   //–––––––––––––––GEN
-    long minut = 60000;
-    long sec = 1000;
     long gen_debut = 0;
     long gen_tmp_230 = 15 * minut;
     bool GEN_ste = false;
@@ -100,18 +100,21 @@
     int ct3t_switch;
 
   //–––––––––––––––chiffre type
-    int selc_aut[6]{91, 81, 92, 82, 60, 50};  //    selc 1
-    int selc_bat[6]{91, 81, 92, 82, 60, 50};  //    selc 2
-    int selc_230[6]{91, 81, 92, 82, 60, 50};  //    selc 3
-    int selc_ne_te[6]{3, 61, 4, 71, 0, 0};    //    selc 4
-    int selc_ph_te[6]{2, 61, 4, 71, 0, 0};    //    selc 5
-    int selc_ph_ne[6]{2, 61, 3, 62, 0, 0};    //    selc 6
-    int selc_cc_tst[6]{2, 611, 3, 612, 4, 50};  //    selc 7
-    int selc_cc_cc[6]{5, 71, 5, 72, 0, 50};   //    selc 8
+      int selc_aut[12]{91, 2, 81, 2, 92, 2, 82, 2, 60, 2, 50, 2};  //    selc 1
+      int selc_bat[12]{91, 3, 81, 3, 92, 3, 82, 2, 60, 2, 50, 2};  //    selc 2
+      int selc_230[12]{91, 3, 81, 3, 92, 3, 82, 3, 60, 3, 50, 3};  //    selc 3
+    int selc_ne_te[12]{3, 3, 61, 1, 4, 4, 71, 2, 0, 1, 0,1};    //    selc 4
+    int selc_ph_te[12]{2, 2, 61, 1, 4, 4, 71, 2, 0, 1, 0, 1};    //    selc 5
+    int selc_ph_ne[12]{2, 2, 61, 1, 3, 3, 62, 2, 0, 1, 0, 1};    //    selc 6
+   int selc_cc_tst[12]{2, 2, 61, 1, 3, 3, 62, 2, 4, 4, 50, 1};  //    selc 7
+    int selc_cc_cc[12]{5, 5, 71, 1, 5, 5, 72, 2, 0, 1, 50, 1};   //    selc 8
     //    chiffre
     int chf_cyl[6];
     int flache_b_r_s = 0;
     int siren_c_i = 0;
+    int sosSay = 0;
+    int selc = 0;
+    int typ = 0;           //
 
 
   //–––––––––––––––WELC
@@ -535,7 +538,7 @@
     //			5   ph_te     							              
     //			6   ph_ne      	                          
     //			7   cc_tst     							              
-    //			6   cc_cc      	                          
+    //			8   cc_cc      	                          
     //                                                
   //––––––––––––––––––SOSSAY	TYPE                    
     //			1   def_1t        ct1t								    
@@ -564,7 +567,7 @@
     //                                                
     //
  //–––––––––––––SLC––SOSSAY–––TYPE–––––––––––––––––––––––––––
-//––––––––––––––––––––––––GEN_mode_tst_alim
+//––––––GEN––––mode–––––TST––––ALM
   void GEN_mode()
   {
     debut_gen_inp = millis();
@@ -635,408 +638,42 @@
     case 1: // Ne <-> Te
       Serial.print("Ne <-> Te ");
       Serial.println(CcPhNeTe);
-      // sosNbr34();
-      cyl_def_source(4,);
-      if (welc_ctr_err == true)
-      {
-        switch_def = ct3t_posi_st[8];
-      }
-      else
-      {
-        switch_def = ct1t_posi_st[8];
-      }
-      switch (switch_def) //(sosNbr == 3_61_4_72)
-      {
-      case 0:
-        if (welc_ctr_err == true)
-        {
-          def_3t(3, 3);
-        }
-        else
-        {
-          def_1t(3, 3);
-        }
-        break;
-      case 1:
-        if (welc_ctr_err == true)
-        {
-          def_3t(61, 1);
-        }
-        else
-        {
-          def_1t(61, 1);
-        }
-        break;
-      case 2:
-        if (welc_ctr_err == true)
-        {
-          def_3t(4, 4);
-        }
-        else
-        {
-          def_1t(4, 4);
-        }
-        break;
-      case 3:
-        if (welc_ctr_err == true)
-        {
-          def_3t(72, 2);
-        }
-        else
-        {
-          def_1t(72, 2);
-        }
-        break;
-      case 4:
-        if (welc_ctr_err == true)
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        else
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        break;
-      }
+      selc=4;
+      //sosSay=selc_ne_te[1];
+      typ=1;
+      cyl_def_source(selc,sosSay,typ);
       break;
-
     case 2: // Ph <-> Te
       Serial.print("Ph <-> Te ");
       Serial.println(CcPhNeTe);
-      // sosNbr24();
-      if (welc_ctr_err == true)
-      {
-        switch_def = ct3t_posi_st[8];
-      }
-      else
-      {
-        switch_def = ct1t_posi_st[8];
-      }
-      switch (switch_def) //(sosNbr == 2_61_4_72)
-      {
-      case 0:
-        if (welc_ctr_err == true)
-        {
-          def_3t(2, 2);
-        }
-        else
-        {
-          def_1t(2, 2);
-        }
-        break;
-      case 1:
-        if (welc_ctr_err == true)
-        {
-          def_3t(61, 1);
-        }
-        else
-        {
-          def_1t(61, 1);
-        }
-        break;
-      case 2:
-        if (welc_ctr_err == true)
-        {
-          def_3t(4, 4);
-        }
-        else
-        {
-          def_1t(4, 4);
-        }
-        break;
-      case 3:
-        if (welc_ctr_err == true)
-        {
-          def_3t(72, 2);
-        }
-        else
-        {
-          def_1t(72, 2);
-        }
-        break;
-      case 4:
-        if (welc_ctr_err == true)
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        else
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        break;
-      }
+      selc=5;
+      //sosSay=selc_ph_te[1];
+      typ=1;
+      cyl_def_source(selc,sosSay,typ);
       break;
-
     case 3: // Ph <-> Ne
       Serial.print("Ph <-> Ne ");
       Serial.println(CcPhNeTe);
-      if (welc_ctr_err == true)
-      {
-        switch_def = ct3t_posi_st[8];
-      }
-      else
-      {
-        switch_def = ct1t_posi_st[8];
-      }
-      switch (switch_def) //(sosNbr == 2_61_3_62)
-      {
-      case 0:
-        if (welc_ctr_err == true)
-        {
-          def_3t(2, 2);
-        }
-        else
-        {
-          def_1t(2, 2);
-        }
-        break;
-      case 1:
-        if (welc_ctr_err == true)
-        {
-          def_3t(61, 1);
-        }
-        else
-        {
-          def_1t(61, 1);
-        }
-        break;
-      case 2:
-        if (welc_ctr_err == true)
-        {
-          def_3t(3, 3);
-        }
-        else
-        {
-          def_1t(3, 3);
-        }
-        break;
-      case 3:
-        if (welc_ctr_err == true)
-        {
-          def_3t(62, 2);
-        }
-        else
-        {
-          def_1t(62, 2);
-        }
-        break;
-      case 4:
-        if (welc_ctr_err == true)
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        else
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        break;
-      }
+      selc=6;
+      //sosSay=selc_ph_ne[1];
+      typ=1;
+      cyl_def_source(selc,sosSay,typ);
       break;
-
     case 4: // Cc-Ph-Ne-Te. test
       Serial.print("Cc-Ph-Ne-Te. test ");
       Serial.println(CcPhNeTe);
-      // sosNbr234();
-      if (welc_ctr_err == true)
-      {
-        switch_def = ct3t_posi_st[8];
-      }
-      else
-      {
-        switch_def = ct1t_posi_st[8];
-      }
-      switch (switch_def) //(sosNbr == 2_61_3_61_4_72)
-      {
-      case 0:
-        if (welc_ctr_err == true)
-        {
-          def_3t(2, 2);
-        }
-        else
-        {
-          def_1t(2, 2);
-        }
-        break;
-      case 1:
-        if (welc_ctr_err == true)
-        {
-          def_3t(61, 1);
-        }
-        else
-        {
-          def_1t(61, 1);
-        }
-        break;
-      case 2:
-        if (welc_ctr_err == true)
-        {
-          def_3t(3, 3);
-        }
-        else
-        {
-          def_1t(3, 3);
-        }
-        break;
-      case 3:
-        if (welc_ctr_err == true)
-        {
-          def_3t(61, 1);
-        }
-        else
-        {
-          def_1t(61, 1);
-        }
-        break;
-      case 4:
-        if (welc_ctr_err == true)
-        {
-          def_3t(4, 4);
-        }
-        else
-        {
-          def_1t(4, 4);
-        }
-        break;
-      case 5:
-        if (welc_ctr_err == true)
-        {
-          def_3t(72, 2);
-        }
-        else
-        {
-          def_1t(72, 2);
-        }
-        break;
-      case 6:
-        if (welc_ctr_err == true)
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        else
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        break;
-      }
+      selc=7;
+      //sosSay=selc_cc_tst[1];
+      typ=1;
+      cyl_def_source(selc,sosSay,typ);
       break;
-
     case 5: // Cc_Ph_Ne_Te. cuci
       Serial.print("Cc_Ph_Ne_Te. cuci");
       Serial.println(CcPhNeTe);
-      // sosNbr55();
-      if (welc_ctr_err == true)
-      {
-        switch_def = ct3t_posi_st[8];
-      }
-      else
-      {
-        switch_def = ct1t_posi_st[8];
-      }
-      switch (switch_def) //(sosNbr == 5_71_5_72)
-      {
-      case 0:
-        if (welc_ctr_err == true)
-        {
-          def_3t(5, 5);
-        }
-        else
-        {
-          def_1t(5, 5);
-        }
-        break;
-      case 1:
-        if (welc_ctr_err == true)
-        {
-          def_3t(71, 1);
-        }
-        else
-        {
-          def_1t(71, 1);
-        }
-        break;
-      case 2:
-        if (welc_ctr_err == true)
-        {
-          def_3t(5, 5);
-        }
-        else
-        {
-          def_1t(5, 5);
-        }
-        break;
-      case 3:
-        if (welc_ctr_err == true)
-        {
-          def_3t(72, 2);
-        }
-        else
-        {
-          def_1t(72, 2);
-        }
-        break;
-      case 4:
-        if (welc_ctr_err == true)
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        else
-        {
-          for (int i = 0; i < 9; i++)
-          {
-            ct1t_posi_st[i] = false;
-            ct2t_posi_st[i] = false;
-            ct3t_posi_st[i] = false;
-          }
-        }
-        break;
-      }
-      break;
-
+      selc=8;
+      //sosSay=selc_cc_cc[1];
+      typ=1;
+      cyl_def_source(selc,sosSay,typ);
     default:
       //                  SYSTEM 0K
       if ((alim_State == 10 || alim_State == 30) && battLow == false && CcPhNeTe == false)
@@ -1212,27 +849,45 @@
   }
   void veil_mis()
   {
-    BPmarcheState = digitalRead(BPmarche);
-    batt = getBattery(batt, battLow);
-    alim_State = controlAlimFonc();
 
-    while (BPmarcheState == true || batt <= 1 || alim_State == 20)
+    if (BPmarcheState == true || batt <= 1 || alim_State == 20)
     {
+
       Serial.println("veil_mis  appuille BP");
-      if (BPmarcheState == true)
+      while (BPmarcheState == true)
       {
-        Serial.println("veil_mis  tempo off");
-        cyl_def_source(1, 1, 1);
+        BPmarcheState = digitalRead(BPmarche);
+        tempx = (millis() - temp1);
+        if (tempx >= 5*sec)
+        {
+          Serial.println("veil_mis  tempo off");
+          cyl_def_source(1, 1, 1);
+          temp1 = millis();
+        }
+
       }
-      if (batt <= 1)
+      while (batt <= 1)
       {
-        Serial.println("veil_mis  bosch off");
-        cyl_def_source(2, 2, 2);
+        batt = getBattery(batt, battLow);
+        tempx = (millis() - temp1);
+        if (tempx >= 5*sec)
+        {
+          Serial.println("veil_mis  bosch off");
+          cyl_def_source(2, 2, 2);
+          temp1 = millis();
+        }
       }
-      if (alim_State == 20)
+      while (alim_State == 20)
       {
-        Serial.println("veil_mis  230v off");
-        cyl_def_source(3, 3, 3);
+        alim_State = controlAlimFonc();
+          tempx = (millis() - temp1);
+        if (tempx >= 5*sec)
+        {
+          Serial.println("veil_mis  230v off");
+          cyl_def_source(3, 3, 3);
+          temp1 = millis();
+        }
+      
 
       }
     }
@@ -1416,6 +1071,7 @@
     return (CcPhNeTe);
   }
 //––––––DEF––÷––COUNT–––––1t_2t_3t 
+  
   int count_1t()
   {
     unsigned long ct1t_resu = millis() - ct1t_millis;
@@ -1518,75 +1174,6 @@
       ct1t_posi_st[5] = false;
       ct1t_posi_st[6] = true;
     }
-  }
-  int def_1t(int sosSay, int cl)
-  {
-    sosSay_slc(selc, sosSay, typ);
-    // cycle count_1t
-    count_1t();
-    for (int i = 0; i < 6; i++)
-    {
-      if (ct1t_posi_st[i] == true)
-      {
-        ct1t_switch = i;
-      }
-    }
-    if (ct1t_posi_st[6] == true)
-    {
-      ct1t_posi_st[6] = false;
-      ct1t_posi_st[7]++; // compteur cycle
-      if (ct1t_posi_st[7] == cl)
-      {
-        ct1t_posi_st[8]++; // compteur
-      }
-    }
-
-    switch (ct1t_switch)
-    {
-    case 0:
-      digitalWrite(flache_b_r_s, true);
-      digitalWrite(siren_c_i, true);
-      break;
-    case 1:
-      digitalWrite(flache_b_r_s, false);
-      digitalWrite(siren_c_i, false);
-      break;
-    case 2:
-      digitalWrite(siren_c_i, true);
-      digitalWrite(flache_b_r_s, true);
-      break;
-    case 3:
-      digitalWrite(siren_c_i, false);
-      digitalWrite(flache_b_r_s, false);
-      break;
-    case 4:
-      digitalWrite(flache_b_r_s, true);
-      digitalWrite(siren_c_i, true);
-      break;
-    case 5:
-      digitalWrite(flache_b_r_s, false);
-      digitalWrite(siren_c_i, false);
-      break;
-    case 6:
-      ct1t_switch = 0;
-      for (int i = 0; i < 9; i++)
-      {
-        ct1t_posi_st[i] = false;
-        ct2t_posi_st[i] = false;
-        ct3t_posi_st[i] = false;
-      }
-
-      ct1t_millis = millis();
-      ct2t_millis = millis();
-      ct3t_millis = millis();
-
-      break;
-    case 7:
-      ct1t_switch = 0;
-      break;
-    }
-    int CcPhNeTe_switch = ct1t_posi_st[8];
-    return (CcPhNeTe_switch);
   }
   int count_2t()
   {
@@ -1691,75 +1278,6 @@
       ct2t_posi_st[6] = true;
     }
   }
-  int def_2t(int sosSay, int cl)
-  {
-    sosSay_slc(selc, sosSay, typ);
-    // cycle count_2t
-    count_2t();
-    for (int i = 0; i < 6; i++)
-    {
-      if (ct2t_posi_st[i] == true)
-      {
-        ct2t_switch = i;
-      }
-    }
-    if (ct2t_posi_st[6] == true)
-    {
-      ct2t_posi_st[6] = false;
-      ct2t_posi_st[7]++; // compteur cycle
-      if (ct2t_posi_st[7] == cl)
-      {
-        ct2t_posi_st[8]++; // compteur
-      }
-    }
-
-    switch (ct2t_switch)
-    {
-    case 0:
-      digitalWrite(flache_b_r_s, true);
-      digitalWrite(siren_c_i, true);
-      break;
-    case 1:
-      digitalWrite(flache_b_r_s, false);
-      digitalWrite(siren_c_i, false);
-      break;
-    case 2:
-      digitalWrite(siren_c_i, true);
-      digitalWrite(flache_b_r_s, true);
-      break;
-    case 3:
-      digitalWrite(siren_c_i, false);
-      digitalWrite(flache_b_r_s, false);
-      break;
-    case 4:
-      digitalWrite(flache_b_r_s, true);
-      digitalWrite(siren_c_i, true);
-      break;
-    case 5:
-      digitalWrite(flache_b_r_s, false);
-      digitalWrite(siren_c_i, false);
-      break;
-    case 6:
-      ct2t_switch = 0;
-      for (int i = 0; i < 9; i++)
-      {
-        ct1t_posi_st[i] = false;
-        ct2t_posi_st[i] = false;
-        ct3t_posi_st[i] = false;
-      }
-
-      ct1t_millis = millis();
-      ct2t_millis = millis();
-      ct3t_millis = millis();
-
-      break;
-    case 7:
-      ct2t_switch = 0;
-      break;
-    }
-    int CcPhNeTe_switch = ct2t_posi_st[8];
-    return (CcPhNeTe_switch);
-  }
   int count_3t()
   {
     unsigned long ct3t_resu = millis() - ct3t_millis;
@@ -1863,6 +1381,144 @@
       ct3t_posi_st[6] = true;
     }
   }
+  int def_1t(int sosSay, int cl)
+  {
+    sosSay_slc(selc, sosSay, typ);
+    // cycle count_1t
+    count_1t();
+    for (int i = 0; i < 6; i++)
+    {
+      if (ct1t_posi_st[i] == true)
+      {
+        ct1t_switch = i;
+      }
+    }
+    if (ct1t_posi_st[6] == true)
+    {
+      ct1t_posi_st[6] = false;
+      ct1t_posi_st[7]++; // compteur cycle
+      if (ct1t_posi_st[7] == cl)
+      {
+        ct1t_posi_st[8]++; // compteur
+      }
+    }
+
+    switch (ct1t_switch)
+    {
+    case 0:
+      digitalWrite(flache_b_r_s, true);
+      digitalWrite(siren_c_i, true);
+      break;
+    case 1:
+      digitalWrite(flache_b_r_s, false);
+      digitalWrite(siren_c_i, false);
+      break;
+    case 2:
+      digitalWrite(siren_c_i, true);
+      digitalWrite(flache_b_r_s, true);
+      break;
+    case 3:
+      digitalWrite(siren_c_i, false);
+      digitalWrite(flache_b_r_s, false);
+      break;
+    case 4:
+      digitalWrite(flache_b_r_s, true);
+      digitalWrite(siren_c_i, true);
+      break;
+    case 5:
+      digitalWrite(flache_b_r_s, false);
+      digitalWrite(siren_c_i, false);
+      break;
+    case 6:
+      ct1t_switch = 0;
+      for (int i = 0; i < 9; i++)
+      {
+        ct1t_posi_st[i] = false;
+        ct2t_posi_st[i] = false;
+        ct3t_posi_st[i] = false;
+      }
+
+      ct1t_millis = millis();
+      ct2t_millis = millis();
+      ct3t_millis = millis();
+
+      break;
+    case 7:
+      ct1t_switch = 0;
+      break;
+    }
+    int CcPhNeTe_switch = ct1t_posi_st[8];
+    return (CcPhNeTe_switch);
+  }
+  int def_2t(int sosSay, int cl)
+  {
+    sosSay_slc(selc, sosSay, typ);
+    // cycle count_2t
+    count_2t();
+    for (int i = 0; i < 6; i++)
+    {
+      if (ct2t_posi_st[i] == true)
+      {
+        ct2t_switch = i;
+      }
+    }
+    if (ct2t_posi_st[6] == true)
+    {
+      ct2t_posi_st[6] = false;
+      ct2t_posi_st[7]++; // compteur cycle
+      if (ct2t_posi_st[7] == cl)
+      {
+        ct2t_posi_st[8]++; // compteur
+      }
+    }
+
+    switch (ct2t_switch)
+    {
+    case 0:
+      digitalWrite(flache_b_r_s, true);
+      digitalWrite(siren_c_i, true);
+      break;
+    case 1:
+      digitalWrite(flache_b_r_s, false);
+      digitalWrite(siren_c_i, false);
+      break;
+    case 2:
+      digitalWrite(siren_c_i, true);
+      digitalWrite(flache_b_r_s, true);
+      break;
+    case 3:
+      digitalWrite(siren_c_i, false);
+      digitalWrite(flache_b_r_s, false);
+      break;
+    case 4:
+      digitalWrite(flache_b_r_s, true);
+      digitalWrite(siren_c_i, true);
+      break;
+    case 5:
+      digitalWrite(flache_b_r_s, false);
+      digitalWrite(siren_c_i, false);
+      break;
+    case 6:
+      ct2t_switch = 0;
+      for (int i = 0; i < 9; i++)
+      {
+        ct1t_posi_st[i] = false;
+        ct2t_posi_st[i] = false;
+        ct3t_posi_st[i] = false;
+      }
+
+      ct1t_millis = millis();
+      ct2t_millis = millis();
+      ct3t_millis = millis();
+
+      break;
+    case 7:
+      ct2t_switch = 0;
+      break;
+    }
+    int CcPhNeTe_switch = ct2t_posi_st[8];
+    return (CcPhNeTe_switch);
+  }
   int def_3t(int sosSay, int cl)
   {
     sosSay_slc(selc, sosSay, typ);
@@ -1932,155 +1588,6 @@
     int CcPhNeTe_switch = ct3t_posi_st[8];
     return (CcPhNeTe_switch);
   }
-  void cyl_def_source(int selc, int sosSay, int typ)
-  {
-    sosSay_slc(selc, sosSay, typ);
-    switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
-    {
-    case 0:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[0], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[0], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[0], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[0], sosSay);
-      }
-      break;
-    case 1:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[1], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[1], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[1], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[1], sosSay);
-      }
-      break;
-    case 2:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[2], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[2], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[2], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[2], sosSay);
-      }
-      break;
-    case 3:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[3], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[3], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[3], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[3], sosSay);
-      }
-      break;
-    case 4:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[4], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[4], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[4], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[4], sosSay);
-      }
-      break;
-    case 5:
-      if (typ == 1)
-      {
-        def_1t(chf_cyl[5], sosSay);
-      }
-      if (typ == 2)
-      {
-        def_2t(chf_cyl[5], sosSay);
-      }
-      if (typ == 3)
-      {
-        def_3t(chf_cyl[5], sosSay);
-      }
-      if (typ == 4)
-      {
-        def_source(chf_cyl[5], sosSay);
-      }
-      def_source(2, 2);
-      def_source(4, 2);
-
-      break;
-    case 6:
-        if (typ == 1)
-      {
-        for (int i = 0; i < 9; i++)
-      {
-        ct1t_posi_st[i] = false;
-      }
-      }
-      if (typ == 2)
-      {
-      for (int i = 0; i < 9; i++)
-      {
-        ct2t_posi_st[i] = false;
-      }
-      }
-      if (typ == 3)
-      {
-      for (int i = 0; i < 9; i++)
-      {
-        ct3t_posi_st[i] = false;
-      }
-      }
-      if (typ == 4)
-      {
-      for (int i = 0; i < 9; i++)
-      {
-        ct3t_posi_st[i] = false;
-      }
-      }
-
-      break;
-    }
-  }
   int def_source(int sosSay, int cl)
   {
     sosSay_slc(selc, sosSay, typ);  
@@ -2148,6 +1655,179 @@
     }
     int CcPhNeTe_switch = ct3t_posi_st[8];
     return (CcPhNeTe_switch);
+  }
+  void cyl_def_source(int selc, int sosSay, int typ)
+  {
+    sosSay_slc(selc, sosSay, typ);
+    switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
+    {
+    case 0://0 1
+      if (typ == 1)
+      {
+        sosSay=chf_cyl[1];
+        def_1t(chf_cyl[0], chf_cyl[1]);
+      }
+      if (typ == 2)
+      {
+        sosSay=chf_cyl[1];
+        def_2t(chf_cyl[0], chf_cyl[1]);
+      }
+      if (typ == 3)
+      {
+        sosSay=chf_cyl[1];
+        def_3t(chf_cyl[0], chf_cyl[1]);
+      }
+      if (typ == 4)
+      {
+         sosSay=chf_cyl[1];
+       def_source(chf_cyl[0], chf_cyl[1]);
+      }
+      break;
+    case 1://2 3
+      if (typ == 1)
+      {
+         sosSay=chf_cyl[3];
+       def_1t(chf_cyl[2], chf_cyl[3]);
+      }
+      if (typ == 2)
+      {
+         sosSay=chf_cyl[3];
+       def_2t(chf_cyl[2], chf_cyl[3]);
+      }
+      if (typ == 3)
+      {
+        sosSay=chf_cyl[3];
+        def_3t(chf_cyl[2], chf_cyl[3]);
+      }
+      if (typ == 4)
+      {
+         sosSay=chf_cyl[3];
+       def_source(chf_cyl[2], chf_cyl[3]);
+      }
+      break;
+    case 2://4 5
+      if (typ == 1)
+      {
+         sosSay=chf_cyl[5];
+       def_1t(chf_cyl[4], chf_cyl[5]);
+      }
+      if (typ == 2)
+      {
+        sosSay=chf_cyl[5];
+        def_2t(chf_cyl[4], chf_cyl[5]);
+      }
+      if (typ == 3)
+      {
+         sosSay=chf_cyl[5];
+       def_3t(chf_cyl[4], chf_cyl[5]);
+      }
+      if (typ == 4)
+      {
+        sosSay=chf_cyl[5];
+        def_source(chf_cyl[4], chf_cyl[5]);
+      }
+      break;
+    case 3://6 7
+      if (typ == 1)
+      {
+        sosSay=chf_cyl[7];
+        def_1t(chf_cyl[6], chf_cyl[7]);
+      }
+      if (typ == 2)
+      {
+        sosSay=chf_cyl[7];
+        def_2t(chf_cyl[6], sosSay);
+      }
+      if (typ == 3)
+      {
+        sosSay=chf_cyl[7];
+        def_3t(chf_cyl[6], sosSay);
+      }
+      if (typ == 4)
+      {
+         sosSay=chf_cyl[7];
+       def_source(chf_cyl[6], sosSay);
+      }
+      break;
+    case 4://8 9
+      if (typ == 1)
+      {
+        sosSay=chf_cyl[9];
+        def_1t(chf_cyl[8], sosSay);
+      }
+      if (typ == 2)
+      {
+        sosSay=chf_cyl[9];
+        def_2t(chf_cyl[8], sosSay);
+      }
+      if (typ == 3)
+      {
+        sosSay=chf_cyl[9];
+        def_3t(chf_cyl[8], sosSay);
+      }
+      if (typ == 4)
+      {
+        sosSay=chf_cyl[9];
+        def_source(chf_cyl[8], sosSay);
+      }
+      break;
+    case 5://10 11
+      if (typ == 1)
+      {
+        sosSay=chf_cyl[11];
+        def_1t(chf_cyl[10], sosSay);
+      }
+      if (typ == 2)
+      {
+        sosSay=chf_cyl[11];
+        def_2t(chf_cyl[10], sosSay);
+      }
+      if (typ == 3)
+      {
+        sosSay=chf_cyl[11];
+        def_3t(chf_cyl[10], sosSay);
+      }
+      if (typ == 4)
+      {
+        sosSay=chf_cyl[11];
+        def_source(chf_cyl[10], sosSay);
+      }
+      def_source(2, 2);
+      def_source(4, 2);
+
+      break;
+    case 6:
+        if (typ == 1)
+      {
+        for (int i = 0; i < 9; i++)
+      {
+        ct1t_posi_st[i] = false;
+      }
+      }
+      if (typ == 2)
+      {
+      for (int i = 0; i < 9; i++)
+      {
+        ct2t_posi_st[i] = false;
+      }
+      }
+      if (typ == 3)
+      {
+      for (int i = 0; i < 9; i++)
+      {
+        ct3t_posi_st[i] = false;
+      }
+      }
+      if (typ == 4)
+      {
+      for (int i = 0; i < 9; i++)
+      {
+        ct3t_posi_st[i] = false;
+      }
+      }
+
+      break;
+    }
   }
   void sosSay_slc(int selc, int sosSay, int typ)
   {
@@ -2225,21 +1905,21 @@
     }
     if (selc == 1) // tempo manu auto   off
     {
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 13; i++)
       {
         chf_cyl[i] = selc_aut[i];
       }
     }
     if (selc == 2) // bosch             off
     {
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 13; i++)
       {
         chf_cyl[i] = selc_bat[i];
       }
     }
     if (selc == 3) // 230v              off
     {
-      for (int i = 0; i < 7; i++)
+      for (int i = 0; i < 13; i++)
       {
         chf_cyl[i] = selc_230[i];
       }
@@ -2853,8 +2533,8 @@
       Serial.println("TENTION 230V 0n"); // affiche 230v On
       if(battLow==false)
       {
-      sosSay = 1;                        // code active fane  controlAlimFonc()
-      fane(sosSay);                      // active ventilateur controlAlimFonc()
+        sosSay = 1;                        // code active fane  controlAlimFonc()
+        fane(sosSay);                      // active ventilateur controlAlimFonc()
       }
       else
       {
