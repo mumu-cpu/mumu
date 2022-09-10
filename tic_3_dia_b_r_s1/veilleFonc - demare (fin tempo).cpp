@@ -34,7 +34,14 @@ sosSay  sosSay_slc    //selection flache siren
         def_3t        // sosSay_slc
         def_source    // sosSay_slc
 
-
+             0   veil_mis
+ccphnete0    1   sys ok
+             2   GEN_mode
+             3   BOSCH low
+             4   TEMPO 5 min
+             5   manu_auto_tempo
+             6   getBattery
+             7   controlAlimFonc
 
 
 
