@@ -18,6 +18,7 @@ demare        –>  sec*20    tempt pause
 cc0 bosch low ->  sec*10    def_source
 cc0 sys ok    ->  sec*5     def_1t  ||  def_3t
 cc0 tempo5m   –>  minut*5   ** en attente **
+cc0 GEN_mode  –>  minut     debut_gen_lop   
 GEN_mode      –>  sec*3     debut_gen_cyl
 GEN_mode      –>  100m      debut_gen_inp
 GEN           –>  minut*15  en cours…
@@ -34,14 +35,14 @@ sosSay  sosSay_slc    //selection flache siren
         def_3t        // sosSay_slc
         def_source    // sosSay_slc
 
-             0   veil_mis
-ccphnete0    1   sys ok
-             2   GEN_mode
-             3   BOSCH low
-             4   TEMPO 5 min
-             5   manu_auto_tempo
-             6   getBattery
-             7   controlAlimFonc
+ccphnete0 0   veil_mis
+          1   sys ok
+          2   GEN_mode
+          3   BOSCH low
+          4   TEMPO 5 min
+          5   manu_auto_tempo
+          6   getBattery
+          7   controlAlimFonc
 
 
 

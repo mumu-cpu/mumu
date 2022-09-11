@@ -34,8 +34,10 @@
 
     byte CcPhNeTe = 0;         // CcPhNeTe
     byte CcPhNeTe_prew = 0;
+    byte fan_bch_cyl = 0;
 
     bool battLow = false; // battLow
+    bool battLow_prew = false;
     int batt = 0;         // batt
     bool BPmarcheState = false;    // state bp_marche
     bool Manu_auto = false;        // state auto_manu
@@ -79,6 +81,11 @@
     bool ct3t_cycl_st[6] = {false, false, false, false, false, false};
     byte ct3t_posi_st[9] = {false, false, false, false, false, false, false, false, false};
     byte ct3t_switch;
+    unsigned long ct3t_millis_fan = millis();
+    bool ct3t_cycl_st_fan[6] = {false, false, false, false, false, false};
+    byte ct3t_posi_st_fan[9] = {false, false, false, false, false, false, false, false, false};
+    byte ct3t_switch_fan;
+
 
   //------chiffre type
       byte selc_aut[12]{91, 2, 81, 2, 92, 2, 82, 2, 60, 2, 50, 2};  //    selc 1
@@ -477,20 +484,20 @@
     /*
       for (int i = 0; i < 9; i++)
       {
-        Serial.print(ct1t_posi_st[i]);
+        //Serial.print(ct1t_posi_st[i]);
       }
-      Serial.println(" ");
+      //Serial.println(" ");
       for (int i = 0; i < 9; i++)
       {
 
-        Serial.print(ct2t_posi_st[i]);
+        //Serial.print(ct2t_posi_st[i]);
       }
-      Serial.println(" ");
+      //Serial.println(" ");
       for (int i = 0; i < 9; i++)
       {
-        Serial.print(ct3t_posi_st[i]);
+        //Serial.print(ct3t_posi_st[i]);
       }
-      Serial.println(" ");
+      //Serial.println(" ");
       
     */
       //-----------------------------TEST
@@ -606,40 +613,40 @@
       switch (CcPhNeTe)
       {
       case 1: // Ne <-> Te
-        Serial.print("Ne <-> Te ");
-        Serial.println(CcPhNeTe);
+        //Serial.print("Ne <-> Te ");
+        //Serial.println(CcPhNeTe);
         selc=4;
         typ=1;
         selc_typ(selc,sosSay,typ);
         cyl_def_source(selc,sosSay,typ);
         break;
       case 2: // Ph <-> Te
-        Serial.print("Ph <-> Te ");
-        Serial.println(CcPhNeTe);
+        //Serial.print("Ph <-> Te ");
+        //Serial.println(CcPhNeTe);
         selc=5;
         typ=1;
         selc_typ(selc,sosSay,typ);
         cyl_def_source(selc,sosSay,typ);
         break;
       case 3: // Ph <-> Ne
-        Serial.print("Ph <-> Ne ");
-        Serial.println(CcPhNeTe);
+        //Serial.print("Ph <-> Ne ");
+        //Serial.println(CcPhNeTe);
         selc=6;
         typ=1;
         selc_typ(selc,sosSay,typ);
         cyl_def_source(selc,sosSay,typ);
         break;
       case 4: // Cc-Ph-Ne-Te. test
-        Serial.print("Cc-Ph-Ne-Te. test ");
-        Serial.println(CcPhNeTe);
+        //Serial.print("Cc-Ph-Ne-Te. test ");
+        //Serial.println(CcPhNeTe);
         selc=7;
         typ=1;
         selc_typ(selc,sosSay,typ);
         cyl_def_source(selc,sosSay,typ);
         break;
       case 5: // Cc_Ph_Ne_Te. cuci
-        Serial.print("Cc_Ph_Ne_Te. cuci");
-        Serial.println(CcPhNeTe);
+        //Serial.print("Cc_Ph_Ne_Te. cuci");
+        //Serial.println(CcPhNeTe);
         selc=8;
         typ=1;
         selc_typ(selc,sosSay,typ);
@@ -722,17 +729,17 @@
         }
     if (tempo_State_On == true && Manu_auto == false){
       long tempCycle = (20*sec) - (millis() - debut);
-      Serial.print("temp cylce restant : ");
+      //Serial.print("temp cylce restant : ");
       tempCycle = tempCycle / sec;
-      Serial.print(tempCycle);
-      Serial.println(" s.");
+      //Serial.print(tempCycle);
+      //Serial.println(" s.");
 
       }
     if (tempo_State_On == false && Manu_auto == true){
-      long temp_manu=millis()/sec;
-      Serial.println("Manu  on");
-      Serial.print("temp cycle :");
-      Serial.println(temp_manu);
+      long temp_manu = millis()/sec;
+      //Serial.println("Manu  on");
+      //Serial.print("temp cycle :");
+      //Serial.println(temp_manu);
       debut = millis();
       }
     if (tempo_State_On == false && Manu_auto == false){
@@ -743,14 +750,14 @@
     if(tempo_State_On == true && Manu_auto == true ){
         long dbut = debut;
         long temp_manu = millis()/sec;
-        Serial.println("Manu  on");
-        Serial.print("temp cycle :");
-        Serial.println(temp_manu);
+        //Serial.println("Manu  on");
+        //Serial.print("temp cycle :");
+        //Serial.println(temp_manu);
         long tempCycle = (20*sec) - (millis() - dbut);
-        Serial.print("temp cylce restant : ");
+        //Serial.print("temp cylce restant : ");
         tempCycle = tempCycle / sec;
-        Serial.print(tempCycle);
-        Serial.println(" s.");
+        //Serial.print(tempCycle);
+        //Serial.println(" s.");
         debut = millis();
       }
     }
@@ -790,28 +797,28 @@
       debut_gen_cyl = millis();
       debut_cc0_lop = millis();
       debut_gen_lop = millis();
-      debut_fan_bch = millis();
+      //debut_fan_bch = millis();
       byte etalon[4] = {0, 0, 0, 0};
-      curmill = millis();
+      if(CcPhNeTe != 5){curmill = millis();}
     }
     }
   void ecl_auto(byte sosSay){
     if (sosSay == 0)
     { // arret ecl_Auto()
       digitalWrite(spot, false);
-      Serial.println("eclairage off");
+      //Serial.println("eclairage off");
     }
     if (sosSay == 1)
     { // active ecl_Auto()
       if (analogRead(photo) >= seuil_lux)
       {
         digitalWrite(spot, true);
-        Serial.println("eclairage on_auto");
+        //Serial.println("eclairage on_auto");
       }
       else
       {
         digitalWrite(spot, false);
-        Serial.println("eclairage off_auto");
+        //Serial.println("eclairage off_auto");
       }
     }
     }
@@ -821,15 +828,15 @@
     maz_int_f();
     if (tempo_State_On == false || batt <= 0 || alim_State == 20){
       ccphnete0 = 0;
-      Serial.println("veil_mis  appuille BP");
+      //Serial.println("veil_mis  appuille BP");
       if(tempo_State_On == false ){
-        Serial.println("veil_mis  temp o off");
+        //Serial.println("veil_mis  temp o off");
         while (BPmarcheState == true)
           {
           BPmarcheState = digitalRead(BPmarche);
           if (millis() - debut >= 5*sec)
           {
-            Serial.println("veil_mis  temp o off");
+            //Serial.println("veil_mis  temp o off");
             selc=1;
             typ=1;
             selc_typ(selc,sosSay,typ);
@@ -849,13 +856,13 @@
           goto fin;
           }
       if(batt <= 0){
-        Serial.println("veil_mis  bosch off");
+        //Serial.println("veil_mis  bosch off");
         while (batt <= 0)
           {
           batt = getBattery(battLow);
           if (millis() - debut >= 5*sec)
           {
-            Serial.println("veil_mis  bosch off");
+            //Serial.println("veil_mis  bosch off");
             selc=2;
             typ=2;
             selc_typ(selc,sosSay,typ);
@@ -875,14 +882,14 @@
           goto fin;
           }
       if(alim_State == 20 ){
-          Serial.println("veil_mis  230v off");
+          //Serial.println("veil_mis  230v off");
           }
         while (alim_State == 20)
         {
         alim_State = controlAlimFonc(battLow);
         if (millis() - debut >= 5*sec)
         {
-          Serial.println("veil_mis  230v off");
+          //Serial.println("veil_mis  230v off");
           selc=3;
           typ=3;
           selc_typ(selc,sosSay,typ);
@@ -1268,6 +1275,110 @@
         ct3t_posi_st[6] = true;
       }
     }
+  int count_3t_fan()
+    {
+      unsigned long ct3t_resu_fan = millis() - ct3t_millis_fan;
+
+      // cycle x1
+      // allum 0
+      if (ct3t_resu_fan > 0 &&
+          ct3t_cycl_st_fan[0] == false &&
+          ct3t_cycl_st_fan[5] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[0] = true;
+        ct3t_cycl_st_fan[0] = true;
+        ct3t_cycl_st_fan[5] = false;
+      }
+      // etein 1
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 20 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[0] = false;
+        ct3t_posi_st_fan[1] = true;
+        ct3t_cycl_st_fan[1] = true;
+      }
+
+      // cycle x2
+      // allum 2
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 20 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == true &&
+          ct3t_cycl_st_fan[2] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[1] = false;
+        ct3t_posi_st_fan[2] = true;
+        ct3t_cycl_st_fan[2] = true;
+      }
+      // etein 3
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 50 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == true &&
+          ct3t_cycl_st_fan[2] == true &&
+          ct3t_cycl_st_fan[3] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[2] = false;
+        ct3t_posi_st_fan[3] = true;
+        ct3t_cycl_st_fan[3] = true;
+      }
+      // cycle x3
+      // allum 4
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 20 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == true &&
+          ct3t_cycl_st_fan[2] == true &&
+          ct3t_cycl_st_fan[3] == true &&
+          ct3t_cycl_st_fan[4] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[3] = false;
+        ct3t_posi_st_fan[4] = true;
+        ct3t_cycl_st_fan[4] = true;
+      }
+      // etein 5
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 20 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == true &&
+          ct3t_cycl_st_fan[2] == true &&
+          ct3t_cycl_st_fan[3] == true &&
+          ct3t_cycl_st_fan[4] == true &&
+          ct3t_cycl_st_fan[5] == false)
+      {
+        ct3t_millis_fan = millis();
+        ct3t_posi_st_fan[4] = false;
+        ct3t_posi_st_fan[5] = true;
+        ct3t_cycl_st_fan[5] = true;
+      }
+      // fin cycle maz
+      ct3t_resu_fan = millis() - ct3t_millis_fan;
+      if (ct3t_resu_fan > 40 &&
+          ct3t_cycl_st_fan[0] == true &&
+          ct3t_cycl_st_fan[1] == true &&
+          ct3t_cycl_st_fan[2] == true &&
+          ct3t_cycl_st_fan[3] == true &&
+          ct3t_cycl_st_fan[4] == true &&
+          ct3t_cycl_st_fan[5] == true)
+      {
+        ct3t_millis_fan = millis();
+        for (int i = 0; i < 6; i++)
+        {
+          ct3t_cycl_st_fan[i] = false;
+        }
+
+        ct3t_posi_st_fan[5] = false;
+        ct3t_posi_st_fan[6] = true;
+      }
+    }
+  
   int def_1t(byte sosSay, byte cl)
     {
     if (sosSay == 0){
@@ -1494,6 +1605,78 @@
       byte CcPhNeTe_switch = ct3t_posi_st[8];
       return (CcPhNeTe_switch);
     }
+  int fan_3t(byte sosSay, byte cl)
+    {
+      if (sosSay == 0){
+        ct3t_posi_st_fan[8]++;
+        ct3t_switch_fan=6;
+        goto inter;
+        }
+
+      sosSay_slc(selc, sosSay, typ);
+      count_3t_fan();
+      for (int i = 0; i < 6; i++)
+        {
+          if (ct3t_posi_st_fan[i] == true)
+          {
+            ct3t_switch_fan = i;
+          }
+        }
+      if (ct3t_posi_st_fan[6] == true)
+        {
+          ct3t_posi_st_fan[6] = false;
+          ct3t_posi_st_fan[7]++; // compteur cycle
+          if (ct3t_posi_st_fan[7] == cl)
+          {
+            ct3t_posi_st_fan[8]++; // compteur
+            ct3t_posi_st_fan[7] = 0;
+          }
+        }
+    inter:
+      switch (ct3t_switch_fan)
+      {
+      case 0:
+        digitalWrite(flache_b_r_s, true);
+        digitalWrite(siren_c_i, true);
+        break;
+      case 1:
+        digitalWrite(flache_b_r_s, false);
+        digitalWrite(siren_c_i, false);
+        break;
+      case 2:
+        digitalWrite(siren_c_i, true);
+        digitalWrite(flache_b_r_s, true);
+        break;
+      case 3:
+        digitalWrite(siren_c_i, false);
+        digitalWrite(flache_b_r_s, false);
+        break;
+      case 4:
+        digitalWrite(flache_b_r_s, true);
+        digitalWrite(siren_c_i, true);
+        break;
+      case 5:
+        digitalWrite(flache_b_r_s, false);
+        digitalWrite(siren_c_i, false);
+        break;
+      case 6:
+        ct3t_switch_fan = 0;
+        for (int i = 0; i < 9; i++)
+        {
+          ct3t_posi_st_fan[i] = false;
+        }
+
+        ct3t_millis_fan = millis();
+
+        break;
+      case 7:
+        ct3t_switch_fan = 0;
+        break;
+      }
+      byte CcPhNeTe_switch = ct3t_posi_st_fan[8];
+      return (CcPhNeTe_switch);
+    }
+
   int def_source(byte sosSay, byte cl)
     {
       if (sosSay == 0){
@@ -1944,8 +2127,6 @@
       ct1s_sta1 = false;
       cpt1s_millis = millis();
     }
-    // Serial.print("ct1s_ste : ");
-    //  Serial.println(ct1s_ste);
     switch (ct1s_ste)
     {
 
@@ -2343,190 +2524,213 @@
   }
 //------------------BOSCH_230V_FAN
   int getBattery(bool battLow)
-  {
-    float b = analogRead(BATTERYPIN);                  // valeur analogique
-    float minValue = (1023 * 10.5) / 20.0; // Arduino
-    float maxValue = (1023 * 20.0) / 20.0; // Arduino
-    float moy = maxValue - minValue;
-    float val = b - minValue;
-    float res = val / moy;
-    float pct = res * 100; // mettre en pourcentage
-    batt = pct;
-    //const float voltt = (batt * (20.0 - 10.5));
-    //const float volty = (voltt) / 100);
-    //const float volt = (volty + 10.5);
-    if (batt >= 100)
     {
-      batt = 100;
-    }
-    if (batt <= 0)
-    {
-      batt = 0;
-      ccphnete0 = 6;
-      mis_veil = true;
-    }
+      float b = analogRead(BATTERYPIN);                  // valeur analogique
+      float minValue = (1023 * 10.5) / 20.0; // Arduino
+      float maxValue = (1023 * 20.0) / 20.0; // Arduino
+      float moy = maxValue - minValue;
+      float val = b - minValue;
+      float res = val / moy;
+      float pct = res * 100; // mettre en pourcentage
+      batt = pct;
+      //const float voltt = (batt * (20.0 - 10.5));
+      //const float volty = (voltt) / 100);
+      //const float volt = (volty + 10.5);
+      if (batt >= 100)
+      {
+        batt = 100;
+      }
+      if (batt <= 0)
+      {
+        batt = 0;
+        ccphnete0 = 6;
+        mis_veil = true;
+      }
 
-    // float volt = (((batt * (20.0 - 10.5)) / 100) + 10.5);
-     float volt = (((batt * (20.0 - 10.5)) / 100) + 10.5);
+      // float volt = (((batt * (20.0 - 10.5)) / 100) + 10.5);
+      float volt = (((batt * (20.0 - 10.5)) / 100) + 10.5);
 
-      //if (batt > 0 && batt < 20){battLow = true;}else{battLow = false;}
-    if (batt >= 1 && batt <= 20) // max is 20%
-    {
-      if (mis_veil == false ){
-        Serial.print(volt);
-        Serial.print("v !");
-        Serial.println(" !!! bat BOSCH LOW !!! ");
-        }
-    }
-    else  {
-      if (mis_veil == false){
-        Serial.print("bat BOSCH : ");
-        Serial.print(batt);
-        Serial.print("%_");
-        Serial.print(volt);
-        Serial.println("v");
-        }
-    }
+        //if (batt > 0 && batt < 20){battLow = true;}else{battLow = false;}
+      if (batt >= 1 && batt <= 20) // max is 20%
+      {
+        if (mis_veil == false ){
+          //Serial.print(volt);
+          //Serial.print("v !");
+          //Serial.println(" !!! bat BOSCH LOW !!! ");
+          }
+      }
+      else  {
+        if (mis_veil == false){
+          //Serial.print("bat BOSCH : ");
+          //Serial.print(batt);
+          //Serial.print("%_");
+          //Serial.print(volt);
+          //Serial.println("v");
+          }
+      }
 
-    return (batt);
-  }
+      return (batt);
+    }
   int controlAlimFonc(bool battLow)
-  {
-    alim_State = 10;
-    digitalWrite(alim, true);            // 230v sous tention
-    byte alimState = digitalRead(alimOk); // control 230v sous tention
-    if (alimState == false)
-    {                                    // si entree actif
-      if (mis_veil == false ){
-      Serial.println("TENTION 230V 0n"); // affiche 230v On
-      }
-      if (battLow == true)
-      {
-        sosSay = 52;                        // code active fan e   controlAlimFon c()
-        fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
-      }
-      else
-      {
-        sosSay = 1;                        // code active fan e  controlAlimFon c()
-        fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
-
-      }
-      
-      if (alim_State == 20)
-      { // state alim 230v on off
-        alim_State = 30;
-      }
-      else
-      {
-        alim_State = 10;
-      }
-      return (alim_State);
-    }
-    else
     {
-      mis_veil = true;
-      ccphnete0 = 7;
-      alim_State = 20;
-      if (mis_veil == false ){
+      alim_State = 10;
+      digitalWrite(alim, true);            // 230v sous tention
+      byte alimState = digitalRead(alimOk); // control 230v sous tention
+      if (alimState == false)
+      {                                    // si entree actif
+        if (mis_veil == false ){
+        //Serial.println("TENTION 230V 0n"); // affiche 230v On
+        }
+        if (battLow == true)
+        {
+          sosSay = 52;                        // code active fan e   controlAlimFon c()
+          fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
+        }
+        else
+        {
+          sosSay = 1;                        // code active fan e  controlAlimFon c()
+          fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
 
-        Serial.println("DEFAUT 230V 0ff"); // affiche 230v Off
-       }
-      sosSay = 0;                        // code arret fan e controlAlimFon c()  off
-      fane(sosSay,battLow);                      // arret ventilateur controlAlimFon c()
-      digitalWrite(alim, false); // arret 230v
+        }
+        
+        if (alim_State == 20)
+        { // state alim 230v on off
+          alim_State = 30;
+        }
+        else
+        {
+          alim_State = 10;
+        }
+        return (alim_State);
+      }
+      else
+      {
+        mis_veil = true;
+        ccphnete0 = 7;
+        alim_State = 20;
+        if (mis_veil == false ){
 
-      return (alim_State);
+          //Serial.println("DEFAUT 230V 0ff"); // affiche 230v Off
+        }
+        sosSay = 0;                        // code arret fan e controlAlimFon c()  off
+        fane(sosSay,battLow);                      // arret ventilateur controlAlimFon c()
+        digitalWrite(alim, false); // arret 230v
+
+        return (alim_State);
+      }
     }
-  }
   void fane(byte sosSay,bool battLow)
-  {
-    if (sosSay == 0)
-    { // arret fan e()
-      digitalWrite(fan, false);
-      if (mis_veil == false ){
-      Serial.println("ventilateur off");
-      }
-    }
-    if ((battLow == false && sosSay == 1) || sosSay == 51)
-    { // auto fan e()
-      if (analogRead(temrat) >= seuil_term){
-        digitalWrite(fan, true);
-        if (mis_veil == false ){
-          Serial.println("ventilateur on_auto");
-          }
-      }
-      else {
-        digitalWrite(fan, false);
-        if (mis_veil == false ){
-          Serial.println("ventilateur off_auto");
-          }
-      }
-    }
-    if (battLow == true && sosSay == 1 || sosSay == 52)
     {
-      unsigned long rlt_fan_bch = millis() - debut_fan_bch;
-      unsigned long rlt1_fan_bch = millis() - debut_fan_bch;
-      byte fan_bch_cyl = 0;
-      if (fan_bch_cyl == 0 && rlt_fan_bch > sec * 10)
-      {
-        def_3t(50, 5); // active FAN
-        if (ct3t_posi_st[8] > 0)
-        {
-          // ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[8] = 0;
-          debut_fan_bch = millis();
-          fan_bch_cyl = 1;
-          for (int i = 0; i < 8; i++)
-          {
-            ct3t_posi_st[i] = false;
+      if (sosSay == 0)
+        { // arret fan e()
+          digitalWrite(fan, false);
+          if (mis_veil == false ){
+          //Serial.println("ventilateur off");
           }
         }
-      }
-      if (fan_bch_cyl == 1 && rlt_fan_bch > sec * 10)
-      {
-        def_3t(50, 4); // active FAN
-        if (ct3t_posi_st[8] > 0)
-        {
-          // ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[8] = 0;
-          debut_fan_bch = millis();
-          fan_bch_cyl = 2;
-          for (int i = 0; i < 8; i++)
-          {
-            ct3t_posi_st[i] = false;
+      if ((battLow == false && sosSay == 1) || sosSay == 51)
+        { // auto fan e()
+          if (analogRead(temrat) >= seuil_term){
+            digitalWrite(fan, true);
+            if (mis_veil == false ){
+              //Serial.println("ventilateur on_auto");
+              }
+          }
+          else {
+            digitalWrite(fan, false);
+            if (mis_veil == false ){
+              //Serial.println("ventilateur off_auto");
+              }
           }
         }
-      }
-      if (fan_bch_cyl == 2 && rlt_fan_bch > sec * 10)
-      {
-        def_3t(50, 3); // active FAN
-        if (ct3t_posi_st[8] > 0)
-        {
-          // ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[8] = 0;
-          debut_fan_bch = millis();
-          fan_bch_cyl = 3;
-          for (int i = 0; i < 8; i++)
+      if (battLow_prew != battLow){
+        battLow_prew = battLow;
+        for (int i = 0; i < 9; i++)
           {
-            ct3t_posi_st[i] = false;
+          ct3t_posi_st_fan[i] = false;
+          }
+        for (int i = 0; i < 6; i++)
+          {
+          ct3t_cycl_st_fan[i] = false;
+          }
+        ct3t_millis_fan = millis();
+        debut_fan_bch = millis();
+        fan_bch_cyl = 0;
+        digitalWrite(fan,false);
+
+
+
+        }
+      if (battLow == true && sosSay == 1 || sosSay == 52)
+        {
+          unsigned long rlt_fan_bch = millis() - debut_fan_bch;
+          if (fan_bch_cyl == 0 && rlt_fan_bch > sec * 10)
+          {
+            //Serial.println("ventilateur BCH LOW cyl 1 on_auto");
+            fan_3t(50, 5); // active FAN
+            if (ct3t_posi_st_fan[8] > 0)
+            {
+              // ct3t_posi_st[8]++; // compteur
+              ct3t_posi_st_fan[8] = 0;
+              debut_fan_bch = millis();
+              fan_bch_cyl = 1;
+              for (int i = 0; i < 8; i++)
+              {
+                ct3t_posi_st_fan[i] = false;
+              }
+            }
+          }
+          rlt_fan_bch = millis() - debut_fan_bch;
+          if (fan_bch_cyl == 1 && rlt_fan_bch > sec * 10)
+          {
+            //Serial.println("ventilateur BCH LOW cyl 2 on_auto");
+            fan_3t(50, 4); // active FAN
+            if (ct3t_posi_st_fan[8] > 0)
+            {
+              // ct3t_posi_st[8]++; // compteur
+              ct3t_posi_st_fan[8] = 0;
+              debut_fan_bch = millis();
+              fan_bch_cyl = 2;
+              for (int i = 0; i < 8; i++)
+              {
+                ct3t_posi_st_fan[i] = false;
+              }
+            }
+          }
+          rlt_fan_bch = millis() - debut_fan_bch;
+          if (fan_bch_cyl == 2 && rlt_fan_bch > sec * 10)
+          {
+            //Serial.println("ventilateur BCH LOW cyl 3 on_auto");
+            fan_3t(50, 3); // active FAN
+            if (ct3t_posi_st_fan[8] > 0)
+            {
+              // ct3t_posi_st[8]++; // compteur
+              ct3t_posi_st_fan[8] = 0;
+              debut_fan_bch = millis();
+              fan_bch_cyl = 3;
+              for (int i = 0; i < 8; i++)
+              {
+                ct3t_posi_st_fan[i] = false;
+              }
+            }
+          }
+          rlt_fan_bch = millis() - debut_fan_bch;
+          if (fan_bch_cyl == 3 && rlt_fan_bch > sec * 10)
+          {
+            //Serial.println("ventilateur BCH LOW cyl 4 on_auto");
+            fan_3t(50, 2); // active FAN
+            if (ct3t_posi_st_fan[8] > 0)
+            {
+              // ct3t_posi_st[8]++; // compteur
+              ct3t_posi_st_fan[8] = 0;
+              debut_fan_bch = millis();
+              fan_bch_cyl = 0;
+              for (int i = 0; i < 8; i++)
+              {
+                ct3t_posi_st_fan[i] = false;
+              }
+            }
           }
         }
-      }
-      if (fan_bch_cyl == 3 && rlt_fan_bch > sec * 10)
-      {
-        def_3t(50, 2); // active FAN
-        if (ct3t_posi_st[8] > 0)
-        {
-          // ct3t_posi_st[8]++; // compteur
-          ct3t_posi_st[8] = 0;
-          debut_fan_bch = millis();
-          fan_bch_cyl = 0;
-          for (int i = 0; i < 8; i++)
-          {
-            ct3t_posi_st[i] = false;
-          }
-        }
-      }
     }
-  }
 
