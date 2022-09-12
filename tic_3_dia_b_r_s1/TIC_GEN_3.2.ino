@@ -2637,10 +2637,21 @@
       if(alim_State_prew == true )
       {
         digitalWrite(alim, alim_State);
+
         cur_mil = millis();
+
+        if (battLow == true) {
+            sosSay = 52;                   // code active fan e   controlAlimFon c()
+            fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
+          }
+        else {
+          sosSay = 1;                      // code active fan e  controlAlimFon c()
+          fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
+          }
+
       }
       
-     // digitalWrite(alim, true);            // 230v sous tention
+     // digitalWrite(alim, true);          // 230v sous tention
       //digitalWrite(alim, alim_State)
       
       
@@ -2653,13 +2664,15 @@
           if(alim_State == false )
           {
             digitalWrite(alim, false);
+            sosSay = 0;                        // code arret fan e controlAlimFon c()  off
+            fane(sosSay,battLow);                      // arret ventilateur controlAlimFon c()
+            mis_veil = true;
+            ccphnete0 = 7;
+
           } else {
             alim_State_prew = true;
           }
           
-          if(rlt_alim > sec ){
-            digitalWrite(alim, true);
-          }
 
 
 
@@ -2684,14 +2697,6 @@
           //Serial.println("TENTION 230V 0n"); // affiche 230v On
           }
         //--------act fan  
-        if (battLow == true) {
-            sosSay = 52;                        // code active fan e   controlAlimFon c()
-            fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
-          }
-        else {
-          sosSay = 1;                        // code active fan e  controlAlimFon c()
-          fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
-          }
         
       }
       else {
