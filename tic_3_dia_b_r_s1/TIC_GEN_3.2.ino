@@ -347,7 +347,7 @@
       if (batt >= 1 && batt <= 20){battLow = true;}else{battLow = false;}
 
 
-      alim_State = controlAlimFonc(battLow);
+      alim_State = getAlim(battLow);
 
     //--------RESET
 
@@ -824,7 +824,7 @@
     //mis_veil = false;
     maz_int = false;
     maz_int_f();
-    if (tempo_State_On == false || batt <= 0 || alim_State == 20){
+    if (tempo_State_On == false || batt <= 0 || alim_State == false){
       ccphnete0 = 0;
       //Serial.println("veil_mis  appuille BP");
       if(tempo_State_On == false ){
@@ -850,7 +850,7 @@
                       //}
                   }
           }
-        }
+         }
           goto fin;
           }
       if(batt <= 0){
@@ -859,56 +859,51 @@
           {
           batt = getBattery(battLow);
           if (millis() - debut >= 5*sec)
-          {
-            //Serial.println("veil_mis  bosch off");
-            selc=2;
-            typ=2;
-            selc_typ(selc,sosSay,typ);
-            cyl_def_source(selc, sosSay, typ);
-            if (ct2t_posi_st[8] == 6)
-                  {
-                    // ct3t_posi_st[8]++; // compteur
-                    //ct2t_posi_st[8] = 0;
-                    debut = millis();
-                    //for (int i = 0; i < 9; i++)
-                      //{
-                        //ct2t_posi_st[i] = false;
-                      //}
-                  }
+            {
+              //Serial.println("veil_mis  bosch off");
+              selc=2;
+              typ=2;
+              selc_typ(selc,sosSay,typ);
+              cyl_def_source(selc, sosSay, typ);
+              if (ct2t_posi_st[8] == 6)
+                {
+                  // ct3t_posi_st[8]++; // compteur
+                  //ct2t_posi_st[8] = 0;
+                  debut = millis();
+                  //for (int i = 0; i < 9; i++)
+                    //{
+                      //ct2t_posi_st[i] = false;
+                    //}
+                }
+            }
           }
-          }
-          goto fin;
+        goto fin;
           }
       if(alim_State == false ){
           //Serial.println("veil_mis  230v off");
           }
-        while (alim_State == false)
-        {
-        alim_State = controlAlimFonc(battLow);
-        if (millis() - debut >= 5*sec)
-        {
-          //Serial.println("veil_mis  230v off");
-          selc=3;
-          typ=3;
-          selc_typ(selc,sosSay,typ);
-          cyl_def_source(selc, sosSay, typ);
-          if (ct3t_posi_st[8] == 6)
-                  {
-                    // ct3t_posi_st[8]++; // compteur
-                    //ct3t_posi_st[8] = 0;
-                    debut = millis();
-                    //for (int i = 0; i < 9; i++)
-                      //{
-                        //ct3t_posi_st[i] = false;
-                      //}
-                  }
-        }
-      
-
-        }
+        while (alim_State == false) {
+        alim_State = getAlim(battLow);
+        if(millis() - debut >= 5*sec)
+          {
+            //Serial.println("veil_mis  230v off");
+            selc=3;
+            typ=3;
+            selc_typ(selc,sosSay,typ);
+            cyl_def_source(selc, sosSay, typ);
+            if (ct3t_posi_st[8] == 6)
+              {
+                // ct3t_posi_st[8]++; // compteur
+                //ct3t_posi_st[8] = 0;
+                debut = millis();
+                //for (int i = 0; i < 9; i++)
+                  //{
+                    //ct3t_posi_st[i] = false;
+                  //}
+              }
+          }
+         }
         goto fin;
-      
-
       }
     fin:
     debut = millis();
@@ -1381,7 +1376,7 @@
     {
     if (sosSay == 0){
       ct1t_posi_st[8]++;
-      ct1t_switch=6;
+      ct1t_switch = 6;
       goto inter;
       }
     sosSay_slc(selc, sosSay, typ);
@@ -1406,49 +1401,49 @@
         }
     inter:
       switch (ct1t_switch)
-      {
-      case 0:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 1:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 2:
-        digitalWrite(siren_c_i, true);
-        digitalWrite(flache_b_r_s, true);
-        break;
-      case 3:
-        digitalWrite(siren_c_i, false);
-        digitalWrite(flache_b_r_s, false);
-        break;
-      case 4:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 5:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 6:
-        ct1t_switch = 0;
-        for (int i = 0; i < 9; i++)
-        {
-          ct1t_posi_st[i] = false;
-          ct2t_posi_st[i] = false;
-          ct3t_posi_st[i] = false;
+       {
+        case 0:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 1:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 2:
+          digitalWrite(siren_c_i, true);
+          digitalWrite(flache_b_r_s, true);
+          break;
+        case 3:
+          digitalWrite(siren_c_i, false);
+          digitalWrite(flache_b_r_s, false);
+          break;
+        case 4:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 5:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 6:
+          ct1t_switch = 0;
+          for (int i = 0; i < 9; i++)
+          {
+            ct1t_posi_st[i] = false;
+            //ct2t_posi_st[i] = false;
+            //ct3t_posi_st[i] = false;
+          }
+
+          ct1t_millis = millis();
+          //ct2t_millis = millis();
+          //ct3t_millis = millis();
+
+          break;
+        case 7:
+          ct1t_switch = 0;
+          break;
         }
-
-        ct1t_millis = millis();
-        ct2t_millis = millis();
-        ct3t_millis = millis();
-
-        break;
-      case 7:
-        ct1t_switch = 0;
-        break;
-      }
       byte CcPhNeTe_switch = ct1t_posi_st[8];
       return (CcPhNeTe_switch);
     }
@@ -1456,7 +1451,7 @@
     {
       if (sosSay == 0){
         ct2t_posi_st[8]++;
-        ct2t_switch=6;
+        ct2t_switch = 6;
         goto inter;
         }
 
@@ -1482,49 +1477,49 @@
         }
     inter:
       switch (ct2t_switch)
-      {
-      case 0:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 1:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 2:
-        digitalWrite(siren_c_i, true);
-        digitalWrite(flache_b_r_s, true);
-        break;
-      case 3:
-        digitalWrite(siren_c_i, false);
-        digitalWrite(flache_b_r_s, false);
-        break;
-      case 4:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 5:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 6:
-        ct2t_switch = 0;
-        for (int i = 0; i < 9; i++)
-        {
-          ct1t_posi_st[i] = false;
-          ct2t_posi_st[i] = false;
-          ct3t_posi_st[i] = false;
+       {
+        case 0:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 1:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 2:
+          digitalWrite(siren_c_i, true);
+          digitalWrite(flache_b_r_s, true);
+          break;
+        case 3:
+          digitalWrite(siren_c_i, false);
+          digitalWrite(flache_b_r_s, false);
+          break;
+        case 4:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 5:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 6:
+          ct2t_switch = 0;
+          for (int i = 0; i < 9; i++)
+          {
+            //ct1t_posi_st[i] = false;
+            ct2t_posi_st[i] = false;
+            //ct3t_posi_st[i] = false;
+          }
+
+          //ct1t_millis = millis();
+          ct2t_millis = millis();
+          //ct3t_millis = millis();
+
+          break;
+        case 7:
+          ct2t_switch = 0;
+          break;
         }
-
-        ct1t_millis = millis();
-        ct2t_millis = millis();
-        ct3t_millis = millis();
-
-        break;
-      case 7:
-        ct2t_switch = 0;
-        break;
-      }
       byte CcPhNeTe_switch = ct2t_posi_st[8];
       return (CcPhNeTe_switch);
     }
@@ -1532,10 +1527,9 @@
     {
       if (sosSay == 0){
         ct3t_posi_st[8]++;
-        ct3t_switch=6;
+        ct3t_switch = 6;
         goto inter;
         }
-
       sosSay_slc(selc, sosSay, typ);
       count_3t();
       for (int i = 0; i < 6; i++)
@@ -1557,49 +1551,49 @@
         }
     inter:
       switch (ct3t_switch)
-      {
-      case 0:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 1:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 2:
-        digitalWrite(siren_c_i, true);
-        digitalWrite(flache_b_r_s, true);
-        break;
-      case 3:
-        digitalWrite(siren_c_i, false);
-        digitalWrite(flache_b_r_s, false);
-        break;
-      case 4:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 5:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 6:
-        ct3t_switch = 0;
-        for (int i = 0; i < 9; i++)
-        {
-          ct1t_posi_st[i] = false;
-          ct2t_posi_st[i] = false;
-          ct3t_posi_st[i] = false;
+       {
+        case 0:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 1:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 2:
+          digitalWrite(siren_c_i, true);
+          digitalWrite(flache_b_r_s, true);
+          break;
+        case 3:
+          digitalWrite(siren_c_i, false);
+          digitalWrite(flache_b_r_s, false);
+          break;
+        case 4:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 5:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 6:
+          ct3t_switch = 0;
+          for (int i = 0; i < 9; i++)
+          {
+            //ct1t_posi_st[i] = false;
+            //ct2t_posi_st[i] = false;
+            ct3t_posi_st[i] = false;
+          }
+
+          ct3t_millis = millis();
+          //ct2t_millis = millis();
+          //ct1t_millis = millis();
+
+          break;
+        case 7:
+          ct3t_switch = 0;
+          break;
         }
-
-        ct3t_millis = millis();
-        ct2t_millis = millis();
-        ct1t_millis = millis();
-
-        break;
-      case 7:
-        ct3t_switch = 0;
-        break;
-      }
       byte CcPhNeTe_switch = ct3t_posi_st[8];
       return (CcPhNeTe_switch);
     }
@@ -1607,7 +1601,7 @@
     {
       if (sosSay == 0){
         ct3t_posi_st_fan[8]++;
-        ct3t_switch_fan=6;
+        ct3t_switch_fan = 6;
         goto inter;
         }
 
@@ -1631,46 +1625,42 @@
           }
         }
     inter:
-      switch (ct3t_switch_fan)
-      {
-      case 0:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 1:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 2:
-        digitalWrite(siren_c_i, true);
-        digitalWrite(flache_b_r_s, true);
-        break;
-      case 3:
-        digitalWrite(siren_c_i, false);
-        digitalWrite(flache_b_r_s, false);
-        break;
-      case 4:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 5:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 6:
-        ct3t_switch_fan = 0;
-        for (int i = 0; i < 9; i++)
-        {
-          ct3t_posi_st_fan[i] = false;
-        }
-
-        ct3t_millis_fan = millis();
-
-        break;
-      case 7:
-        ct3t_switch_fan = 0;
-        break;
-      }
+      switch (ct3t_switch_fan){
+        case 0:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 1:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 2:
+          digitalWrite(siren_c_i, true);
+          digitalWrite(flache_b_r_s, true);
+          break;
+        case 3:
+          digitalWrite(siren_c_i, false);
+          digitalWrite(flache_b_r_s, false);
+          break;
+        case 4:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 5:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 6:
+          ct3t_switch_fan = 0;
+          for (int i = 0; i < 9; i++){
+            ct3t_posi_st_fan[i] = false;
+           }
+          ct3t_millis_fan = millis();
+          break;
+        case 7:
+          ct3t_switch_fan = 0;
+          break;
+       }
       byte CcPhNeTe_switch = ct3t_posi_st_fan[8];
       return (CcPhNeTe_switch);
     }
@@ -1678,8 +1668,8 @@
   int def_source(byte sosSay, byte cl)
     {
       if (sosSay == 0){
-        ct1t_posi_st[8]++;
-        ct1t_switch=6;
+        ct3t_posi_st[8]++;
+        ct3t_switch = 6;
         goto inter;
         }
 
@@ -1700,404 +1690,365 @@
         }
     inter:
       switch (ct3t_switch)
-      {
-      case 0:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, true);
-        break;
-      case 1:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 2:
-        digitalWrite(siren_c_i, true);
-        digitalWrite(flache_b_r_s, true);
-        break;
-      case 3:
-        digitalWrite(siren_c_i, false);
-        digitalWrite(flache_b_r_s, false);
-        break;
-      case 4:
-        digitalWrite(flache_b_r_s, true);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 5:
-        digitalWrite(flache_b_r_s, false);
-        digitalWrite(siren_c_i, false);
-        break;
-      case 6:
-        ct3t_switch = 0;
-        for (int i = 0; i < 9; i++)
-        {
-          ct1t_posi_st[i] = false;
-          ct2t_posi_st[i] = false;
-          ct3t_posi_st[i] = false;
+       {
+        case 0:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, true);
+          break;
+        case 1:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 2:
+          digitalWrite(siren_c_i, true);
+          digitalWrite(flache_b_r_s, true);
+          break;
+        case 3:
+          digitalWrite(siren_c_i, false);
+          digitalWrite(flache_b_r_s, false);
+          break;
+        case 4:
+          digitalWrite(flache_b_r_s, true);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 5:
+          digitalWrite(flache_b_r_s, false);
+          digitalWrite(siren_c_i, false);
+          break;
+        case 6:
+          ct3t_switch = 0;
+          for (int i = 0; i < 9; i++)
+          {
+            //ct1t_posi_st[i] = false;
+            //ct2t_posi_st[i] = false;
+            ct3t_posi_st[i] = false;
+          }
+
+          ct3t_millis = millis();
+          //ct2t_millis = millis();
+          //ct1t_millis = millis();
+
+          break;
+        case 7:
+          ct3t_switch = 0;
+          break;
         }
-
-        ct3t_millis = millis();
-        ct2t_millis = millis();
-        ct1t_millis = millis();
-
-        break;
-      case 7:
-        ct3t_switch = 0;
-        break;
-      }
       byte CcPhNeTe_switch = ct3t_posi_st[8];
       return (CcPhNeTe_switch);
     }
 //------------------CYL CcPhNeTe    
-  void cyl_def_source(byte selc, byte sosSay, byte typ)
-    {
-      switch (switch_def_src) //(sosNbr == 2_61_3_61_4_72)
-      {
-      case 0://0 1
-        if (typ == 1)
-          {
-          sosSay=chf_cyl[0];
-          sosSay_slc(selc, sosSay, typ);
-          def_1t(chf_cyl[0], chf_cyl[1]);
-          }
-        if (typ == 2)
-          {
-          sosSay=chf_cyl[0];
-          sosSay_slc(selc, sosSay, typ);
-          def_2t(chf_cyl[0], chf_cyl[1]);
-          }
-        if (typ == 3)
-          {
-          sosSay=chf_cyl[0];
-          sosSay_slc(selc, sosSay, typ);
-          def_3t(chf_cyl[0], chf_cyl[1]);
-          }
-        if (typ == 4)
-          {
-          sosSay=chf_cyl[0];
-          sosSay_slc(selc, sosSay, typ);
-          def_source(chf_cyl[0], chf_cyl[1]);
-          }
-        break;
-      case 1://2 3
-        if (typ == 1)
-          {
-          sosSay=chf_cyl[2];
-          sosSay_slc(selc, sosSay, typ);
-          def_1t(chf_cyl[2], chf_cyl[3]);
-          }
-        if (typ == 2)
-          {
-          sosSay=chf_cyl[2];
-          sosSay_slc(selc, sosSay, typ);
-          def_2t(chf_cyl[2], chf_cyl[3]);
-          }
-        if (typ == 3)
-          {
-          sosSay=chf_cyl[2];
-          sosSay_slc(selc, sosSay, typ);
-          def_3t(chf_cyl[2], chf_cyl[3]);
-          }
-        if (typ == 4)
-          {
-          sosSay=chf_cyl[2];
-          sosSay_slc(selc, sosSay, typ);
-          def_source(chf_cyl[2], chf_cyl[3]);
-          }
-        break;
-      case 2://4 5
-        if (typ == 1)
-          {
-          sosSay=chf_cyl[4];
-          sosSay_slc(selc, sosSay, typ);
-          def_1t(chf_cyl[4], chf_cyl[5]);
-          }
-        if (typ == 2)
-          {
-          sosSay=chf_cyl[4];
-          sosSay_slc(selc, sosSay, typ);
-          def_2t(chf_cyl[4], chf_cyl[5]);
-          }
-        if (typ == 3)
-          {
-          sosSay=chf_cyl[4];
-          sosSay_slc(selc, sosSay, typ);
-          def_3t(chf_cyl[4], chf_cyl[5]);
-          }
-        if (typ == 4)
-          {
-          sosSay=chf_cyl[4];
-          sosSay_slc(selc, sosSay, typ);
-          def_source(chf_cyl[4], chf_cyl[5]);
-          }
-        break;
-      case 3://6 7
-        if (typ == 1)
-          {
-          sosSay=chf_cyl[6];
-          sosSay_slc(selc, sosSay, typ);
-          def_1t(chf_cyl[6], chf_cyl[7]);
-          }
-        if (typ == 2)
-          {
-          sosSay=chf_cyl[6];
-          sosSay_slc(selc, sosSay, typ);
-          def_2t(chf_cyl[6], chf_cyl[7]);
-          }
-        if (typ == 3)
-          {
-          sosSay=chf_cyl[6];
-          sosSay_slc(selc, sosSay, typ);
-          def_3t(chf_cyl[6], chf_cyl[7]);
-          }
-        if (typ == 4)
-          {
-          sosSay=chf_cyl[6];
-          sosSay_slc(selc, sosSay, typ);
-          def_source(chf_cyl[6], chf_cyl[7]);
-          }
-        break;
-      case 4://8 9
-        if (typ == 1)
-          {
-            sosSay=chf_cyl[8];
+  void cyl_def_source(byte selc, byte sosSay, byte typ){
+      switch (switch_def_src){
+        case 0://0 1
+          switch (typ) {
+          case 1:
+            sosSay=chf_cyl[0];
             sosSay_slc(selc, sosSay, typ);
-            def_1t(chf_cyl[8], chf_cyl[9]);
-          }
-        if (typ == 2)
-          {
-            sosSay=chf_cyl[8];
+            def_1t(chf_cyl[0], chf_cyl[1]);
+            break;
+          case 2:
+            sosSay=chf_cyl[0];
             sosSay_slc(selc, sosSay, typ);
-            def_2t(chf_cyl[8], chf_cyl[9]);
-          }
-        if (typ == 3)
-          {
-            sosSay=chf_cyl[8];
+            def_2t(chf_cyl[0], chf_cyl[1]);
+            break;
+          case 3:
+            sosSay=chf_cyl[0];
             sosSay_slc(selc, sosSay, typ);
-            def_3t(chf_cyl[8], chf_cyl[9]);
-          }
-        if (typ == 4)
-          {
-            sosSay=chf_cyl[8];
+            def_3t(chf_cyl[0], chf_cyl[1]);
+            break;
+          case 4:
+            sosSay=chf_cyl[0];
             sosSay_slc(selc, sosSay, typ);
-            def_source(chf_cyl[8], chf_cyl[9]);
+            def_source(chf_cyl[0], chf_cyl[1]);
+            break;
           }
-        break;
-      case 5://10 11
-        if (typ == 1)
-          {
-            sosSay=chf_cyl[10];
-            sosSay_slc(selc, sosSay, typ);
-            def_1t(chf_cyl[10], chf_cyl[11]);
+          break;
+        case 1://2 3
+          switch(typ){
+            case 1:
+              sosSay=chf_cyl[2];
+              sosSay_slc(selc, sosSay, typ);
+              def_1t(chf_cyl[2], chf_cyl[3]);
+              break;
+            case 2:
+              sosSay=chf_cyl[2];
+              sosSay_slc(selc, sosSay, typ);
+              def_2t(chf_cyl[2], chf_cyl[3]);
+              break;
+            case 3:
+              sosSay=chf_cyl[2];
+              sosSay_slc(selc, sosSay, typ);
+              def_3t(chf_cyl[2], chf_cyl[3]);
+              break;
+            case 4:
+              sosSay=chf_cyl[2];
+              sosSay_slc(selc, sosSay, typ);
+              def_source(chf_cyl[2], chf_cyl[3]);
+              break;
+            }
+          break;
+        case 2://4 5
+          switch(typ){
+            case 1:
+              sosSay=chf_cyl[4];
+              sosSay_slc(selc, sosSay, typ);
+              def_1t(chf_cyl[4], chf_cyl[5]);
+              break;
+            case 2:
+              sosSay=chf_cyl[4];
+              sosSay_slc(selc, sosSay, typ);
+              def_2t(chf_cyl[4], chf_cyl[5]);
+              break;
+            case 3:
+              sosSay=chf_cyl[4];
+              sosSay_slc(selc, sosSay, typ);
+              def_3t(chf_cyl[4], chf_cyl[5]);
+              break;
+            case 4:
+              sosSay=chf_cyl[4];
+              sosSay_slc(selc, sosSay, typ);
+              def_source(chf_cyl[4], chf_cyl[5]);
+              break;
+              }
+              break;
+        case 3://6 7
+          switch(typ){
+            case 1:
+              sosSay=chf_cyl[6];
+              sosSay_slc(selc, sosSay, typ);
+              def_1t(chf_cyl[6], chf_cyl[7]);
+              break;
+            case 2:
+              sosSay=chf_cyl[6];
+              sosSay_slc(selc, sosSay, typ);
+              def_2t(chf_cyl[6], chf_cyl[7]);
+              break;
+            case 3:
+              sosSay=chf_cyl[6];
+              sosSay_slc(selc, sosSay, typ);
+              def_3t(chf_cyl[6], chf_cyl[7]);
+              break;
+            case 4:
+              sosSay=chf_cyl[6];
+              sosSay_slc(selc, sosSay, typ);
+              def_source(chf_cyl[6], chf_cyl[7]);
+              break;
+              }
+            break;
+        case 4://8 9
+          switch(typ){
+            case 1:
+              sosSay=chf_cyl[8];
+              sosSay_slc(selc, sosSay, typ);
+              def_1t(chf_cyl[8], chf_cyl[9]);
+              break;
+            case 2:
+              sosSay=chf_cyl[8];
+              sosSay_slc(selc, sosSay, typ);
+              def_2t(chf_cyl[8], chf_cyl[9]);
+              break;
+            case 3:
+              sosSay=chf_cyl[8];
+              sosSay_slc(selc, sosSay, typ);
+              def_3t(chf_cyl[8], chf_cyl[9]);
+              break;
+            case 4:
+              sosSay=chf_cyl[8];
+              sosSay_slc(selc, sosSay, typ);
+              def_source(chf_cyl[8], chf_cyl[9]);
+              break;
           }
-        if (typ == 2)
-          {
-            sosSay=chf_cyl[10];
-            sosSay_slc(selc, sosSay, typ);
-            def_2t(chf_cyl[10], chf_cyl[11]);
-          }
-        if (typ == 3)
-          {
-            sosSay=chf_cyl[10];
-            sosSay_slc(selc, sosSay, typ);
-            def_3t(chf_cyl[10], chf_cyl[11]);
-          }
-        if (typ == 4)
-          {
-            sosSay=chf_cyl[10];
-            sosSay_slc(selc, sosSay, typ);
-            def_source(chf_cyl[10], chf_cyl[11]);
-          }
-
-        break;
-      case 6:
-          if (typ == 1)
-        {
-          for (int i = 0; i < 9; i++)
-        {
-          ct1t_posi_st[i] = false;
+          break;
+        case 5://10 11
+          switch(typ){
+          case 1:
+              sosSay=chf_cyl[10];
+              sosSay_slc(selc, sosSay, typ);
+              def_1t(chf_cyl[10], chf_cyl[11]);
+            break;
+          case 2:
+              sosSay=chf_cyl[10];
+              sosSay_slc(selc, sosSay, typ);
+              def_2t(chf_cyl[10], chf_cyl[11]);
+            break;
+          case 3:
+              sosSay=chf_cyl[10];
+              sosSay_slc(selc, sosSay, typ);
+              def_3t(chf_cyl[10], chf_cyl[11]);
+            break;
+          case 4:
+              sosSay=chf_cyl[10];
+              sosSay_slc(selc, sosSay, typ);
+              def_source(chf_cyl[10], chf_cyl[11]);
+            break;
+            }
+          break;
+        case 6:
+          switch(typ){
+          case 1:
+              for (int i = 0; i < 9; i++)
+            {
+              ct1t_posi_st[i] = false;
+            }
+            break;
+          case 2:
+            for (int i = 0; i < 9; i++)
+            {
+              ct2t_posi_st[i] = false;
+            }
+            break;
+          case 3:
+            for (int i = 0; i < 9; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+            break;
+          case 4:
+            for (int i = 0; i < 9; i++)
+            {
+              ct3t_posi_st[i] = false;
+            }
+            break;
+            }
+          break;
         }
-        }
-        if (typ == 2)
-        {
-        for (int i = 0; i < 9; i++)
-        {
-          ct2t_posi_st[i] = false;
-        }
-        }
-        if (typ == 3)
-        {
-        for (int i = 0; i < 9; i++)
-        {
-          ct3t_posi_st[i] = false;
-        }
-        }
-        if (typ == 4)
-        {
-        for (int i = 0; i < 9; i++)
-        {
-          ct3t_posi_st[i] = false;
-        }
-        }
-
-        break;
-      }
     }
   void sosSay_slc(byte selc, byte sosSay, byte typ)
     {
-      if (sosSay == 0)
-      {flache_b_r_s = false;
-       siren_c_i = false;
-      }
-      if (sosSay == 2 || sosSay == 3) // flacheBleu,sirenC
-      {
+    switch(sosSay){
+      case 0:
+        flache_b_r_s = false;
+        siren_c_i = false;
+        break;
+      case 2:
+      case 3: // flacheBleu,sirenC
         flache_b_r_s = flacheBleu; // sortie 12
         siren_c_i = sirenC;        // 3 sortie siren con (continute)
-      }
-      if (sosSay == 4 || sosSay == 5) // flacheRouge,sirenI
-      {
+        break;
+      case 4:
+      case 5: // flacheRouge,sirenI
         flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
         siren_c_i = sirenI;         // 9 sortie siren iso
-      }
-      if (sosSay == 50) // fan
-      {
+        break;
+      case 50: // fan
         flache_b_r_s = fan; // 5 ventilateur
         siren_c_i = fan;    // 5 ventilateur
-      }
-      if (sosSay == 60) // spot
-      {
+        break;
+      case 60: // spot
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = false;   // "<&>"
-      }
-      if (sosSay == 611) // spot
-      {
+        break;
+      case 611: // spot
         sosSay = 1;
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = false;   // "<&>"
-      }
-      if (sosSay == 612) // spot
-      {
+        break;
+      case 612: // spot
         sosSay = 2;
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = false;   // "<&>"
-      }
-      if (sosSay == 61) // spot,sirenI
-      {
+        break;
+      case 61: // spot,sirenI
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = sirenI;  // 9 sortie siren iso
-      }
-      if (sosSay == 62) // spot,sirenI
-      {
+        break;
+      case 62: // spot,sirenI
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = sirenI;  // 9 sortie siren iso
-      }
-      if (sosSay == 71) // spot,sirenC
-      {
+        break;
+      case 71: // spot,sirenC
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = sirenC;  // 3 sortie siren con
-      }
-      if (sosSay == 72) // spot,sirenC
-      {
+        break;
+      case 72: // spot,sirenC
         flache_b_r_s = spot; // 6 sortie spot
         siren_c_i = sirenC;  // 3 sortie siren con
-      }
-      if (sosSay == 81) // sirenC
-      {
+        break;
+      case 81: // sirenC
         flache_b_r_s = false; // "<&>"
         siren_c_i = sirenC;   // 3 sortie siren con
-      }
-      if (sosSay == 82) // sirenI
-      {
+        break;
+      case 82: // sirenI
         flache_b_r_s = false; // "<&>"
         siren_c_i = sirenI;   // 9 sortie siren iso
-      }
-      if (sosSay == 91) // flacheBleu
-      {
+        break;
+      case 91: // flacheBleu
         flache_b_r_s = flacheBleu; // 12 sortie flacheBleu
         siren_c_i = false;         // "<&>"
-      }
-      if (sosSay == 92) // flacheRouge
-      {
+        break;
+      case 92: // flacheRouge
         flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
         siren_c_i = false;          // "<&>"
-      }
+        break;
+     }
     }
   void selc_typ(byte selc, byte sosSay, byte typ)
     {
-    if (selc == 1) // temp o manu auto   off
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_aut[i];
+    switch(selc){
+      case 1: // temp o manu auto   off
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_aut[i];
+        }
+        break;
+      case 2: // bosch             off
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_bat[i];
+        }
+        break;
+      case 3: // 230v              off
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_230[i];
+        }
+        break;
+      case 4: // ne_te
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_ne_te[i];
+        }
+        break;
+      case 5: // ph_te
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_ph_te[i];
+        }
+        break;
+      case 6: // ph_ne
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_ph_ne[i];
+        }
+        break;
+      case 7: // cc_tst
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_cc_tst[i];
+        }
+        break;
+      case 8: // cc_cc
+        for (int i = 0; i < 13; i++)
+        {
+          chf_cyl[i] = selc_cc_cc[i];
+        }
+        break;
+       }
+    switch(typ){
+      case 1: // def_1t
+        switch_def_src = ct1t_posi_st[8];
+        break;
+      case 2: // def_2t
+        switch_def_src = ct2t_posi_st[8];
+        break;
+      case 3: // def_3t
+        switch_def_src = ct3t_posi_st[8];
+        break;
+      case 4: // def_source
+        switch_def_src = ct3t_posi_st[8];
+        break;
       }
-      }
-    if (selc == 2) // bosch             off
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_bat[i];
-      }
-      }
-    if (selc == 3) // 230v              off
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_230[i];
-      }
-      }
-    if (selc == 4) // ne_te
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_ne_te[i];
-      }
-      }
-    if (selc == 5) // ph_te
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_ph_te[i];
-      }
-      }
-    if (selc == 6) // ph_ne
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_ph_ne[i];
-      }
-      }
-    if (selc == 7) // cc_tst
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_cc_tst[i];
-      }
-      }
-    if (selc == 8) // cc_cc
-      {
-      for (int i = 0; i < 13; i++)
-      {
-        chf_cyl[i] = selc_cc_cc[i];
-      }
-      }
-
-    if (typ == 1) // def_1t
-      {
-      switch_def_src = ct1t_posi_st[8];
-      }
-    if (typ == 2) // def_2t
-      {
-      switch_def_src = ct2t_posi_st[8];
-      }
-    if (typ == 3) // def_3t
-      {
-      switch_def_src = ct3t_posi_st[8];
-      }
-    if (typ == 4) // def_source
-      {
-      switch_def_src = ct3t_posi_st[8];
-      }
-
     }
-
 //------------------AUTO COFIG 
   int welc_1s(byte ct1s_state)
   {
@@ -2631,89 +2582,48 @@
     }
   int getAlim(bool battLow)
     {
+      alim_State = !digitalRead(alimOk);
       long rlt_alim = millis() - cur_mil;
-      alim_State != digitalRead(alimOk); // control 230v sous tention
-
-      if(alim_State_prew == true )
+      if(alim_State == false)
       {
         digitalWrite(alim, alim_State);
+        fane(0,battLow);                      // arret ventilateur controlAlimFon c()
+        goto alim_off;
 
+      }
+      
+      digitalWrite(alim, true);
+      alim_State = !digitalRead(alimOk); // control 230v sous tention
+      digitalWrite(alim,alim_State);
+      if(alim_State == true) {
+        //digitalWrite(alim, alim_State);
         cur_mil = millis();
-
         if (battLow == true) {
-            sosSay = 52;                   // code active fan e   controlAlimFon c()
-            fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
+            //sosSay = 52;                   // code active fan e   controlAlimFon c()
+            fane(52,battLow);                      // active ventilateur controlAlimFon c()
           }
         else {
-          sosSay = 1;                      // code active fan e  controlAlimFon c()
-          fane(sosSay,battLow);                      // active ventilateur controlAlimFon c()
+          //sosSay = 1;                      // code active fan e  controlAlimFon c()
+          fane(1,battLow);                      // active ventilateur controlAlimFon c()
           }
-
-      }
-      
-     // digitalWrite(alim, true);          // 230v sous tention
-      //digitalWrite(alim, alim_State)
-      
-      
-      if(alim_State == false && rlt_alim > sec ) //&& alim_State == false)
-        {
-          cur_mil = millis();
-         // alim_State_prew = alim_State;
-          digitalWrite(alim, true);
-          alim_State != digitalRead(alim);
-          if(alim_State == false )
-          {
-            digitalWrite(alim, false);
-            sosSay = 0;                        // code arret fan e controlAlimFon c()  off
-            fane(sosSay,battLow);                      // arret ventilateur controlAlimFon c()
-            mis_veil = true;
-            ccphnete0 = 7;
-
-          } else {
-            alim_State_prew = true;
-          }
-          
-
-
-
-
-
-        }
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      if (alim_State == true) { // si entree actif
-        //alim_State_prew = true;
-
-
-
-        if (mis_veil == false ){
-          //Serial.println("TENTION 230V 0n"); // affiche 230v On
-          }
-        //--------act fan  
-        
-      }
-      else {
-        mis_veil = true;
-        ccphnete0 = 7;
-        alim_State_prew = false;
-
-
-        if (mis_veil == false ){
-          //Serial.println("DEFAUT 230V 0ff"); // affiche 230v Off
-          }
-        //--------arret fan  
-        sosSay = 0;                        // code arret fan e controlAlimFon c()  off
-        fane(sosSay,battLow);                      // arret ventilateur controlAlimFon c()
-        digitalWrite(alim, false); // arret 230v
-
-      }
+       } 
+       goto alim_fin;
+       alim_off:
+          if(rlt_alim > sec && alim_State == false)
+            {
+              cur_mil = millis();
+              digitalWrite(alim, true);
+              alim_State = !digitalRead(alimOk);
+              digitalWrite(alim, alim_State);
+              if(alim_State == false ){
+                //digitalWrite(alim, false);
+                //sosSay = 0;                        // code arret fan e controlAlimFon c()  off
+                fane(0,battLow);                      // arret ventilateur controlAlimFon c()
+                mis_veil = true;
+                ccphnete0 = 7;
+                }
+            }
+      alim_fin:    
       return alim_State ;
     }
 
