@@ -41,9 +41,11 @@
     bool alim_State = false;                // state alim_State
     bool alim_State_prew = 0;
     bool tempo_State_On = false;       // cycle on
+    bool ecl_state = false;
+    byte ecl_pos = 0;
     unsigned long debut = millis();   // temp debu t duree cycle
     unsigned long curmill = millis();       // temp ccphnt
-    long cur_mil = millis();
+    long cur_mil = millis();//bat
   //------GEN
     long gen_debut = 0;
     long gen_tmp_230 = 15 * minut;
@@ -55,6 +57,7 @@
     long debut_cc0_lop = 0;
     long debut_gen_lop = 0;
     long debut_fan_bch = 0;
+    long debut_ecl = 0;
     byte etalon[4] = {0, 0, 0, 0};
 
 
@@ -86,9 +89,9 @@
 
 
   //------chiffre type
-      byte selc_aut[12]{91, 2, 81, 2, 92, 2, 82, 2, 60, 2, 50, 2};  //    selc 1
-      byte selc_bat[12]{91, 3, 81, 3, 92, 3, 82, 2, 60, 2, 50, 2};  //    selc 2
-      byte selc_230[12]{91, 3, 81, 3, 92, 3, 82, 3, 60, 3, 50, 3};  //    selc 3
+      byte selc_aut[12]{91, 1, 81, 1, 92, 1, 82, 1, 0, 0, 0, 0};  //    selc 1
+      byte selc_bat[12]{91, 2, 81, 2, 0, 0, 0, 0, 0, 0, 0, 0};  //    selc 2
+      byte selc_230[12]{0, 0, 0, 0, 92, 3, 82, 3, 0, 0, 0, 0};  //    selc 3
     byte selc_ne_te[12]{3, 3, 61, 1, 4, 4, 71, 2, 0, 0, 0, 0};    //    selc 4
     byte selc_ph_te[12]{2, 2, 61, 1, 4, 4, 71, 2, 0, 0, 0, 0};    //    selc 5
     byte selc_ph_ne[12]{2, 2, 61, 1, 3, 3, 62, 2, 0, 0, 0, 0};    //    selc 6
@@ -344,7 +347,7 @@
       manu_auto_tempo();
       CcPhNeTe = test();
       batt = getBattery(battLow);
-      if (batt >= 1 && batt <= 20){battLow = true;}else{battLow = false;}
+      if (batt >= 0 && batt <= 20){battLow = true;}else{battLow = false;}
 
 
       alim_State = getAlim(battLow);
@@ -360,11 +363,13 @@
     //lop     exe
       if (CcPhNeTe > 0)
         {
+          ecl_auto(0,battLow);
           GEN_TST();
           debut = millis();
         }
       else 
         {
+          ecl_auto(11,battLow);
           //--------------SYS OK  
             unsigned long rlt_cc0_lop = millis() - debut_cc0_lop;
             //                  SYSTEM 0K
@@ -375,7 +380,7 @@
               {
               if (welc_ctr_err == true)
               {
-                def_3t(60, 2);
+                //def_3t(60, 2);
                 def_3t(81, 2);
 
                 if (ct3t_posi_st[8] == 1)
@@ -391,7 +396,7 @@
               }
               else
               {
-                def_1t(60, 2);
+                //def_1t(60, 2);
                 if (ct1t_posi_st[8] == 1)
                 {
                   ct1t_posi_st[8] = 0; // compteur
@@ -422,7 +427,7 @@
             {
               def_source(2, 2);
               def_source(4, 2);
-              def_source(60, 2);
+              //def_source(60, 2);
               if (ct3t_posi_st[8] == 1)
               {
                 // ct3t_posi_st[8]++; // compteur
@@ -529,7 +534,7 @@
     //			51	fan 					tot_auto		 	  
     //			52	fan 					semi_auto							  
     //			60	spot
-    //			611	spot                      sosSay 1
+    //			611	spot          intermitent
     //			612	spot                      sosSay 2
     //			61	spot					sirenI			sosSay 1	          
     //			62	spot					sirenI			sosSay 2	          
@@ -551,14 +556,16 @@
       unsigned long rlt_gen_cyl = millis() - debut_gen_cyl;
       while (rlt_gen_cyl <= sec * 3)
       {
+        digitalWrite(spot,true);
         rlt_gen_cyl = millis() - debut_gen_cyl;
 
-        if (etalon[0] == 0 && etalon[1] == 0 && phase > 1 && rlt_gen_inp < 100)
+        if (etalon[0] == 0 && etalon[1] == 0 && phase == 1 && rlt_gen_inp < 100)
         {
+          digitalWrite(flacheBleu,true);
           debut_gen_inp = millis();
           etalon[0] = 1;
         }
-        if (etalon[0] == 1 && etalon[1] == 0 && phase < 1 && rlt_gen_inp < 100)
+        if (etalon[0] == 1 && etalon[1] == 0 && phase == 0 && rlt_gen_inp < 100)
         {
           debut_gen_inp = millis();
           etalon[1] = 1;
@@ -566,37 +573,51 @@
         if (etalon[0] == 1 && etalon[1] == 1)
         {
           etalon[2]++;
+          etalon[0] = 0;
+          etalon[1] = 0;
         }
+      }
+      digitalWrite(spot,false);
+        switch (etalon[2] ) {
+            case 1:
+              etalon[3] = etalon[2];
+              // do something
+              break;
+            case 2:
+              etalon[3] = etalon[2];
+              GEN_ALM();
+              // do something
+              break;
+            case 3:
+              etalon[3] = etalon[2];
+              for (int i = 0; i < 3; i++)
+              {
+                etalon[i] = 0;
+              }
+              GEN_TST();
 
+              break;
+        }
         if (etalon[2] == 1)
         {
-          etalon[3] = etalon[2];
         }
         if (etalon[2] == 2)
         {
-          etalon[3] = etalon[2];
         }
 
         if (etalon[2] == 3)
         {
-          etalon[3] = etalon[2];
-          for (int i = 0; i < 3; i++)
-          {
-            etalon[i] = 0;
-          }
         }
         for (int i = 0; i < 4; i++)
         {
           etalon[i] = 0;
         }
-      }
+      //}
       if (etalon[3] == 3)
       {
-        GEN_TST();
       }  
       if (etalon[3] == 2)
       {
-        GEN_ALM();
       }
       if (etalon[3] == 1)
       {
@@ -800,14 +821,15 @@
       if(CcPhNeTe != 5){curmill = millis();}
     }
     }
-  void ecl_auto(byte sosSay){
+  void ecl_auto(byte sosSay, bool battLow){
     if (sosSay == 0)
-    { // arret ecl_Auto()
+    { // arret ecl_ Auto()
       digitalWrite(spot, false);
       //Serial.println("eclairage off");
+      goto sosSay0;
     }
-    if (sosSay == 1)
-    { // active ecl_Auto()
+    if (sosSay == 1 && battLow == false)
+    { // active ecl_ Auto()
       if (analogRead(photo) >= 10)
       {
         digitalWrite(spot, true);
@@ -818,21 +840,58 @@
         digitalWrite(spot, false);
         //Serial.println("eclairage off_auto");
       }
+      goto sosSay0;
     }
+    if (sosSay == 11) 
+      {
+        long ecl_mil = millis() - debut_ecl;
+        if (ecl_pos == 0 && ecl_mil > 5 * sec ){
+          ecl_state=false;
+          ecl_pos = 1;
+          debut_ecl = millis(); 
+        }
+        ecl_mil = millis() - debut_ecl; 
+        if(ecl_pos == 1 && ecl_mil > 2 * sec)
+          {
+            ecl_state = false;
+            ecl_pos = 0;
+            debut_ecl = millis();
+          }
+        if(ecl_pos == 0)
+        {
+          ecl_pos = 0;
+          if(analogRead(photo) >= 10)
+          {
+            ecl_state = true;
+          }else {ecl_state = false;}
+        }
+
+        digitalWrite(spot, ecl_state);
+      }
+
+
+    sosSay0:
+    sosSay=sosSay;
     }
   void veil_mis()  {
     //mis_veil = false;
     maz_int = false;
     maz_int_f();
-    if (tempo_State_On == false || batt <= 0 || alim_State == false){
+    bool debut_tempo = false;
+    while (tempo_State_On == false || batt <= 0 || alim_State == false){
       ccphnete0 = 0;
+      ecl_auto(11,battLow);
+      BPmarcheState = digitalRead(BPmarche);
+      alim_State = getAlim(battLow);
+      batt = getBattery(battLow);
+      if (batt >= 1 && batt <= 20){battLow = true;}else{battLow = false;}
+
       //Serial.println("veil_mis  appuille BP");
       if(tempo_State_On == false ){
         //Serial.println("veil_mis  temp o off");
-        while (BPmarcheState == true)
+        if (BPmarcheState == true)
           {
-          BPmarcheState = digitalRead(BPmarche);
-          if (millis() - debut >= 5*sec)
+          if (millis() - debut >= 5*sec || debut_tempo == false)
           {
             //Serial.println("veil_mis  temp o off");
             selc=1;
@@ -840,25 +899,26 @@
             selc_typ(selc,sosSay,typ);
             cyl_def_source(selc, sosSay, typ);
             if (ct1t_posi_st[8] == 6)
-                  {
-                    // ct3t_posi_st[8]++; // compteur
-                    //ct1t_posi_st[8] = 0;
-                    debut = millis();
-                    //for (int i = 0; i < 9; i++)
-                      //{
-                        //ct1t_posi_st[i] = false;
-                      //}
-                  }
+              {
+                // ct3t_posi_st[8]++; // compteur
+                //ct1t_posi_st[8] = 0;
+                debut = millis();
+                debut_tempo = true;
+                //for (int i = 0; i < 9; i++)
+                  //{
+                    //ct1t_posi_st[i] = false;
+                  //}
+              }
           }
          }
-          goto fin;
+          //goto fin;
           }
       if(batt <= 0){
         //Serial.println("veil_mis  bosch off");
-        while (batt <= 0)
-          {
-          batt = getBattery(battLow);
-          if (millis() - debut >= 5*sec)
+        //if (batt <= 0)
+          //{
+          //batt = getBattery(battLow);
+          if (millis() - debut >= 5*sec || debut_tempo == false)
             {
               //Serial.println("veil_mis  bosch off");
               selc=2;
@@ -870,21 +930,23 @@
                   // ct3t_posi_st[8]++; // compteur
                   //ct2t_posi_st[8] = 0;
                   debut = millis();
+                  debut_tempo = true;
                   //for (int i = 0; i < 9; i++)
                     //{
                       //ct2t_posi_st[i] = false;
                     //}
                 }
             }
+          //}
+        //goto fin;
           }
-        goto fin;
-          }
-      if(alim_State == false ){
+          //if(alim_State == false ){
+          //ecl_auto(1,battLow);
           //Serial.println("veil_mis  230v off");
-          }
-        while (alim_State == false) {
-        alim_State = getAlim(battLow);
-        if(millis() - debut >= 5*sec)
+          //}
+        if (alim_State == false) {
+        
+        if(millis() - debut >= 15*sec || debut_tempo == false)
           {
             //Serial.println("veil_mis  230v off");
             selc=3;
@@ -896,6 +958,7 @@
                 // ct3t_posi_st[8]++; // compteur
                 //ct3t_posi_st[8] = 0;
                 debut = millis();
+                debut_tempo = true;
                 //for (int i = 0; i < 9; i++)
                   //{
                     //ct3t_posi_st[i] = false;
@@ -903,7 +966,7 @@
               }
           }
          }
-        goto fin;
+        //goto fin;
       }
     fin:
     debut = millis();
@@ -1374,11 +1437,33 @@
   
   int def_1t(byte sosSay, byte cl)
     {
+    if (ct1t_posi_st[6] == true || cl == 0)
+        {
+          ct1t_posi_st[6] = false;
+          if (ct1t_posi_st[7] == cl)
+          {
+            ct1t_posi_st[7]=0;
+            ct1t_posi_st[8]++; // compteur
+            if(sosSay==0)
+            {
+              goto sosSay0;
+            }
+            
+          } else {
+          ct1t_posi_st[7]++; // compteur cycle
+
+          }
+        }
+    /**
     if (sosSay == 0){
-      ct1t_posi_st[8]++;
+      ct1t_posi_st[6] = true;
+      ct1t_posi_st[7]=0;
+      ct1t_posi_st[8]++; // compteur
+
       ct1t_switch = 6;
       goto inter;
-      }
+      } 
+    */
     sosSay_slc(selc, sosSay, typ);
     // cycle count_1t
     count_1t();
@@ -1387,16 +1472,6 @@
           if (ct1t_posi_st[i] == true)
           {
             ct1t_switch = i;
-          }
-        }
-    if (ct1t_posi_st[6] == true)
-        {
-          ct1t_posi_st[6] = false;
-          ct1t_posi_st[7]++; // compteur cycle
-          if (ct1t_posi_st[7] == cl)
-          {
-            ct1t_posi_st[7]=0;
-            ct1t_posi_st[8]++; // compteur
           }
         }
     inter:
@@ -1444,35 +1519,30 @@
           ct1t_switch = 0;
           break;
         }
+      sosSay0:
       byte CcPhNeTe_switch = ct1t_posi_st[8];
       return (CcPhNeTe_switch);
     }
   int def_2t(byte sosSay, byte cl)
     {
-      if (sosSay == 0){
-        ct2t_posi_st[8]++;
-        ct2t_switch = 6;
-        goto inter;
-        }
-
+      if (ct2t_posi_st[6] == true || cl == 0)
+        {
+        ct2t_posi_st[6] = false;
+        if (ct2t_posi_st[7] == cl)
+          {
+            ct2t_posi_st[7] = 0;
+            ct2t_posi_st[8]++; // compteur
+            if(sosSay==0){goto sosSay0;}
+          } else {ct2t_posi_st[7]++;} // compteur cycle
+          }
       sosSay_slc(selc, sosSay, typ);
       // cycle count_2t
       count_2t();
       for (int i = 0; i < 6; i++)
         {
         if (ct2t_posi_st[i] == true)
-        {
-          ct2t_switch = i;
-        }
-        }
-      if (ct2t_posi_st[6] == true)
-        {
-        ct2t_posi_st[6] = false;
-        ct2t_posi_st[7]++; // compteur cycle
-        if (ct2t_posi_st[7] == cl)
           {
-          ct2t_posi_st[7] = 0;
-          ct2t_posi_st[8]++; // compteur
+            ct2t_switch = i;
           }
         }
     inter:
@@ -1520,15 +1590,26 @@
           ct2t_switch = 0;
           break;
         }
+      sosSay0:  
       byte CcPhNeTe_switch = ct2t_posi_st[8];
       return (CcPhNeTe_switch);
     }
   int def_3t(byte sosSay, byte cl)
     {
-      if (sosSay == 0){
-        ct3t_posi_st[8]++;
-        ct3t_switch = 6;
-        goto inter;
+      if (ct3t_posi_st[6] == true || cl == 0)
+        {
+          ct3t_posi_st[6] = false;
+          if (ct3t_posi_st[7] == cl)
+          {
+            ct3t_posi_st[8]++; // compteur
+            ct3t_posi_st[7] = 0;
+            if(sosSay==0)
+            {
+              goto sosSay0;
+            }
+          }else {
+          ct3t_posi_st[7]++; // compteur cycle
+          }
         }
       sosSay_slc(selc, sosSay, typ);
       count_3t();
@@ -1537,16 +1618,6 @@
           if (ct3t_posi_st[i] == true)
           {
             ct3t_switch = i;
-          }
-        }
-      if (ct3t_posi_st[6] == true)
-        {
-          ct3t_posi_st[6] = false;
-          ct3t_posi_st[7]++; // compteur cycle
-          if (ct3t_posi_st[7] == cl)
-          {
-            ct3t_posi_st[8]++; // compteur
-            ct3t_posi_st[7] = 0;
           }
         }
     inter:
@@ -1594,6 +1665,7 @@
           ct3t_switch = 0;
           break;
         }
+      sosSay0:  
       byte CcPhNeTe_switch = ct3t_posi_st[8];
       return (CcPhNeTe_switch);
     }
@@ -2582,21 +2654,21 @@
     }
   int getAlim(bool battLow)
     {
-      alim_State = !digitalRead(alimOk);
       long rlt_alim = millis() - cur_mil;
+      if(mis_veil==true){goto alim_off;}
+      digitalWrite(alim,true);
+      alim_State = !digitalRead(alimOk);
+      digitalWrite(alim, alim_State);
       if(alim_State == false)
       {
-        digitalWrite(alim, alim_State);
+        ///digitalWrite(alim, alim_State);
         fane(0,battLow);                      // arret ventilateur controlAlimFon c()
+        mis_veil = true;
+        ccphnete0 = 7;
         goto alim_off;
 
-      }
-      
-      digitalWrite(alim, true);
-      alim_State = !digitalRead(alimOk); // control 230v sous tention
-      digitalWrite(alim,alim_State);
-      if(alim_State == true) {
-        //digitalWrite(alim, alim_State);
+      }else 
+      {
         cur_mil = millis();
         if (battLow == true) {
             //sosSay = 52;                   // code active fan e   controlAlimFon c()
@@ -2604,10 +2676,12 @@
           }
         else {
           //sosSay = 1;                      // code active fan e  controlAlimFon c()
-          fane(1,battLow);                      // active ventilateur controlAlimFon c()
+          fane(52,battLow);                      // active ventilateur controlAlimFon c()
           }
-       } 
        goto alim_fin;
+
+      }
+      
        alim_off:
           if(rlt_alim > sec && alim_State == false)
             {
@@ -2671,7 +2745,12 @@
 
 
         }
-      if (battLow == true && sosSay == 1 || sosSay == 52)
+    bool temp_sys;
+      
+    if (analogRead(temrat) >= 10){temp_sys = true;}else{temp_sys = false;}
+
+
+      if ((sosSay == 52) && temp_sys == true)
         {
           unsigned long rlt_fan_bch = millis() - debut_fan_bch;
           if (fan_bch_cyl == 0 && rlt_fan_bch > sec * 10)
