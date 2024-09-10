@@ -1,0 +1,29 @@
+
+"fonction clio interval1 interval2 compteur": {
+  "prefix": "fclio",
+  "body": [
+    "bool clio_arret(${1:val}, ${2:val}, ${3:comp})",
+    "{",
+    "	if (clio_arret_stat == false)",
+    "	{",
+    "		if (millis() - clio_arret_millis > ${1:val})",
+    "		{",
+    "			clio_arret_millis = millis();",
+    "			clio_arret_stat = true;",
+    "		}",
+    "	}",
+    "	if (clio_arret_stat == true)",
+    "	{",
+    "		if (millis() - clio_arret_millis > ${2:val})",
+    "		{",
+    "			clio_arret_millis = millis();",
+    "			clio_arret_stat = false;",
+    "			${3:comp}++;",
+    "		}",
+    "	}",
+    "	return clio_arret_stat;",
+    "}",
+    "${0}"
+  ],
+  "description": "fonction clio interval1 interval2 compteur"
+}

@@ -11,89 +11,89 @@
 
 */
 
-byte testPh = A0;      // entree analog phase
-byte testN = A1;       // entree analog neutre
-byte testT = A2;       // entree analog terre
-byte phase = 0;        // state phase
-byte neutre = 0;       // state neutre
-byte terre = 0;        // state terre
-byte BATTERYPIN = A3;  // pin de la batterie
-bool battLow = false;  // battLow
+byte testPh = A0;	  // entree analog phase
+byte testN = A1;	  // entree analog neutre
+byte testT = A2;	  // entree analog terre
+byte phase = 0;		  // state phase
+byte neutre = 0;	  // state neutre
+byte terre = 0;		  // state terre
+byte BATTERYPIN = A3; // pin de la batterie
+bool battLow = false; // battLow
 bool battLow_prew = false;
-int batt = 0;  // batt
+int batt = 0; // batt
 bool battOff = false;
 bool alim_tst = false;
-bool alim_State = false;  // state alim_State
+bool alim_State = false; // state alim_State
 bool alim_State_prew = false;
-long curren_millis_alim = millis();         // tempo_alim_off
-int BPmarche = 2;                // entree bp_marche
-bool BPmarcheState = false;      // state bp_marche
-bool Manu_auto = false;          // state auto_manu
-bool tempo_State_On = false;     // cycle on
+long curren_millis_alim = millis(); // tempo_alim_off
+int BPmarche = 2;					// entree bp_marche
+bool BPmarcheState = false;			// state bp_marche
+bool Manu_auto = false;				// state auto_manu
+bool tempo_State_On = false;		// cycle on
 
-long unsigned int debut = millis();  // temp debu t duree cycle
-long unsigned int veil_millis = millis();	 // tempo veil detection
-bool selec_mode_GEN = false;	 // state veil detection
+long unsigned int debut = millis();		  // temp debu t duree cycle
+long unsigned int veil_millis = millis(); // tempo veil detection
+bool selec_mode_GEN = false;			  // state veil detection
 unsigned long selec_mode_GEN_millis = 0;
-unsigned long clio_normal_millis = millis();// tempo clio normal
-bool state_sortie = false;		 // state clio normal
+unsigned long clio_normal_millis = millis(); // tempo clio normal
+bool state_sortie = false;					 // state clio normal
 
 bool fan_state = false;
 long fan_millis = 0;
-int photo = A4;   // cellule photo
-int temrat = A5;  // cellule temperature
+int photo = A4;	 // cellule photo
+int temrat = A5; // cellule temperature
 
-const int sirenC = 3;  // sortie siren con (continute)
-const int alimOk = 4;  // entree control 230v OK
-const int fan = 5;     // ventilateur
-const int spot = 6;    // eclairage
+const int sirenC = 3; // sortie siren con (continute)
+const int alimOk = 4; // entree control 230v OK
+const int fan = 5;	  // ventilateur
+const int spot = 6;	  // eclairage
 //                  D7;
 //                  D8;
-const int sirenI = 9;        // sortie siren iso
-const int alim = 10;         // sortie_Alim
-const int flacheRouge = 11;  // sortie flacheRouge
-const int flacheBleu = 12;   // sortie flacheBleu
-const int bosch = 13;        // sortie batterie
+const int sirenI = 9;		// sortie siren iso
+const int alim = 10;		// sortie_Alim
+const int flacheRouge = 11; // sortie flacheRouge
+const int flacheBleu = 12;	// sortie flacheBleu
+const int bosch = 13;		// sortie batterie
 
 int flache_b_r_s = 0;
 int siren_c_i = 0;
-int CcPhNeTe = 0;  // CcPhNeTe
+int CcPhNeTe = 0; // CcPhNeTe
 int CcPhNeTe_prew = 0;
 long sec = 1000;
 long minut = 60 * sec;
 
-unsigned long curmill = millis();  // temp ccphnt
+unsigned long curmill = millis(); // temp ccphnt
 
 unsigned long compteMillis1 = 0;
 
 int sequance = 0;
-//int selec_type;
+// int selec_type;
 /*					select type 1													*/
-long ct1t_nbr[9] = { 0, 200, 2000, 0, 2000, 0, 2000, 0, 2000 };  // temp clio selec auto
+long ct1t_nbr[9] = {0, 200, 2000, 0, 2000, 0, 2000, 0, 2000}; // temp clio selec auto
 long ct1t_total = (ct1t_nbr[0] + ct1t_nbr[1] + ct1t_nbr[2] + ct1t_nbr[3] + ct1t_nbr[4] + ct1t_nbr[5] + ct1t_nbr[6] + ct1t_nbr[7] + ct1t_nbr[8]) * 4;
 /*					select type 2													*/
-long ct2t_nbr[9] = { 0, 200, 200, 500, 0, 0, 400, 0, 0 };  // temp clio selec
+long ct2t_nbr[9] = {0, 200, 200, 500, 0, 0, 400, 0, 0}; // temp clio selec
 long ct2t_total = (ct2t_nbr[0] + ct2t_nbr[1] + ct2t_nbr[2] + ct2t_nbr[3] + ct2t_nbr[4] + ct2t_nbr[5] + ct2t_nbr[6] + ct2t_nbr[7] + ct2t_nbr[8]) * 4;
 /*					select type 3													*/
-long ct3t_nbr[9] = { 0, 100, 300, 100, 300, 100, 100, 500, 100 };  // temps clio defaut batt defaut 230v
+long ct3t_nbr[9] = {0, 100, 300, 100, 300, 100, 100, 500, 100}; // temps clio defaut batt defaut 230v
 long ct3t_total = (ct3t_nbr[0] + ct3t_nbr[1] + ct3t_nbr[2] + ct3t_nbr[3] + ct3t_nbr[4] + ct3t_nbr[5] + ct3t_nbr[6] + ct3t_nbr[7] + ct3t_nbr[8]) * 4;
 /*					select type 4													*/
 long temps_clio[9];
-long ct_ECL_nbr[9] = { 0, 1000, 0, 2000, 0, 2000, 0, 2000, 200 };  // temps clio defaut batt defaut 230v
+long ct_ECL_nbr[9] = {0, 1000, 0, 2000, 0, 2000, 0, 2000, 200}; // temps clio defaut batt defaut 230v
 long ct_ECL_total = (ct_ECL_nbr[0] + ct_ECL_nbr[1] + ct_ECL_nbr[2] + ct_ECL_nbr[3] + ct_ECL_nbr[4] + ct_ECL_nbr[5] + ct_ECL_nbr[6] + ct_ECL_nbr[7] + ct_ECL_nbr[8]) * 4;
 /*					select type 5													*/
-long ct_FAN_nbr[9] = { 1000, 1000, 500, 800, 400, 600, 300, 400, 100 };  // temps clio defaut batt defaut 230v
+long ct_FAN_nbr[9] = {1000, 1000, 500, 800, 400, 600, 300, 400, 100}; // temps clio defaut batt defaut 230v
 long ct_FAN_total = (ct_FAN_nbr[0] + ct_FAN_nbr[1] + ct_FAN_nbr[2] + ct_FAN_nbr[3] + ct_FAN_nbr[4] + ct_FAN_nbr[5] + ct_FAN_nbr[6] + ct_FAN_nbr[7] + ct_FAN_nbr[8]) * 4;
 /*					select type 6													*/
 long tempoECL[9];
-long ct_SOS_nbr[9] = { 10, 100, 100, 0, 0, 0, 0, 0, 100 };  // temps clio defaut batt defaut 230v
+long ct_SOS_nbr[9] = {10, 100, 100, 0, 0, 0, 0, 0, 100}; // temps clio defaut batt defaut 230v
 long ct_SOS_total = (ct_SOS_nbr[0] + ct_SOS_nbr[1] + ct_SOS_nbr[2] + ct_SOS_nbr[3] + ct_SOS_nbr[4] + ct_SOS_nbr[5] + ct_SOS_nbr[6] + ct_SOS_nbr[7] + ct_SOS_nbr[8]) * 4;
 /*					select type 7													*/
-long ct_SOS1_nbr[9] = { 10, 1000, 1000, 0, 0, 0, 0, 0, 100 };  // temps clio defaut batt defaut 230v
+long ct_SOS1_nbr[9] = {10, 1000, 1000, 0, 0, 0, 0, 0, 100}; // temps clio defaut batt defaut 230v
 long ct_SOS1_total = (ct_SOS1_nbr[0] + ct_SOS1_nbr[1] + ct_SOS1_nbr[2] + ct_SOS1_nbr[3] + ct_SOS1_nbr[4] + ct_SOS1_nbr[5] + ct_SOS1_nbr[6] + ct_SOS1_nbr[7] + ct_SOS1_nbr[8]) * 4;
 int sos_niveau_2 = 0;
 /*					select type 8													*/
-long ct_GEN_nbr[9] = { 10, 1000, 1000, 0, 0, 0, 0, 0, minut };  // temps clio defaut batt defaut 230v
+long ct_GEN_nbr[9] = {10, 1000, 1000, 0, 0, 0, 0, 0, minut}; // temps clio defaut batt defaut 230v
 long ct_GEN_total = (ct_GEN_nbr[0] + ct_GEN_nbr[1] + ct_GEN_nbr[2] + ct_GEN_nbr[3] + ct_GEN_nbr[4] + ct_GEN_nbr[5] + ct_GEN_nbr[6] + ct_GEN_nbr[7] + ct_GEN_nbr[8]) * 4;
 
 /*
@@ -107,22 +107,21 @@ chf_cyl chf_cyl_sos
 7 ct_SOS1_nbr
 */
 
-
 //------chiffre type
-int selc_ECL[9]{ 60, 1, 60, 1, 60, 1, 60, 2, 4 };			//  selc 0
-int selc_aut[9]{ 91, 1, 0, 1, 0, 1, 0, 1, 1 };				//  selc 1
-int selc_bat[9]{ 91, 2, 91, 1, 1, 1, 81, 1, 1 };			//  selc 2
-int selc_230[9]{ 92, 3, 82, 1, 1, 1, 1, 1, 3 };				//  selc 3
-int selc_ne_te[9]{ 3, 3, 61, 1, 4, 4, 71, 2, 2 };			//  selc 4
-int selc_ph_te[9]{ 2, 2, 61, 1, 4, 4, 71, 2, 2 };			//  selc 5
-int selc_ph_ne[9]{ 2, 2, 60, 1, 3, 3, 60, 2, 2 };			//  selc 6
-int selc_cc_tst[9]{ 5, 1, 61, 1, 5, 1, 62, 2, 2 };			//  selc 7
-int selc_cc_cc[9]{ 5, 5, 71, 1, 5, 5, 72, 2, 3 };			//  selc 8
-int selc_FAN_d[9]{ 50, 1, 50, 1, 50, 1, 50, 2, 5 };			//  selc 9
-int selc_SOS[9]{ 60, 3, 0, 1, 0, 1, 0, 1, 6 };				//  selc 10
-int selc_SOS1[9]{ 60, 3, 0, 1, 0, 1, 0, 1, 7 };				//  selc 11
-int selc_aut_veil[9]{ 82, 1, 81, 1, 82, 1, 81, 1, 3 };		//  selc 12
-int selc_GEN_SYS[9]{ 82, 1, 81, 1, 82, 1, 81, 1, 8 };		//  selc 13
+int selc_ECL[9]{60, 1, 60, 1, 60, 1, 60, 2, 4};		 //  selc 0
+int selc_aut[9]{91, 1, 0, 1, 0, 1, 0, 1, 1};		 //  selc 1
+int selc_bat[9]{91, 2, 91, 1, 1, 1, 81, 1, 1};		 //  selc 2
+int selc_230[9]{92, 3, 82, 1, 1, 1, 1, 1, 3};		 //  selc 3
+int selc_ne_te[9]{3, 3, 61, 1, 4, 4, 71, 2, 2};		 //  selc 4
+int selc_ph_te[9]{2, 2, 61, 1, 4, 4, 71, 2, 2};		 //  selc 5
+int selc_ph_ne[9]{2, 2, 60, 1, 3, 3, 60, 2, 2};		 //  selc 6
+int selc_cc_tst[9]{5, 1, 61, 1, 5, 1, 62, 2, 2};	 //  selc 7
+int selc_cc_cc[9]{5, 5, 71, 1, 5, 5, 72, 2, 3};		 //  selc 8
+int selc_FAN_d[9]{50, 1, 50, 1, 50, 1, 50, 2, 5};	 //  selc 9
+int selc_SOS[9]{60, 3, 0, 1, 0, 1, 0, 1, 6};		 //  selc 10
+int selc_SOS1[9]{60, 3, 0, 1, 0, 1, 0, 1, 7};		 //  selc 11
+int selc_aut_veil[9]{82, 1, 81, 1, 82, 1, 81, 1, 3}; //  selc 12
+int selc_GEN_SYS[9]{82, 1, 81, 1, 82, 1, 81, 1, 8};	 //  selc 13
 
 int chf_cyl[9]{};
 /*						0 sortie      1 chr
@@ -137,7 +136,7 @@ int chf_cyl[9]{};
 */
 int chf_cyl_sos[9]{};
 int selc_FAN[9]{};
-int tempo[9]{};//selec tempo fan
+int tempo[9]{}; // selec tempo fan
 long tempo_total = (sec * 10) + ct_ECL_total;
 
 int compteurchf1 = 0;
@@ -154,11 +153,11 @@ unsigned long compteFANMillis2 = 0;
 unsigned long compteECLMillis1 = 0;
 unsigned long compteECLMillis2 = 0;
 int compt_alim_off = 0;
-int niveau = 0;// fan fonction
+int niveau = 0; // fan fonction
 int niveauECL = 0;
-//unsigned long tempo = 0;//
+// unsigned long tempo = 0;//
 
-int sys_etat = 30;									// init valeur
+int sys_etat = 30; // init valeur
 int sys_etat_prew = 30;
 
 int get_temp_sys = 0;
@@ -170,6 +169,7 @@ bool lux_env = false;
 bool GENERATEUR_230v_stat = false;
 long gen_debut = millis();
 long gen_tmp_230 = 2 * minut;
+bool sys_surcharge = false;
 
 //						SYS_ARRET
 int sys_clio_arret_tempo_compt = 0;
@@ -181,7 +181,8 @@ bool clio_arret_stat = false;
 unsigned long clio_arret_tempo_millis = millis();
 bool clio_arret_tempo_stat = false;
 
-void setup() {
+void setup()
+{
 	Serial.begin(115200);
 	pinMode(flacheRouge, OUTPUT);
 	pinMode(flacheBleu, OUTPUT);
@@ -194,7 +195,7 @@ void setup() {
 
 	pinMode(alimOk, INPUT_PULLUP);
 	pinMode(BPmarche, INPUT_PULLUP);
-	//pinMode(welc_ctr_in, INPUT_PULLUP);
+	// pinMode(welc_ctr_in, INPUT_PULLUP);
 }
 
 // the loop function runs over and over again until power down or reset
@@ -203,8 +204,8 @@ void loop()
 	getBattery();
 	sys_temp_lux();
 	sys_inital();
-	sys_veille();// loop init
-}  //				fin loop
+	sys_veille(); // loop init
+} //				fin loop
 
 /*--------------etat system
 
@@ -262,7 +263,7 @@ void sys_inital()
 	}
 	if (battOff == true)
 	{
-		sys_etat = 6;								// batt off
+		sys_etat = 6; // batt off
 		getAlim(sys_etat);
 		return;
 	}
@@ -270,21 +271,23 @@ void sys_inital()
 	{
 		battLow_prew = battLow;
 		sys_etat_prew = sys_etat;
-		sys_raz(sys_etat);									// defaut - batt - alim - ch.sys_etat
+		sys_raz(sys_etat); // defaut - batt - alim - ch.sys_etat
 	}
-	if (SYS_SURCHAUFFE == true)  //				ARRET SYSTEME MISE EN VEILLE
+	if (SYS_SURCHAUFFE == true) //				ARRET SYSTEME MISE EN VEILLE
 	{
-		sys_etat = 7;								// sys surchauffe
+		sys_etat = 7; // sys surchauffe
 		getAlim(sys_etat);
 		fan_fonct(2);
-		sys_raz(sys_etat);									// sys surchauffe
+		sys_raz(sys_etat); // sys surchauffe
 		return;
 	}
 }
-void sys_temp_lux() {
+void sys_temp_lux()
+{
 	get_temp_sys = analogRead(temrat);
 	get_lux_sys = analogRead(photo);
-	if (get_temp_sys >= 150) {
+	if (get_temp_sys >= 150)
+	{
 		temp_sys = true;
 	}
 	else
@@ -292,7 +295,8 @@ void sys_temp_lux() {
 		temp_sys = false;
 	}
 
-	if (get_lux_sys >= 10) {
+	if (get_lux_sys >= 10)
+	{
 		lux_env = true;
 	}
 	else
@@ -300,7 +304,7 @@ void sys_temp_lux() {
 		lux_env = false;
 	}
 
-	if (get_temp_sys >= 250)  // ARRET SYSTEME
+	if (get_temp_sys >= 250) // ARRET SYSTEME
 	{
 		SYS_SURCHAUFFE = true;
 	}
@@ -318,6 +322,8 @@ void sys_temp_lux() {
 }
 void GENERATEUR_230v()
 {
+	bool clio=false;
+	int compteur=0;
 	GENERATEUR_230v_stat = true;
 	gen_debut = millis();
 	while (GENERATEUR_230v_stat == true)
@@ -325,14 +331,27 @@ void GENERATEUR_230v()
 		getBattery();
 		sys_temp_lux();
 		sys_inital();
+		TA_PROTEC();
 		if (battOff == true || SYS_SURCHAUFFE == true)
 		{
+			getAlim(20);
+			ecl_fonct(20);
 			return;
 		}
-		sys_etat = 8;								// generateur en cours
-		sys_clio_4t(13);							// generateur en cours
+
+		sys_etat = 8;	 // generateur en cours
+		sys_clio_4t(13); // generateur en cours
 		if (millis() - gen_debut <= gen_tmp_230)
 		{
+			if (sys_surcharge==true)
+			{
+				if (/* condition */)
+				{
+					/* code */
+				}
+				(sec,sec,compteur)
+			}
+			
 			GENERATEUR_230v_stat = true;
 			getAlim(1);
 			if (lux_env == true)
@@ -353,7 +372,23 @@ void GENERATEUR_230v()
 		}
 		digitalWrite(bosch, GENERATEUR_230v_stat);
 	}
-	sys_etat = 21;									// sortie generateur 230v
+	sys_etat = 21; // sortie generateur 230v
+}
+void TA_PROTEC()
+{
+	test_CcPhNeTe();
+	if (phase >= 150 || neutre >= 150)
+	{
+		sys_surcharge = true;
+	}
+	else
+	{
+		sys_surcharge = false;
+	}
+	if (CcPhNeTe == 7)
+	{
+		sys_clio_4t(CcPhNeTe);
+	}
 }
 void gen_tst()
 {
@@ -371,20 +406,20 @@ void gen_tst()
 		if (CcPhNeTe_prew != CcPhNeTe)
 		{
 			CcPhNeTe_prew = CcPhNeTe;
-			sys_raz(sys_etat);								// gent_test ch. ccphnete
+			sys_raz(sys_etat); // gent_test ch. ccphnete
 		}
 		sys_clio_4t(CcPhNeTe);
-		if (CcPhNeTe >= 4 && CcPhNeTe <= 8)	/*	TEST  EN COURS	CcPhNeTe 4-8	*/
+		if (CcPhNeTe >= 4 && CcPhNeTe <= 8) /*	TEST  EN COURS	CcPhNeTe 4-8	*/
 		{
-			sys_etat = 1;								// gen_test en cours
+			sys_etat = 1; // gen_test en cours
 			debut = millis();
 		}
-		else								/*	TEST  EN COURS	CcPhNeTe 0		*/
+		else /*	TEST  EN COURS	CcPhNeTe 0		*/
 		{
 			manu_auto_tempo();
 			if (battLow == false && alim_State == true)
 			{
-				sys_etat = 2;						// gen_test en cours ccphnete=0
+				sys_etat = 2; // gen_test en cours ccphnete=0
 				if (lux_env == true)
 				{
 					selc_mode_clio(0, 2);
@@ -398,21 +433,21 @@ void gen_tst()
 			if ((battLow == true && battOff == false) || alim_State == false)
 			{
 				selc_mode_clio(10, 2);
-				ecl_fonct(10);						// SOS
+				ecl_fonct(10); // SOS
 				if (battLow == true)
 				{
-					sys_etat = 3;					// battlow -20% gen_tst
+					sys_etat = 3; // battlow -20% gen_tst
 				}
 				if (alim_State == false)
 				{
-					sys_etat = 4;					// alim off gen_tst
+					sys_etat = 4; // alim off gen_tst
 				}
 			}
 		}
 	}
 	getAlim(30);
 	fan_fonct(20);
-	sys_etat = 22;									// sortie gen_tst
+	sys_etat = 22; // sortie gen_tst
 }
 //------------------TEST CCPHNETE
 int test()
@@ -444,11 +479,11 @@ int test()
 		}
 		if (millis() - curmill >= ct_total)
 		{
-			CcPhNeTe = 8;  // sosNbr234()
+			CcPhNeTe = 8; // sosNbr234()
 		}
 		else
 		{
-			CcPhNeTe = 7;  //sosNbr55()
+			CcPhNeTe = 7; // sosNbr55()
 		}
 	}
 	return (CcPhNeTe);
@@ -466,7 +501,7 @@ void detect_mode(int retour_foncf)
 	test_CcPhNeTe();
 	switch (CcPhNeTe)
 	{
-	case 0:											// CcPhNeTe 0
+	case 0: // CcPhNeTe 0
 		if (retour_foncf == 1)
 		{
 			return;
@@ -481,87 +516,87 @@ void detect_mode(int retour_foncf)
 			}
 		}
 		break;
-	case 4:											// CcPhNeTe 4 TE-NE
+	case 4: // CcPhNeTe 4 TE-NE
 		if (retour_foncf == 2)
 		{
 			do
 			{
-				clio_normal(4); // detect_mode 
+				clio_normal(4); // detect_mode
 				test_CcPhNeTe();
 				if (CcPhNeTe == 0)
 				{
 					getAlim(20);
-					clio_normal(20);				// detect_mode
+					clio_normal(20); // detect_mode
 				}
 			} while (CcPhNeTe != 0);
 			if (CcPhNeTe == 0)
 			{
 				tempo_State_On = true;
 				debut = millis();
-				sys_etat = 1;						//generateur en cours
+				sys_etat = 1; // generateur en cours
 				gen_tst();
 			}
 			return;
 		}
 		break;
-	case 5:											// CcPhNeTe 5 TE-PH
+	case 5: // CcPhNeTe 5 TE-PH
 		if (retour_foncf == 2)
 		{
 			do
 			{
-				clio_normal(4); // detect_mode 
+				clio_normal(4); // detect_mode
 				test_CcPhNeTe();
 				if (CcPhNeTe == 0)
 				{
 					getAlim(20);
-					clio_normal(20);				// detect_mode
+					clio_normal(20); // detect_mode
 				}
 			} while (CcPhNeTe != 0);
 			if (CcPhNeTe == 0)
 			{
-				sys_etat = 8;						//generateur en cours
+				sys_etat = 8; // generateur en cours
 				GENERATEUR_230v();
 			}
 			return;
 		}
 		break;
-	case 6:											// CcPhNeTe 6 PH-NE
+	case 6: // CcPhNeTe 6 PH-NE
 		if (retour_foncf == 2)
 		{
 			do
 			{
-				clio_normal(4); // detect_mode 
+				clio_normal(4); // detect_mode
 				test_CcPhNeTe();
 				if (CcPhNeTe == 0)
 				{
 					getAlim(20);
-					clio_normal(20);				// detect_mode
+					clio_normal(20); // detect_mode
 				}
 			} while (CcPhNeTe != 0);
 			if (CcPhNeTe == 0)
 			{
-				sys_etat = 30;						//generateur en cours
-				//GENERATEUR_230v();
+				sys_etat = 30; // generateur en cours
+							   // GENERATEUR_230v();
 			}
 			return;
 		}
 		break;
-	case 7:											// CcPhNeTe 7 PN-NE-TE
+	case 7: // CcPhNeTe 7 PN-NE-TE
 		if (retour_foncf == 2)
 		{
 			do
 			{
-				clio_normal(4); // detect_mode 
+				clio_normal(4); // detect_mode
 				test_CcPhNeTe();
 				if (CcPhNeTe == 0)
 				{
 					getAlim(20);
-					clio_normal(20);				// detect_mode
+					clio_normal(20); // detect_mode
 				}
 			} while (CcPhNeTe != 0);
 			if (CcPhNeTe == 0)
 			{
-				sys_etat = 30;						//generateur en cours
+				sys_etat = 30; // generateur en cours
 				sys_arret();
 			}
 			return;
@@ -574,34 +609,52 @@ void test_CcPhNeTe()
 	phase = analogRead(testPh);
 	neutre = analogRead(testN);
 	terre = analogRead(testT);
-	if (phase >= 10) { phase = true; }
-	else { phase = false; }
-	if (neutre >= 10) { neutre = true; }
-	else { neutre = false; }
-	if (terre >= 10) { terre = true; }
-	else { terre = false; }
+	if (phase >= 10)
+	{
+		phase = true;
+	}
+	else
+	{
+		phase = false;
+	}
+	if (neutre >= 10)
+	{
+		neutre = true;
+	}
+	else
+	{
+		neutre = false;
+	}
+	if (terre >= 10)
+	{
+		terre = true;
+	}
+	else
+	{
+		terre = false;
+	}
 	if ((phase == false && neutre == false && terre == false) || (phase == true && neutre == false && terre == false) || (phase == false && neutre == true && terre == false) || (phase == false && neutre == false && terre == true))
 	{
 		CcPhNeTe = 0;
 	}
-	if (phase == true && neutre == true && terre == true)	// detect_PH__NE__TE
+	if (phase == true && neutre == true && terre == true) // detect_PH__NE__TE
 	{
 		CcPhNeTe = 7;
 	}
-	if (phase == true && neutre == true && terre == false)	// detect_PH__NE
+	if (phase == true && neutre == true && terre == false) // detect_PH__NE
 	{
 		CcPhNeTe = 6;
 	}
-	if (phase == true && neutre == false && terre == true)	// detect_TE__PH
+	if (phase == true && neutre == false && terre == true) // detect_TE__PH
 	{
 		CcPhNeTe = 5;
 	}
-	if (phase == false && neutre == true && terre == true)	// detect_TE__NE
+	if (phase == false && neutre == true && terre == true) // detect_TE__NE
 	{
 		CcPhNeTe = 4;
 	}
 }
-void sys_raz(int etat)				// mise a zer0
+void sys_raz(int etat) // mise a zer0
 {
 	digitalWrite(flacheRouge, false);
 	digitalWrite(flacheBleu, false);
@@ -637,7 +690,7 @@ void sys_raz(int etat)				// mise a zer0
 		sequanceFAN = 0;
 		compteFANMillis1 = 0;
 		compteFANMillis2 = 0;
-		niveau = 0;// fan fontion
+		niveau = 0; // fan fontion
 	}
 	if (sys_etat == 20 || sys_etat == 21 || sys_etat == 22 || sys_etat == 23 || sys_etat == 25)
 	{
@@ -645,9 +698,10 @@ void sys_raz(int etat)				// mise a zer0
 		selec_mode_GEN_millis = millis();
 	}
 }
-void manu_auto_tempo() {
+void manu_auto_tempo()
+{
 	//            MANU_AUTO_VEILLE
-	if (sys_etat == 30 || sys_etat == 8)			// init manu_auto
+	if (sys_etat == 30 || sys_etat == 8) // init manu_auto
 	{
 		tempo_State_On = false;
 		return;
@@ -667,36 +721,36 @@ void manu_auto_tempo() {
 	if (tempo_State_On == true && Manu_auto == false)
 	{
 		long tempCycle = (20 * sec) - (millis() - debut);
-		//Serial.print("temp cylce restant : ");
+		// Serial.print("temp cylce restant : ");
 		tempCycle = tempCycle / sec;
-		//Serial.print(tempCycle);
-		//Serial.println(" s.");
+		// Serial.print(tempCycle);
+		// Serial.println(" s.");
 	}
 	if (tempo_State_On == false && Manu_auto == true)
 	{
 		long temp_manu = millis() / sec;
-		//Serial.println("Manu  on");
-		//Serial.print("temp cycle :");
-		//Serial.println(temp_manu);
+		// Serial.println("Manu  on");
+		// Serial.print("temp cycle :");
+		// Serial.println(temp_manu);
 		debut = millis();
 	}
 	if (tempo_State_On == false && Manu_auto == false)
 	{
-		sys_etat = 5;								// tempo auto off
-		// veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
+		sys_etat = 5; // tempo auto off
+					  // veilleFonc(tempo_State_On, BPmarcheState, battLow, batt);
 	}
 	if (tempo_State_On == true && Manu_auto == true)
 	{
 		long dbut = debut;
 		long temp_manu = millis() / sec;
-		//Serial.println("Manu  on");
-		//Serial.print("temp cycle :");
-		//Serial.println(temp_manu);
+		// Serial.println("Manu  on");
+		// Serial.print("temp cycle :");
+		// Serial.println(temp_manu);
 		long tempCycle = (20 * sec) - (millis() - dbut);
-		//Serial.print("temp cylce restant : ");
+		// Serial.print("temp cylce restant : ");
 		tempCycle = tempCycle / sec;
-		//Serial.print(tempCycle);
-		//Serial.println(" s.");
+		// Serial.print(tempCycle);
+		// Serial.println(" s.");
 		debut = millis();
 	}
 }
@@ -707,7 +761,7 @@ void sys_veille()
 	{
 		sys_veille_sysOK();
 	}
-	if (battOff == true || alim_State == false || SYS_SURCHAUFFE == true)
+	if (battOff == true || alim_State == false || SYS_SURCHAUFFE == true || sys_surcharge == true)
 	{
 		sys_veille_sysDEFAUT();
 		sys_raz(sys_etat);
@@ -715,9 +769,9 @@ void sys_veille()
 }
 void sys_veille_sysOK()
 {
-	unsigned long interval_veil_1 = 5 * sec;			//	temps arret
-	unsigned long interval_veil_2 = 5 * sec;			//	temps marche
-	sys_etat = 20;							// veille en cours SYS_OK
+	unsigned long interval_veil_1 = 5 * sec; //	temps arret
+	unsigned long interval_veil_2 = 5 * sec; //	temps marche
+	sys_etat = 20;							 // veille en cours SYS_OK
 	while (battOff == false && alim_tst == true && SYS_SURCHAUFFE == false)
 	{
 		if (millis() - debut > 5 * minut)
@@ -748,13 +802,13 @@ void sys_veille_sysOK()
 		if (selec_mode_GEN == true)
 		{
 			sys_etat = 26;
-			sys_clio_4t(7);			//	select mode en cours gen_test || GENERATEUR 230v
+			sys_clio_4t(7); //	select mode en cours gen_test || GENERATEUR 230v
 			detect_mode(2);
 		}
 		else
 		{
 			sys_etat = 30;
-			sys_clio_4t(20);		//	select mode en pause gen_test || GENERATEUR 230v
+			sys_clio_4t(20); //	select mode en pause gen_test || GENERATEUR 230v
 			if (lux_env == true)
 			{
 				selc_mode_clio(0, 2);
@@ -767,20 +821,20 @@ void sys_veille_sysOK()
 			fan_fonct(20);
 		}
 	}
-	sys_etat = 23;									// sortie veille SYS_OK
+	sys_etat = 23; // sortie veille SYS_OK
 }
 void sys_veille_sysDEFAUT()
 {
 	byte switch_veil = 0;
 	byte switch_veil_prew = 0;
-	sys_etat = 24;									// veille en cours SYS_DEFAUT
+	sys_etat = 24; // veille en cours SYS_DEFAUT
 	while (battOff == true || alim_tst == false || SYS_SURCHAUFFE == true)
 	{
 		getBattery();
 		sys_temp_lux();
 		if (alim_tst == false)
 		{
-			getAlim(30);	// init getalim
+			getAlim(30); // init getalim
 		}
 		sys_inital();
 		if (battOff == true)
@@ -799,38 +853,38 @@ void sys_veille_sysDEFAUT()
 		if (switch_veil_prew != switch_veil)
 		{
 			switch_veil_prew = switch_veil;
-			//veil_millis = millis();
-			sys_raz(sys_etat);								// sys_veilleDEFAUT ch.etat
+			// veil_millis = millis();
+			sys_raz(sys_etat); // sys_veilleDEFAUT ch.etat
 		}
 		switch (switch_veil)
 		{
-		case 5:							 // TEMPO OFF
+		case 5: // TEMPO OFF
 			/*BPmarcheState = digitalRead(BPmarche);
 			if (BPmarcheState == false)
 			{
 				tempo_State_On = true;
 			}*/
 			break;
-		case 6:							// BATT BOSCH OFF
+		case 6: // BATT BOSCH OFF
 			selc_mode_clio(10, 2);
 			ecl_fonct(10);
-			sys_clio_4t(2);				// sys veille battoff
+			sys_clio_4t(2); // sys veille battoff
 			break;
-		case 4:							// ALIM 230v OFF
+		case 4: // ALIM 230v OFF
 			selc_mode_clio(10, 2);
 			ecl_fonct(10);
-			sys_clio_4t(3);				// sys veille alim off
+			sys_clio_4t(3); // sys veille alim off
 			break;
-		case 7:							// SUR_CHAUFFE SYS
+		case 7: // SUR_CHAUFFE SYS
 			getAlim(30);
-			clio_normal(3);				// veille surchauffe
+			clio_normal(3); // veille surchauffe
 			if (temp_sys == true)
 			{
-				fan_fonct(2);			// fan marche force SYS SURCHAUFFE
+				fan_fonct(2); // fan marche force SYS SURCHAUFFE
 			}
 			else
 			{
-				fan_fonct(20);			// fan marche force SYS SURCHAUFFE
+				fan_fonct(20); // fan marche force SYS SURCHAUFFE
 			}
 			break;
 		case 8:
@@ -838,7 +892,7 @@ void sys_veille_sysDEFAUT()
 			break;
 		}
 	}
-	sys_etat = 25;									// sortie veille SYS_DEFAUT
+	sys_etat = 25; // sortie veille SYS_DEFAUT
 }
 void sys_arret()
 {
@@ -848,23 +902,23 @@ void sys_arret()
 	while (BPmarcheState == true)
 	{
 		BPmarcheState = digitalRead(BPmarche);
-		clio_state_arret = clio_arret();
+		clio_state_arret = clio_arret(3 * sec, 2 * sec, sys_clio_arret_compt);
 		clio_state_tempo_arret = clio_arret_tempo();
 		if (sys_clio_arret_tempo_compt % 8 == false && sys_clio_arret_compt % 8 == true)
 		{
-			clio_normal(5);							//	sys arret
+			clio_normal(5); //	sys arret
 		}
 		else
 		{
-			clio_normal(20);						//	sys arret
+			clio_normal(20); //	sys arret
 		}
 		if (sys_clio_arret_tempo_compt == 1)
 		{
 			do
 			{
 				test_CcPhNeTe();
-				//BPmarcheState = digitalRead(BPmarche);
-				clio_state_arret = clio_arret();
+				// BPmarcheState = digitalRead(BPmarche);
+				clio_state_arret = clio_arret(3 * sec, 2 * sec, sys_clio_arret_compt);
 				if (sys_clio_arret_compt % 2 == true)
 				{
 					clio_normal(3);
@@ -873,17 +927,18 @@ void sys_arret()
 				{
 					sys_clio_arret_tempo_compt = 0;
 					sys_clio_arret_compt = 0;
-					clio_normal(20);				// detect_mode
+					clio_normal(20); // detect_mode
 				}
-			} while (CcPhNeTe != 0); //while (BPmarcheState == true);
+			} while (CcPhNeTe != 0); // while (BPmarcheState == true);
 		}
 	}
 }
-bool clio_arret()
+
+bool clio_arret(long interVal1, long interVal2, int &compteur)
 {
 	if (clio_arret_stat == false)
 	{
-		if (millis() - clio_arret_millis > 3 * sec)
+		if (millis() - clio_arret_millis > interVal1)
 		{
 			clio_arret_millis = millis();
 			clio_arret_stat = true;
@@ -891,11 +946,11 @@ bool clio_arret()
 	}
 	if (clio_arret_stat == true)
 	{
-		if (millis() - clio_arret_millis > 1 * sec)
+		if (millis() - clio_arret_millis > interVal2)
 		{
 			clio_arret_millis = millis();
 			clio_arret_stat = false;
-			sys_clio_arret_compt++;
+			compteur++;
 		}
 	}
 	return clio_arret_stat;
@@ -925,7 +980,7 @@ void sys_clio_4t(int ecl_defaut)
 {
 	if (ecl_defaut == 20)
 	{
-		sys_raz(sys_etat);									// sys_clio_4t arret
+		sys_raz(sys_etat); // sys_clio_4t arret
 		return;
 	}
 	selc_mode_clio(ecl_defaut, 0);
@@ -953,35 +1008,35 @@ void clio_normal(int sys_defaut)
 	{
 	default:
 		break;
-	case 1:					// batt off
+	case 1: // batt off
 		digitalWrite(spot, !state_sortie);
 		digitalWrite(flacheBleu, state_sortie);
 		digitalWrite(flacheRouge, state_sortie);
 		digitalWrite(sirenC, state_sortie);
 		digitalWrite(sirenI, false);
 		break;
-	case 2:					// alim off
+	case 2: // alim off
 		digitalWrite(spot, !state_sortie);
 		digitalWrite(flacheBleu, false);
 		digitalWrite(flacheRouge, state_sortie);
 		digitalWrite(sirenC, false);
 		digitalWrite(sirenI, state_sortie);
 		break;
-	case 3:					// surchauffe
+	case 3: // surchauffe
 		digitalWrite(spot, !state_sortie);
 		digitalWrite(flacheBleu, state_sortie);
 		digitalWrite(flacheRouge, state_sortie);
 		digitalWrite(sirenC, state_sortie);
 		digitalWrite(sirenI, state_sortie);
 		break;
-	case 4:					// detection mode
+	case 4: // detection mode
 		digitalWrite(spot, !state_sortie);
 		digitalWrite(flacheBleu, false);
 		digitalWrite(flacheRouge, state_sortie);
 		digitalWrite(sirenC, state_sortie);
 		digitalWrite(sirenI, false);
 		break;
-	case 5:					// detection mode
+	case 5: // detection mode
 		digitalWrite(spot, !state_sortie);
 		digitalWrite(flacheBleu, false);
 		digitalWrite(flacheRouge, state_sortie);
@@ -989,8 +1044,7 @@ void clio_normal(int sys_defaut)
 		digitalWrite(sirenI, false);
 		break;
 
-
-	case 20:				// arret clio
+	case 20: // arret clio
 		digitalWrite(spot, false);
 		digitalWrite(flacheBleu, false);
 		digitalWrite(flacheRouge, false);
@@ -1002,13 +1056,13 @@ void clio_normal(int sys_defaut)
 //------------------CONTROLE SOURCES BOSCH  230V
 void getBattery()
 {
-	float b = analogRead(BATTERYPIN);       // valeur analogique
-	float minValue = (1023 * 10.5) / 20.0;  // Arduino
-	float maxValue = (1023 * 20.0) / 20.0;  // Arduino
+	float b = analogRead(BATTERYPIN);	   // valeur analogique
+	float minValue = (1023 * 10.5) / 20.0; // Arduino
+	float maxValue = (1023 * 20.0) / 20.0; // Arduino
 	float moy = maxValue - minValue;
 	float val = b - minValue;
 	float res = val / moy;
-	float pct = res * 100;					// valeur en pourcent
+	float pct = res * 100; // valeur en pourcent
 	batt = pct;
 	if (batt >= 100)
 	{
@@ -1017,7 +1071,7 @@ void getBattery()
 	if (batt <= 0)
 	{
 		batt = 0;
-		sys_etat = 6;								// batt off
+		sys_etat = 6; // batt off
 	}
 	/*
 	 float volt = (((batt * (20.0 - 10.5)) / 100) + 10.5);	// valeur en Volts
@@ -1025,7 +1079,7 @@ void getBattery()
 	if (batt >= 3 && batt <= 20)
 	{
 		battLow = true;
-		sys_etat = 3;								// battlow -20% getBatt
+		sys_etat = 3; // battlow -20% getBatt
 	}
 	else
 	{
@@ -1035,7 +1089,7 @@ void getBattery()
 	{
 		battOff = true;
 		battLow = true;
-		sys_etat = 6;								// batt off
+		sys_etat = 6; // batt off
 	}
 	if (batt > 2)
 	{
@@ -1045,12 +1099,12 @@ void getBattery()
 void getAlim(int Mar_Arr)
 {
 	unsigned long rlt_alim = millis() - curren_millis_alim;
-	if (sys_etat == 30 || sys_etat == 6 || sys_etat == 7)				// 6-batt_off || 7-surchauffe
+	if (sys_etat == 30 || sys_etat == 6 || sys_etat == 7) // 6-batt_off || 7-surchauffe
 	{
 		get_Alim_test(Mar_Arr);
 		return;
 	}
-	if (sys_etat == 20)								// getAlim --> veille
+	if (sys_etat == 20) // getAlim --> veille
 	{
 		if (alim_tst == true)
 		{
@@ -1065,7 +1119,7 @@ void getAlim(int Mar_Arr)
 	}
 	switch (Mar_Arr)
 	{
-	case 1:			// alim en cours
+	case 1: // alim en cours
 	case 2:
 		get_Alim_test(Mar_Arr);
 		if (alim_tst == true)
@@ -1073,28 +1127,28 @@ void getAlim(int Mar_Arr)
 			digitalWrite(alim, true);
 			if (temp_sys == true)
 			{
-				selc_mode_clio(9, 1);// 
-				fan_fonct(1);		// fan active getAlim
+				selc_mode_clio(9, 1); //
+				fan_fonct(1);		  // fan active getAlim
 			}
 			else
 			{
-				fan_fonct(20);		// fan arret getAlim
+				fan_fonct(20); // fan arret getAlim
 			}
 		}
 		else
 		{
 			digitalWrite(alim, false);
 			fan_fonct(20);
-			sys_etat = 4;							// alim off
+			sys_etat = 4; // alim off
 		}
 		break;
-	case 20:										// alim arret
+	case 20: // alim arret
 		digitalWrite(alim, false);
 		alim_State = !digitalRead(alimOk);
 		alim_State_prew = alim_State;
-		fan_fonct(20);								// arret ventilateur getAlim(20)
+		fan_fonct(20); // arret ventilateur getAlim(20)
 		break;
-	case 30:										// alim test ok-- > en pause
+	case 30: // alim test ok-- > en pause
 		get_Alim_test(Mar_Arr);
 		break;
 	}
@@ -1106,18 +1160,18 @@ void getAlim(int Mar_Arr)
 		get_Alim_test(Mar_Arr);
 		if (alim_tst == false)
 		{
-			fan_fonct(20);							// arret ventilateur getAlim()
-			sys_etat = 4;							// ALIM 230v OFF
+			fan_fonct(20); // arret ventilateur getAlim()
+			sys_etat = 4;  // ALIM 230v OFF
 		}
 		else
 		{
-			selc_mode_clio(9, 1);//
-			fan_fonct(1);		// active ventilateur getAlim
+			selc_mode_clio(9, 1); //
+			fan_fonct(1);		  // active ventilateur getAlim
 		}
 	}
 	if (compt_alim_off == 5)
 	{
-		sys_veille();							// alim off
+		sys_veille(); // alim off
 	}
 }
 void get_Alim_test(int Mar_Arr)
@@ -1178,58 +1232,70 @@ void detection(int mode_type)
 		sequance = 0;
 	}
 }
-void detection_1(int& sortie, int& nbr_compteur, int& compteur_fonc, int& sequance) {
+void detection_1(int &sortie, int &nbr_compteur, int &compteur_fonc, int &sequance)
+{
 
 	slc_sortie(sortie);
 	compte(sequance, compteur_fonc);
 	activite(sequance);
-	if (compteur_fonc == nbr_compteur) {
+	if (compteur_fonc == nbr_compteur)
+	{
 		sequance = 0;
 	}
 }
-void compte(int& sequance, int& compteur) {
+void compte(int &sequance, int &compteur)
+{
 	unsigned long resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[0] && (sequance == 0)) {
+	if (resul1 >= temps_clio[0] && (sequance == 0))
+	{
 		compteMillis1 = millis();
 		sequance = 1;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[1] && sequance == 1) {
+	if (resul1 >= temps_clio[1] && sequance == 1)
+	{
 		compteMillis1 = millis();
 		sequance = 2;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[2] && sequance == 2) {
+	if (resul1 >= temps_clio[2] && sequance == 2)
+	{
 		compteMillis1 = millis();
 		sequance = 3;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[3] && sequance == 3) {
+	if (resul1 >= temps_clio[3] && sequance == 3)
+	{
 		compteMillis1 = millis();
 		sequance = 4;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[4] && sequance == 4) {
+	if (resul1 >= temps_clio[4] && sequance == 4)
+	{
 		compteMillis1 = millis();
 		sequance = 5;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[5] && sequance == 5) {
+	if (resul1 >= temps_clio[5] && sequance == 5)
+	{
 		compteMillis1 = millis();
 		sequance = 6;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[6] && sequance == 6) {
+	if (resul1 >= temps_clio[6] && sequance == 6)
+	{
 		compteMillis1 = millis();
 		sequance = 7;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[7] && sequance == 7) {
+	if (resul1 >= temps_clio[7] && sequance == 7)
+	{
 		compteMillis1 = millis();
 		sequance = 8;
 	}
 	resul1 = millis() - compteMillis1;
-	if (resul1 >= temps_clio[8] && sequance == 8) {
+	if (resul1 >= temps_clio[8] && sequance == 8)
+	{
 		compteMillis1 = millis();
 		sequance = 0;
 		compteur++;
@@ -1237,83 +1303,85 @@ void compte(int& sequance, int& compteur) {
 }
 //			cliognot CcPhNeTe
 //			fonction commun
-void slc_sortie(int sortie) {
-	switch (sortie) {
+void slc_sortie(int sortie)
+{
+	switch (sortie)
+	{
 	case 0:
 	case 1:
 		flache_b_r_s = false;
 		siren_c_i = false;
 		break;
 	case 2:
-	case 3:                       // flacheBleu,sirenC
-		flache_b_r_s = flacheBleu;  // sortie 12
-		siren_c_i = sirenC;         // 3 sortie siren con (continute)
+	case 3:						   // flacheBleu,sirenC
+		flache_b_r_s = flacheBleu; // sortie 12
+		siren_c_i = sirenC;		   // 3 sortie siren con (continute)
 		break;
 	case 4:
-	case 5:                        // flacheRouge,sirenI
-		flache_b_r_s = flacheRouge;  // 11 sortie flacheRouge
-		siren_c_i = sirenI;          // 9 sortie siren iso
+	case 5:							// flacheRouge,sirenI
+		flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = sirenI;			// 9 sortie siren iso
 		break;
 	case 10:
-		flache_b_r_s = spot;  // 6 sortie spot
+		flache_b_r_s = spot; // 6 sortie spot
 		break;
 	case 11:
-		flache_b_r_s = flacheBleu;  // sortie 12
+		flache_b_r_s = flacheBleu; // sortie 12
 		break;
 	case 12:
-		flache_b_r_s = flacheRouge;  // 11 sortie flacheRouge
+		flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
 		break;
 	case 13:
 
 		break;
-	case 50:               // fan
-		flache_b_r_s = fan;  // 5 ventilateur
-		siren_c_i = fan;     // 5 ventilateur
+	case 50:				// fan
+		flache_b_r_s = fan; // 5 ventilateur
+		siren_c_i = fan;	// 5 ventilateur
 		break;
-	case 60:                // spot
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = false;    // "<&>"
+	case 60:				 // spot
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = false;	 // "<&>"
 		break;
-	case 611:  // spot
+	case 611: // spot
 		sortie = 1;
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = false;    // "<&>"
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = false;	 // "<&>"
 		break;
-	case 612:               // spot
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = false;    // "<&>"
+	case 612:				 // spot
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = false;	 // "<&>"
 		break;
-	case 61:                // spot,sirenI
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = sirenI;   // 9 sortie siren iso
+	case 61:				 // spot,sirenI
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = sirenI;	 // 9 sortie siren iso
 		break;
-	case 62:                // spot,sirenI
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = sirenI;   // 9 sortie siren iso
+	case 62:				 // spot,sirenI
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = sirenI;	 // 9 sortie siren iso
 		break;
-	case 71:                // spot,sirenC
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = sirenC;   // 3 sortie siren con
+	case 71:				 // spot,sirenC
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = sirenC;	 // 3 sortie siren con
 		break;
-	case 72:                // spot,sirenC
-		flache_b_r_s = spot;  // 6 sortie spot
-		siren_c_i = sirenC;   // 3 sortie siren con
+	case 72:				 // spot,sirenC
+		flache_b_r_s = spot; // 6 sortie spot
+		siren_c_i = sirenC;	 // 3 sortie siren con
 		break;
-	case 81:                 // sirenC
-		flache_b_r_s = false;  // "<&>"
-		siren_c_i = sirenC;    // 3 sortie siren con
+	case 81:				  // sirenC
+		flache_b_r_s = false; // "<&>"
+		siren_c_i = sirenC;	  // 3 sortie siren con
 		break;
-	case 82:                 // sirenI
-		flache_b_r_s = false;  // "<&>"
-		siren_c_i = sirenI;    // 9 sortie siren iso
+	case 82:				  // sirenI
+		flache_b_r_s = false; // "<&>"
+		siren_c_i = sirenI;	  // 9 sortie siren iso
 		break;
-	case 91:                      // flacheBleu
-		flache_b_r_s = flacheBleu;  // 12 sortie flacheBleu
-		siren_c_i = false;          // "<&>"
+	case 91:					   // flacheBleu
+		flache_b_r_s = flacheBleu; // 12 sortie flacheBleu
+		siren_c_i = false;		   // "<&>"
 		break;
-	case 92:                       // flacheRouge
-		flache_b_r_s = flacheRouge;  // 11 sortie flacheRouge
-		siren_c_i = false;           // "<&>"
+	case 92:						// flacheRouge
+		flache_b_r_s = flacheRouge; // 11 sortie flacheRouge
+		siren_c_i = false;			// "<&>"
 		break;
 	}
 }
@@ -1321,85 +1389,85 @@ void selc_mode_clio(int selection, int fonction)
 {
 	switch (selection)
 	{
-	case 0:  // eclairage ECL
+	case 0: // eclairage ECL
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_ECL[i];
 		}
 		break;
-	case 1:  // temp o manu auto   off
+	case 1: // temp o manu auto   off
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_aut[i];
 		}
 		break;
-	case 2:  // bosch             off
+	case 2: // bosch             off
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_bat[i];
 		}
 		break;
-	case 3:  // 230v              off
+	case 3: // 230v              off
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_230[i];
 		}
 		break;
-	case 4:  // ne_te
+	case 4: // ne_te
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_ne_te[i];
 		}
 		break;
-	case 5:  // ph_te
+	case 5: // ph_te
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_ph_te[i];
 		}
 		break;
-	case 6:  // ph_ne
+	case 6: // ph_ne
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_ph_ne[i];
 		}
 		break;
-	case 7:  // cc_tst
+	case 7: // cc_tst
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_cc_tst[i];
 		}
 		break;
-	case 8:  // cc_cc
+	case 8: // cc_cc
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_cc_cc[i];
 		}
 		break;
-	case 9:  // ventilateur FAN
+	case 9: // ventilateur FAN
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_FAN_d[i];
 		}
 		break;
-	case 10:  // S O S
+	case 10: // S O S
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_SOS[i];
 		}
 		break;
-	case 11:  // S O S 1
+	case 11: // S O S 1
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_SOS1[i];
 		}
 		break;
-	case 12:  // VEIL AUTO OFF
+	case 12: // VEIL AUTO OFF
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_aut_veil[i];
 		}
 		break;
-	case 13:  // GENERATEUR 230v
+	case 13: // GENERATEUR 230v
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl[i] = selc_GEN_SYS[i];
@@ -1459,17 +1527,17 @@ void selc_mode_clio(int selection, int fonction)
 	}
 	switch (fonction)
 	{
-	case 0:			//	sys_clio_4t
+	case 0: //	sys_clio_4t
 		//	chf_cyl[i]---temps_clio[i]
 		break;
-	case 1:			//	fan_fonct
+	case 1: //	fan_fonct
 		for (int i = 0; i < 9; i++)
 		{
 			selc_FAN[i] = chf_cyl[i];
 			tempo[i] = temps_clio[i];
 		}
 		break;
-	case 2:			//	ecl_fonct SOS
+	case 2: //	ecl_fonct SOS
 		for (int i = 0; i < 9; i++)
 		{
 			chf_cyl_sos[i] = chf_cyl[i];
@@ -1481,8 +1549,10 @@ void selc_mode_clio(int selection, int fonction)
 		break;
 	}
 }
-void activite(int& sequance) {
-	switch (sequance) {
+void activite(int &sequance)
+{
+	switch (sequance)
+	{
 	case 0:
 		break;
 	case 1:
@@ -1539,42 +1609,51 @@ void fan_fonct(int mode_type)
 		break;
 	case 1:
 		// compte 1 chiffre
-		if (compteurFAN < selc_FAN[1] && niveau == 0) {
+		if (compteurFAN < selc_FAN[1] && niveau == 0)
+		{
 			fan_fonct_1(selc_FAN[0], selc_FAN[1], compteurFAN, sequanceFAN);
-			if (compteurFAN == selc_FAN[1]) {
+			if (compteurFAN == selc_FAN[1])
+			{
 				compteurFAN = 0;
 				niveau = 1;
 			}
 		}
 		// compte spot1 chiffre
-		if (compteurFAN < selc_FAN[3] && niveau == 1) {
+		if (compteurFAN < selc_FAN[3] && niveau == 1)
+		{
 			fan_fonct_1(selc_FAN[2], selc_FAN[3], compteurFAN, sequanceFAN);
-			if (compteurFAN == selc_FAN[3]) {
+			if (compteurFAN == selc_FAN[3])
+			{
 				compteurFAN = 0;
 				niveau = 2;
 			}
 		}
 		// compte 2 chiffre
-		if (compteurFAN < selc_FAN[5] && niveau == 2) {
+		if (compteurFAN < selc_FAN[5] && niveau == 2)
+		{
 			fan_fonct_1(selc_FAN[4], selc_FAN[5], compteurFAN, sequanceFAN);
-			if (compteurFAN == selc_FAN[5]) {
+			if (compteurFAN == selc_FAN[5])
+			{
 				compteurFAN = 0;
 				niveau = 3;
 			}
 		}
 		// compte spot2 chiffre
-		if (compteurFAN < selc_FAN[7] && niveau == 3) {
+		if (compteurFAN < selc_FAN[7] && niveau == 3)
+		{
 			fan_fonct_1(selc_FAN[6], selc_FAN[7], compteurFAN, sequanceFAN);
-			if (compteurFAN == selc_FAN[7]) {
+			if (compteurFAN == selc_FAN[7])
+			{
 				compteurFAN = 0;
 				niveau = 4;
 			}
 		}
 		// compte remise a zero
-		if (compteurFAN == selc_FAN[7] && niveau == 4) {
-			//compteurFAN = 0;
-			//niveau = 0;
-			//sequanceFAN = 0;
+		if (compteurFAN == selc_FAN[7] && niveau == 4)
+		{
+			// compteurFAN = 0;
+			// niveau = 0;
+			// sequanceFAN = 0;
 		}
 		resul_fan = millis() - compteFANMillis2;
 		if (niveau == 4 && resul_fan >= fan_tempo)
@@ -1609,7 +1688,7 @@ void fan_fonct(int mode_type)
 		break;
 	}
 }
-void fan_fonct_1(int& sortie1, int& nbr_compteur1, int& compteurFAN, int& sequanceFAN)
+void fan_fonct_1(int &sortie1, int &nbr_compteur1, int &compteurFAN, int &sequanceFAN)
 {
 	slc_sortie(sortie1);
 	compte_fan_fonct(sequanceFAN, compteurFAN);
@@ -1619,7 +1698,7 @@ void fan_fonct_1(int& sortie1, int& nbr_compteur1, int& compteurFAN, int& sequan
 		sequanceFAN = 0;
 	}
 }
-void compte_fan_fonct(int& sequanceFAN, int& compteurFAN)
+void compte_fan_fonct(int &sequanceFAN, int &compteurFAN)
 {
 	unsigned long resul1 = millis() - compteFANMillis1;
 	if (resul1 >= tempo[0] && (sequanceFAN == 0))
@@ -1733,9 +1812,9 @@ void ecl_fonct(int mode_type)
 	//					compte remise a zero
 	if (compteurECL == chf_cyl_sos[7] && niveauECL == 4)
 	{
-		//compteurECL = 0;
-		//niveauECL = 0;
-		//sequanceECL = 0;
+		// compteurECL = 0;
+		// niveauECL = 0;
+		// sequanceECL = 0;
 	}
 	resul_ecl = millis() - compteECLMillis2;
 	/*if (sos_niveau_2 == 0)
@@ -1765,57 +1844,69 @@ void ecl_fonct(int mode_type)
 		}
 	}
 }
-void ecl_fonct_1(int& sortie2, int& nbr_compteur2, int& compteurECL, int& sequanceECL) {
+void ecl_fonct_1(int &sortie2, int &nbr_compteur2, int &compteurECL, int &sequanceECL)
+{
 	slc_sortie(sortie2);
 	compte_ecl_fonct(sequanceECL, compteurECL);
 	activite(sequanceECL);
-	if (compteurECL == nbr_compteur2) {
+	if (compteurECL == nbr_compteur2)
+	{
 		sequanceECL = 0;
 	}
 }
-void compte_ecl_fonct(int& sequanceECL, int& compteurECL) {
+void compte_ecl_fonct(int &sequanceECL, int &compteurECL)
+{
 	unsigned long resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[0] && (sequanceECL == 0)) {
+	if (resul1ECL >= tempoECL[0] && (sequanceECL == 0))
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 1;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[1] && sequanceECL == 1) {
+	if (resul1ECL >= tempoECL[1] && sequanceECL == 1)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 2;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[2] && sequanceECL == 2) {
+	if (resul1ECL >= tempoECL[2] && sequanceECL == 2)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 3;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[3] && sequanceECL == 3) {
+	if (resul1ECL >= tempoECL[3] && sequanceECL == 3)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 4;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[4] && sequanceECL == 4) {
+	if (resul1ECL >= tempoECL[4] && sequanceECL == 4)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 5;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[5] && sequanceECL == 5) {
+	if (resul1ECL >= tempoECL[5] && sequanceECL == 5)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 6;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[6] && sequanceECL == 6) {
+	if (resul1ECL >= tempoECL[6] && sequanceECL == 6)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 7;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[7] && sequanceECL == 7) {
+	if (resul1ECL >= tempoECL[7] && sequanceECL == 7)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 8;
 	}
 	resul1ECL = millis() - compteECLMillis1;
-	if (resul1ECL >= tempoECL[8] && sequanceECL == 8) {
+	if (resul1ECL >= tempoECL[8] && sequanceECL == 8)
+	{
 		compteECLMillis1 = millis();
 		sequanceECL = 0;
 		compteurECL++;
