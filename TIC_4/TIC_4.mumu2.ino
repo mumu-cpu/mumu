@@ -11,13 +11,13 @@
 
 */
 
-byte testPh = A0;	  // entree analog phase
-byte testN = A1;	  // entree analog neutre
-byte testT = A2;	  // entree analog terre
-byte phase = 0;		  // state phase
-byte neutre = 0;	  // state neutre
-byte terre = 0;		  // state terre
-byte BATTERYPIN = A3; // pin de la batterie
+int testPh = A0;	  // entree analog phase
+int testN = A1;		  // entree analog neutre
+int testT = A2;		  // entree analog terre
+int phase = 0;		  // state phase
+int neutre = 0;		  // state neutre
+int terre = 0;		  // state terre
+int BATTERYPIN = A3;  // pin de la batterie
 bool battLow = false; // battLow
 bool battLow_prew = false;
 int batt = 0; // batt
@@ -197,14 +197,17 @@ void setup()
 	pinMode(BPmarche, INPUT_PULLUP);
 	// pinMode(welc_ctr_in, INPUT_PULLUP);
 }
-
 // the loop function runs over and over again until power down or reset
 void loop()
 {
-	getBattery();
-	sys_temp_lux();
-	sys_inital();
-	sys_veille(); // loop init
+	GENERATEUR_230v();
+
+	/*
+		getBattery();
+		sys_temp_lux();
+		sys_inital();
+		sys_veille(); // loop init
+		*/
 } //				fin loop
 
 /*--------------etat system
@@ -322,16 +325,30 @@ void sys_temp_lux()
 }
 void GENERATEUR_230v()
 {
-	bool clio=false;
-	int compteur=0;
+	sys_etat = 8; // generateur en cours
+	bool clio = false;
+	int compteur = 0;
 	GENERATEUR_230v_stat = true;
 	gen_debut = millis();
 	while (GENERATEUR_230v_stat == true)
 	{
+		sys_etat = 8; // generateur en cours
 		getBattery();
 		sys_temp_lux();
 		sys_inital();
-		TA_PROTEC();
+		// TA_PROTEC();
+		getAlim(1);
+		digitalWrite(bosch, GENERATEUR_230v_stat);
+		phnete_test();
+		if (phase >= 150 || neutre >= 150)
+		{
+			sys_surcharge = true;
+		}
+		else
+		{
+			sys_surcharge = false;
+		}
+
 		if (battOff == true || SYS_SURCHAUFFE == true)
 		{
 			getAlim(20);
@@ -339,19 +356,37 @@ void GENERATEUR_230v()
 			return;
 		}
 
-		sys_etat = 8;	 // generateur en cours
 		sys_clio_4t(13); // generateur en cours
 		if (millis() - gen_debut <= gen_tmp_230)
 		{
-			if (sys_surcharge==true)
+			while (sys_surcharge == true)
 			{
-				if (/* condition */)
+				sys_etat = 8; // generateur en cours
+							  // TA_PROTEC();
+				phnete_test();
+				if (phase >= 150 || neutre >= 150)
 				{
-					/* code */
+					sys_surcharge = true;
 				}
-				(sec,sec,compteur)
+				else
+				{
+					sys_surcharge = false;
+				}
+
+				clio = clio_arret(sec, sec, compteur);
+				if (clio == true)
+				{
+					getAlim(1);
+				}
+				else
+				{
+					getAlim(20);
+				}
+				if (compteur == 10)
+				{
+					return;
+				}
 			}
-			
 			GENERATEUR_230v_stat = true;
 			getAlim(1);
 			if (lux_env == true)
@@ -376,7 +411,7 @@ void GENERATEUR_230v()
 }
 void TA_PROTEC()
 {
-	test_CcPhNeTe();
+	phnete_test();
 	if (phase >= 150 || neutre >= 150)
 	{
 		sys_surcharge = true;
@@ -604,54 +639,66 @@ void detect_mode(int retour_foncf)
 		break;
 	}
 }
-void test_CcPhNeTe()
+void phnete_test()
 {
 	phase = analogRead(testPh);
 	neutre = analogRead(testN);
 	terre = analogRead(testT);
-	if (phase >= 10)
+}
+void test_CcPhNeTe()
+{
+	if (sys_etat == 8)
 	{
-		phase = true;
+		phnete_test();
+		return;
 	}
 	else
 	{
-		phase = false;
-	}
-	if (neutre >= 10)
-	{
-		neutre = true;
-	}
-	else
-	{
-		neutre = false;
-	}
-	if (terre >= 10)
-	{
-		terre = true;
-	}
-	else
-	{
-		terre = false;
-	}
-	if ((phase == false && neutre == false && terre == false) || (phase == true && neutre == false && terre == false) || (phase == false && neutre == true && terre == false) || (phase == false && neutre == false && terre == true))
-	{
-		CcPhNeTe = 0;
-	}
-	if (phase == true && neutre == true && terre == true) // detect_PH__NE__TE
-	{
-		CcPhNeTe = 7;
-	}
-	if (phase == true && neutre == true && terre == false) // detect_PH__NE
-	{
-		CcPhNeTe = 6;
-	}
-	if (phase == true && neutre == false && terre == true) // detect_TE__PH
-	{
-		CcPhNeTe = 5;
-	}
-	if (phase == false && neutre == true && terre == true) // detect_TE__NE
-	{
-		CcPhNeTe = 4;
+		phnete_test();
+		if (phase >= 10)
+		{
+			phase = true;
+		}
+		else
+		{
+			phase = false;
+		}
+		if (neutre >= 10)
+		{
+			neutre = true;
+		}
+		else
+		{
+			neutre = false;
+		}
+		if (terre >= 10)
+		{
+			terre = true;
+		}
+		else
+		{
+			terre = false;
+		}
+		if ((phase == false && neutre == false && terre == false) || (phase == true && neutre == false && terre == false) || (phase == false && neutre == true && terre == false) || (phase == false && neutre == false && terre == true))
+		{
+			CcPhNeTe = 0;
+		}
+		if (phase == true && neutre == true && terre == true) // detect_PH__NE__TE
+		{
+			CcPhNeTe = 7;
+		}
+		if (phase == true && neutre == true && terre == false) // detect_PH__NE
+		{
+			CcPhNeTe = 6;
+		}
+		if (phase == true && neutre == false && terre == true) // detect_TE__PH
+		{
+			CcPhNeTe = 5;
+		}
+		if (phase == false && neutre == true && terre == true) // detect_TE__NE
+		{
+			CcPhNeTe = 4;
+		}
 	}
 }
 void sys_raz(int etat) // mise a zer0
@@ -934,7 +981,7 @@ void sys_arret()
 	}
 }
 
-bool clio_arret(long interVal1, long interVal2, int &compteur)
+int clio_arret(long interVal1, long interVal2, int &compteur)
 {
 	if (clio_arret_stat == false)
 	{
@@ -1147,6 +1194,7 @@ void getAlim(int Mar_Arr)
 		alim_State = !digitalRead(alimOk);
 		alim_State_prew = alim_State;
 		fan_fonct(20); // arret ventilateur getAlim(20)
+		return;
 		break;
 	case 30: // alim test ok-- > en pause
 		get_Alim_test(Mar_Arr);
@@ -1185,18 +1233,21 @@ void get_Alim_test(int Mar_Arr)
 		{
 			digitalWrite(alim, false);
 		}
-	}
-	if (alim_State == true)
-	{
-		if (Mar_Arr == 1)
+		else
 		{
 			digitalWrite(alim, true);
 		}
-		alim_tst = true;
-	}
-	else
-	{
-		alim_tst = false;
+		if (alim_State == true)
+		{
+			if (Mar_Arr == 1)
+			{
+			}
+			alim_tst = true;
+		}
+		else
+		{
+			alim_tst = false;
+		}
 	}
 }
 //			cliognot CcPhNeTe

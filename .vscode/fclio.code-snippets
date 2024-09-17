@@ -1,5 +1,6 @@
 
 "fonction clio interval1 interval2 compteur": {
+  "scope": "ino,C++",
   "prefix": "fclio",
   "body": [
     "bool clio_arret(${1:val}, ${2:val}, ${3:comp})",
