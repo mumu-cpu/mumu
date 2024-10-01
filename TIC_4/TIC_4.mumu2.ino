@@ -260,15 +260,15 @@ void loop()
 
 void sys_inital()
 {
-	if (alim_tst == false)
-	{
-		getAlim(30);
-	}
 	if (battOff == true)
 	{
 		sys_etat = 6; // batt off
 		getAlim(sys_etat);
 		return;
+	}
+	if (alim_tst == false)
+	{
+		getAlim(30);
 	}
 	if (battLow_prew != battLow || sys_etat_prew != sys_etat)
 	{
@@ -336,9 +336,10 @@ void GENERATEUR_230v()
 		getBattery();
 		sys_temp_lux();
 		sys_inital();
-		// TA_PROTEC();
 		getAlim(1);
 		digitalWrite(bosch, GENERATEUR_230v_stat);
+		TA_PROTEC();
+		/*
 		phnete_test();
 		if (phase >= 150 || neutre >= 150)
 		{
@@ -348,6 +349,7 @@ void GENERATEUR_230v()
 		{
 			sys_surcharge = false;
 		}
+		*/
 
 		if (battOff == true || SYS_SURCHAUFFE == true)
 		{
@@ -362,7 +364,8 @@ void GENERATEUR_230v()
 			while (sys_surcharge == true)
 			{
 				sys_etat = 8; // generateur en cours
-							  // TA_PROTEC();
+				TA_PROTEC();
+				/*
 				phnete_test();
 				if (phase >= 150 || neutre >= 150)
 				{
@@ -372,7 +375,7 @@ void GENERATEUR_230v()
 				{
 					sys_surcharge = false;
 				}
-
+				*/
 				clio = clio_arret(sec, sec, compteur);
 				if (clio == true)
 				{
@@ -1145,7 +1148,6 @@ void getBattery()
 }
 void getAlim(int Mar_Arr)
 {
-	unsigned long rlt_alim = millis() - curren_millis_alim;
 	if (sys_etat == 30 || sys_etat == 6 || sys_etat == 7) // 6-batt_off || 7-surchauffe
 	{
 		get_Alim_test(Mar_Arr);
@@ -1155,8 +1157,7 @@ void getAlim(int Mar_Arr)
 	{
 		if (alim_tst == true)
 		{
-			rlt_alim = millis() - curren_millis_alim;
-			if (rlt_alim >= 5 * sec)
+			if (millis() - curren_millis_alim >= 5 * sec)
 			{
 				curren_millis_alim = millis();
 				get_Alim_test(Mar_Arr);
@@ -1172,14 +1173,25 @@ void getAlim(int Mar_Arr)
 		if (alim_tst == true)
 		{
 			digitalWrite(alim, true);
-			if (temp_sys == true)
+			delay(100);
+			alim_State = !digitalRead(alimOk);
+			if (alim_State == true)
 			{
-				selc_mode_clio(9, 1); //
-				fan_fonct(1);		  // fan active getAlim
+				if (temp_sys == true)
+				{
+					selc_mode_clio(9, 1); //
+					fan_fonct(1);		  // fan active getAlim
+				}
+				else
+				{
+					fan_fonct(20); // fan arret getAlim
+				}
+				return;
 			}
 			else
 			{
-				fan_fonct(20); // fan arret getAlim
+				digitalWrite(alim, false);
+				alim_State = !digitalRead(alimOk);
 			}
 		}
 		else
@@ -1191,17 +1203,16 @@ void getAlim(int Mar_Arr)
 		break;
 	case 20: // alim arret
 		digitalWrite(alim, false);
+		delay(100);
 		alim_State = !digitalRead(alimOk);
 		alim_State_prew = alim_State;
 		fan_fonct(20); // arret ventilateur getAlim(20)
 		return;
-		break;
 	case 30: // alim test ok-- > en pause
 		get_Alim_test(Mar_Arr);
 		break;
 	}
-	rlt_alim = millis() - curren_millis_alim;
-	if (rlt_alim > sec && alim_tst == false)
+	if (millis() - curren_millis_alim > sec && alim_tst == false)
 	{
 		compt_alim_off++;
 		curren_millis_alim = millis();
@@ -1227,25 +1238,33 @@ void get_Alim_test(int Mar_Arr)
 	if (alim_tst == false)
 	{
 		digitalWrite(alim, true);
+		delay(100);
 		alim_State = !digitalRead(alimOk);
 		alim_State_prew = alim_State;
-		if (Mar_Arr != 1)
-		{
-			digitalWrite(alim, false);
-		}
-		else
-		{
-			digitalWrite(alim, true);
-		}
 		if (alim_State == true)
 		{
-			if (Mar_Arr == 1)
+			if (Mar_Arr != 1)
 			{
+				digitalWrite(alim, false);
+				alim_State = !digitalRead(alimOk);
+				alim_State_prew = alim_State;
+			}
+			else
+			{
+				digitalWrite(alim, true);
+				delay(100);
+				alim_State = !digitalRead(alimOk);
+				alim_State_prew = alim_State;
 			}
 			alim_tst = true;
 		}
 		else
 		{
+			digitalWrite(alim, false);
+			delay(100);
+			alim_State = !digitalRead(alimOk);
+			alim_State_prew = alim_State;
+
 			alim_tst = false;
 		}
 	}
